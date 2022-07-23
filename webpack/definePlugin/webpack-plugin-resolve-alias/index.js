@@ -112,7 +112,7 @@ class webpackPluginResolveAlias {
   constructor(options) {
     this.options = options;
   }
-  alias(content, filePath) {
+  alias(content, filePath='') {
     const { resolve = {} } = this.options;
     return alias({
       config: {

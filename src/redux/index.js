@@ -1,14 +1,7 @@
 import { init } from '@rematch/core';
 import * as models from './models';
 import { connect } from 'react-redux';
-
 import { CheckDataType } from '@/utils';
-
-//文档： https://www.icode9.com/content-4-1343821.html
-const store = init({
-    models,
-});
-
 const mapRedux = (modelsName) => {
     return (Component) => {
         const mapStateToProps = (state) => {
@@ -55,6 +48,16 @@ const mapRedux = (modelsName) => {
         return connect(mapStateToProps, mapDispatchToProps)(Component);
     };
 };
-
 export { mapRedux };
-export default store;
+const createStore = ($window) => {
+    let newModels = {};
+    for (let key in models) {
+        newModels[key] = models[key]($window);
+    }
+
+    //文档： https://www.icode9.com/content-4-1343821.html
+    return init({
+        models: newModels,
+    });
+};
+export default createStore;

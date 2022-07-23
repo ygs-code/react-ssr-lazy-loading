@@ -12,7 +12,7 @@ import {
 } from 'react-router-dom';
 // import { StaticRouter } from 'react-router-dom/server';
 import routesConfig from './routesComponent';
-
+// 123 你好 在么
 // <Router history={history}>
 // <Suspense fallback={<div>Loading...</div>}>
 //     <Switch>
@@ -49,8 +49,12 @@ import routesConfig from './routesComponent';
 //     //         })}
 //     //     </BrowserRouter>
 //     // );
-// };
-
+// };  
+ 
+/* 
+你好
+  asdf 
+*/
 const Routers = (props) => {
     const { history, context } = props;
     return (

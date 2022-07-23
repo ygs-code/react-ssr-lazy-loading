@@ -1,5 +1,6 @@
 require('./ignore.js')();
 import React from 'react';
+import axios from 'axios';
 import { renderToString } from 'react-dom/server';
 import {
     createMemoryHistory,
@@ -11,13 +12,23 @@ import stats from '../../web/react-loadable.json';
 import Helmet from 'react-helmet';
 import { matchPath } from 'react-router-dom';
 // import { matchRoutes } from 'react-router-config';
-import store from '../src/redux';
-import routesConfig from '../src/router/routesComponent';
-// import client from '../src/app/index.js';
+import createStore from '@/redux';
+import routesComponent from '@/router/routesComponent';
+import routesConfig from '@/router/routesConfig';
+import { findTreeData } from '@/utils';
+import * as baseInitState from './baseInitState/index';
 import path from 'path';
 import fs from 'fs';
-const CreateApp = require('../src/App').default;
+const CreateApp = require('@/App').default;
+// 创建 store
+const store = createStore({});
 
+// 获取组件初始化数据
+const findInitData = (routesConfig, value, key) => {
+    return (findTreeData(routesConfig, value, key) || {}).initState;
+};
+
+// 创建script link 标签 添加js和css
 const createTags = (modules) => {
     let bundles = getBundles(stats, modules);
     let scriptfiles = bundles.filter((bundle) => bundle.file.endsWith('.js'));
@@ -31,20 +42,21 @@ const createTags = (modules) => {
     return { scripts, styles };
 };
 
+// 解析html
 const prepHTML = (
     data,
     { html, head, rootString, scripts, styles, initState }
 ) => {
-    rootString = rootString + 'asdfsddsf';
+    rootString = rootString;
     data = data.replace('<html', `<html ${html}`);
     data = data.replace('</head>', `${head} \n ${styles}</head>`);
     data = data.replace(
         '<div id="root"></div>',
-        `<div id="root"><div> asfsdfsd  ${rootString}</div></div>`
+        `<div id="root"><div>${rootString}</div></div>`
     );
     data = data.replace(
-        '<body>',
-        `<body> \n <script>window.__INITIAL_STATE__ =${JSON.stringify(
+        '</head>',
+        `</head> \n <script>window.__INITIAL_STATE__ =${JSON.stringify(
             initState
         )}</script>`
     );
@@ -52,6 +64,7 @@ const prepHTML = (
     return data;
 };
 
+// 匹配路由
 const getMatch = (routesArray, url) => {
     for (let router of routesArray) {
         let $router = matchPath(url, {
@@ -61,7 +74,7 @@ const getMatch = (routesArray, url) => {
 
         if ($router) {
             return {
-                // ...router,
+                ...router,
                 ...$router,
             };
         }
@@ -70,13 +83,13 @@ const getMatch = (routesArray, url) => {
 
 const makeup = (ctx, store, CreateApp, html, isMatchRoute) => {
     let initState = store.getState();
-    console.log('ctx.req.url=', ctx.req.url);
+
     let history = createMemoryHistory({ initialEntries: [ctx.req.url] });
     history = {
         ...history,
         ...isMatchRoute,
     };
-    console.log('history====', history);
+
     let modules = [];
     let context = [];
     let location = ctx.req.url;
@@ -84,9 +97,6 @@ const makeup = (ctx, store, CreateApp, html, isMatchRoute) => {
     let rootString = renderToString(
         CreateApp({ store, context, history, modules, location })
     );
-
-    // <ul></ul><div>当前页面是Home页面 123213</div><div class="home"><a
-    // href="/user/123">跳转到用户页面</a></div><div>跳转到DiscountCoupon页面</div>
 
     let { scripts, styles } = createTags(modules);
 
@@ -105,13 +115,35 @@ const makeup = (ctx, store, CreateApp, html, isMatchRoute) => {
     return renderedHtml;
 };
 
+// 中间件
 const clientRouter = async (ctx, next) => {
     let html = fs.readFileSync(
         path.join(path.resolve(__dirname, '../../web'), 'index.html'),
         'utf-8'
     );
-    let isMatchRoute = getMatch(routesConfig, ctx.req.url);
+    let isMatchRoute = getMatch(routesComponent, ctx.req.url);
     if (isMatchRoute) {
+        let data = null;
+        let initState = findInitData(routesConfig, isMatchRoute.name, 'name');
+        // console.log('baseInitState===', baseInitState);
+        let baseInitStateData = {};
+        for (let key in baseInitState) {
+            baseInitStateData[key] = await baseInitState[key]();
+        }
+        // console.log('baseInitStateData=========', baseInitStateData);
+        if (Object.keys(baseInitState).length) {
+            store.dispatch['baseInitState'].setInitState(baseInitStateData);
+        }
+
+        if (initState) {
+            // 拉去请求或者查询sql等操作
+            data = await initState();
+            store.dispatch[isMatchRoute.name].setInitState({
+                initState: data,
+            });
+        }
+        console.log('store===',store.getState())
+        // 渲染html
         let renderedHtml = await makeup(
             ctx,
             store,

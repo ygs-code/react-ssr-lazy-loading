@@ -17,7 +17,14 @@ import {
 } from './ergodic';
 // import {FloatingBall} from './FloatingBall';
 import { getStyle } from './getCssAttr';
-import { checkPhone ,checkUser,checkPassword,checkVerificationCode ,firstToUpper } from './regular';
+import {
+    checkPhone,
+    checkUser,
+    checkPassword,
+    checkVerificationCode,
+    firstToUpper,
+} from './regular';
+import { setInitData } from './setInitData';
 
 export {
     // FloatingBall, // 浮动球 类
@@ -37,6 +44,7 @@ export {
     checkPassword,
     checkVerificationCode,
     firstToUpper,
+    setInitData,
 };
 // 整体输出
 export * from './regular.js';

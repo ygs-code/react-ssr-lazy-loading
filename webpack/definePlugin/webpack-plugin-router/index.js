@@ -9,8 +9,8 @@
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
-const readFile = require('./readFile');
-const jsondiff = require('./diff');
+const {readFile} = require('../../utils');
+const dataDiff = require('./diff');
 
 class WebpackPluginRouter {
     constructor(options) {
@@ -82,7 +82,7 @@ const Loadable${this.firstToUpper(name)} = Loadable({
                  exact: ${exact ? true : false},
                  name:'${name}',
                  entry:'${entry}',
-                 Component:  Loadable${this.firstToUpper(name)},
+                 Component:  Loadable${this.firstToUpper(name)}
                },`;
             return acc;
         }, '');
@@ -139,8 +139,8 @@ export default routesComponentConfig;
                     delete require.cache[require.resolve(path)];
                 }
             });
-
-            if (jsondiff(routesConfigs, this.routesConfigs).length) {
+            
+            if (!dataDiff(routesConfigs, this.routesConfigs)) {
                 this.routesConfigs = _.cloneDeep(routesConfigs);
                 this.writeFile(routesConfigs);
             }

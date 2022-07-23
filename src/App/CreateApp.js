@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
 import Loadable, { Capture } from 'react-loadable';
 import App from './App.js';
+import './App.less';
 
 const CreateApp = (props = {}) => {
     const { modules = [] } = props;
-    console.log('CreateApp============');
-
-    // if (process.env.target === 'ssr') {
-    //     return (
-    //         <Capture report={(moduleName) => modules.push(moduleName)}>
-    //             <App {...props} />
-    //         </Capture>
-    //     );
-    // } else {
-        return <App {...props} />;
-    // }
+    return process.env.target === 'ssr' ? (
+        <Capture report={(moduleName) => modules.push(moduleName)}>
+            <App {...props} />
+        </Capture>
+    ) : (
+        <App {...props} />
+    );
 };
 
 export default CreateApp;

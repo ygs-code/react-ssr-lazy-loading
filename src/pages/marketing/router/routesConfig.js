@@ -8,7 +8,7 @@ export default [
         entry: `/pages/marketing/index.js`,
         children: [
             {
-                path: '/DiscountCoupon',
+                path: '/discount-coupon',
                 name: 'DiscountCoupon',
                 // Component: <UserRouterAddApi />,
                 entry: `/pages/marketing/DiscountCoupon/index.js`, 

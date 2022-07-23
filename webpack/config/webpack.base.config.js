@@ -6,7 +6,10 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const { ReactLoadablePlugin } = require('react-loadable/webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ExtendedDefinePlugin = require('extended-define-webpack-plugin');
+const WebpackPluginRouter = require('../definePlugin/webpack-plugin-router');
+const MyExampleWebpackPlugin = require('../definePlugin/MyExampleWebpackPlugin');
 const isServer = process.env.BUILD_TYPE === 'server';
 const rootPath = process.cwd();
 let {
@@ -32,14 +35,14 @@ htmlWebpackPluginOptions = (() => {
     }
     return htmlWebpackPluginOptions;
 })();
-const prodConfig = {
-    // context: path.join(rootPath, './src'),
+
+module.exports = {
     entry: {
         client: path.join(process.cwd(), '/src/index.js'),
         vendors: [
             'react',
             'react-dom',
-            'react-loadable',
+            // 'react-loadable',
             // 'react-redux',
             // 'redux',
             // 'react-router-dom',
@@ -53,13 +56,6 @@ const prodConfig = {
         publicPath: '/',
         chunkFilename: 'static/js/[name]-[hash:8].js',
         // libraryTarget: isServer?'commonjs2':'umd',
-    },
-    watch: true,
-    watchOptions: {
-        //延迟监听时间
-        aggregateTimeout: 500,
-        //忽略监听文件夹
-        ignored: '/node_modules/',
     },
     resolve: {
         // 路径配置
@@ -85,41 +81,8 @@ const prodConfig = {
                 },
             },
             {
-                test: /\.(css|scss)$/,
-                exclude: /node_modules/,
-                include: path.resolve(rootPath, 'src'),
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader', //style-loader将css chunk 插入到html中
-                    use: [
-                        {
-                            loader: 'css-loader', //css-loader 是处理css文件中的url(),require()等
-                            options: {
-                                minimize: true,
-                            },
-                        },
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                plugins: () => [
-                                    require('autoprefixer')({
-                                        browsers: 'last 5 versions',
-                                    }),
-                                ],
-                                minimize: true,
-                            },
-                        },
-                        // {
-                        //     loader: 'sass-loader',
-                        //     options: {
-                        //         minimize: true,
-                        //     },
-                        // },
-                    ],
-                }),
-            },
-            {
                 test: /\.(svg|woff2?|ttf|eot|jpe?g|png|gif)(\?.*)?$/i,
-                exclude: /node_modules/,
+                // exclude: /node_modules/,
                 use: {
                     loader: 'url-loader',
                     options: {
@@ -131,6 +94,8 @@ const prodConfig = {
         ],
     },
     plugins: [
+        new MyExampleWebpackPlugin(),
+        new WebpackPluginRouter(),
         // 注入全局常量
         new ExtendedDefinePlugin({
             process: {
@@ -142,11 +107,10 @@ const prodConfig = {
             },
             htmlWebpackPluginOptions,
         }),
-
         // html静态页面
         new HtmlWebpackPlugin({
             ...htmlWebpackPluginOptions,
-            minify:true,
+            minify: true,
             // title: 'Custom template using Handlebars',
             // 生成出来的html文件名
             filename: 'index.html',
@@ -164,36 +128,9 @@ const prodConfig = {
             //     // "static/vendor.manifest",
             // ],
         }),
-
-        new ManifestPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
-        new ExtractTextPlugin({
-            filename: 'static/css/style.[hash].css',
-            allChunks: true,
-        }),
-        // new CopyWebpackPlugin([
-        //     { from: 'favicon.ico', to: rootPath + './dist' },
-        // ]),
-        // new CleanWebpackPlugin(['./dist'], { root: rootPath }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         }),
-        new webpack.optimize.OccurrenceOrderPlugin(),
-
-        new webpack.optimize.CommonsChunkPlugin({
-            name: ['vendors', 'manifest'],
-            minChunks: 2,
-        }),
-        // new ReactLoadablePlugin({
-        //     filename: path.join(rootPath, './dist/react-loadable.json'),
-        // }),
-        new ReactLoadablePlugin({
-            filename: path.join(
-                process.cwd(),
-                './dist/web/react-loadable.json'
-            ),
-        }),
     ],
 };
-
-module.exports = prodConfig;

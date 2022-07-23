@@ -8,14 +8,14 @@
  */
 var fs = require('fs');
 var path = require('path');
-const { readdirSync, stat } = fs;
+const { readdirSync, stat, statSync } = fs;
 const readFile = (path, callback = () => {}) => {
-    var files = fs.readdirSync(path);
+    var files = readdirSync(path);
     files.forEach((item, index) => {
         var reg = /(\\\\)|(\\)/g;
         var src = path + '/' + item;
         src = src.replace(reg, '/');
-        var stat = fs.statSync(src);
+        var stat = statSync(src);
         if (stat.isDirectory()) {
             //递归读取文件
             readFile(src, callback);

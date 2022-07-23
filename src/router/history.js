@@ -8,6 +8,8 @@
  */
 import {createBrowserHistory, createHashHistory} from "history";
 export const history = {}
+  
+
 
 // createBrowserHistory({
 //    basename: "/", // 基链接

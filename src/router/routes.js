@@ -63,12 +63,6 @@ const routesComponent = (routesConfig, parentPath = '') => {
     return routesConfig.map((item) => {
         const { path, name, entry, exact, children = [] } = item;
 
-        // firstToUpper(name)
-
-        // let Component = Loadable({
-        //     loader: () => import(/* webpackChunkName: 'Home' */ '@' + entry),
-        //     loading: Loading,
-        // });
         return {
             path: parentPath ? parentPath + path : path,
             name,
@@ -90,7 +84,7 @@ const routesConfig = routesComponent(RoutesConfig);
 //     {
 //         path: '/',
 //         exact: true,
-//         name: 'hemo',
+//         name: 'home',
 //         Component: <RouterAddApi Component={LoadableHome} />,
 //         // thunk: homeThunk,
 //     },
@@ -127,6 +121,5 @@ const routesConfig = routesComponent(RoutesConfig);
 // };
 
 // const routePaths = getRoutePaths(routesConfig);
-console.log('routePaths=================', routePaths);
 
 export default routesConfig;

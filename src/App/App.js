@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import store from '@/redux';
+// import { store } from '@/index';
 import Routers from '@/router';
-
+import './App.less';
+import '@/assets/css/base.less';
+import 'bootstrap/dist/css/bootstrap.css';
 const App = (props) => {
-    const { history, context ,location} = props;
-    // console.log('App===========');
-    // console.log('store===========', store);
+    const { history, context, location, store } = props;
     return (
         <Provider store={store}>
             <Routers history={history} context={context} location={location} />
