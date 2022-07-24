@@ -7,7 +7,7 @@ const checkPassword = (name) => /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/.test
 const checkVerificationCode = (code) => /^([a-z A-Z]|\d){5}$/.test(code);
 const firstToUpper=(str)=>{
     return str.toLowerCase().replace(/( |^)[a-z]/g,(L)=>L.toUpperCase());
-}
+};
 
 
 

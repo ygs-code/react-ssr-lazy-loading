@@ -12,4 +12,4 @@ const setInitData = ($window, name) => {
     return initState;
 };
 
-export { setInitData };
+export {setInitData};

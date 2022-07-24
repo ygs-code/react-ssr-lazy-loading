@@ -17,6 +17,7 @@ let {
     htmlWebpackPluginOptions = '',
 } = process.env; // 环境参数
 const isDevelopment = NODE_ENV == 'development';
+
 htmlWebpackPluginOptions = (() => {
     const regex = /(?<=\{)(.+?)(?=\})/g; // {} 花括号，大括号
     htmlWebpackPluginOptions = htmlWebpackPluginOptions.match(regex);
@@ -150,6 +151,8 @@ module.exports = {
         ],
     },
     plugins: [
+        ...(isDevelopment ? [new webpack.HotModuleReplacementPlugin()] : []),
+
         ...(target == 'ssr'
             ? [
                   new webpackPluginCopyFile(
@@ -222,7 +225,9 @@ module.exports = {
         // new CopyWebpackPlugin([
         //     { from: 'favicon.ico', to: rootPath + './dist' },
         // ]),
-        // new CleanWebpackPlugin(['./dist'], { root: rootPath }),
+        new CleanWebpackPlugin(['./dist/server', './dist/web'], {
+            root: rootPath,
+        }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         }),

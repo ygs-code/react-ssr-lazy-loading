@@ -1,7 +1,7 @@
-import { init } from '@rematch/core';
+import {init} from '@rematch/core';
 import * as models from './models';
-import { connect } from 'react-redux';
-import { CheckDataType } from '@/utils';
+import {connect} from 'react-redux';
+import {CheckDataType} from '@/utils';
 const mapRedux = (modelsName) => {
     return (Component) => {
         const mapStateToProps = (state) => {
@@ -48,7 +48,7 @@ const mapRedux = (modelsName) => {
         return connect(mapStateToProps, mapDispatchToProps)(Component);
     };
 };
-export { mapRedux };
+export {mapRedux};
 const createStore = ($window) => {
     let newModels = {};
     for (let key in models) {

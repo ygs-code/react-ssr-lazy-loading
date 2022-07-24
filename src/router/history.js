@@ -7,7 +7,7 @@
  * @FilePath: /error-sytem/client/src/router/history.js
  */
 import {createBrowserHistory, createHashHistory} from "history";
-export const history = {}
+export const history = {};
   
 
 

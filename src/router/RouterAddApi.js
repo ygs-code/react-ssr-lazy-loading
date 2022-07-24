@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
     withRouter,
     BrowserRouter as Router,
@@ -11,9 +11,16 @@ import {
     useLocation,
     useParams,
 } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-export default (props) => {
-    const { Component } = props;
+const RouterAddApi = (props) => {
+    const {Component} = props;
 
-    return <Component {...api} />;
+    return <Component />;
 };
+
+RouterAddApi.propTypes = {
+    Component: PropTypes.element,
+};
+
+export default RouterAddApi;

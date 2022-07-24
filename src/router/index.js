@@ -1,67 +1,20 @@
-import React, { Suspense, lazy, Children } from 'react';
+import React, {Suspense, lazy, Children} from 'react';
 import {
-    withRouter,
     Router,
     Router as BrowserRouter,
-    Switch,
     Switch as Routes,
     Route,
-    Navigate, // 重定向
-    useNavigate,
-    MemoryRouter,
 } from 'react-router-dom';
-// import { StaticRouter } from 'react-router-dom/server';
+
 import routesConfig from './routesComponent';
-// 123 你好 在么
-// <Router history={history}>
-// <Suspense fallback={<div>Loading...</div>}>
-//     <Switch>
-//         {routesConfig.map((route) => (
-//             <Route
-//                 key={route.path}
-//                 exact={route.exact}
-//                 path={route.path}
-//                 component={route.component}
-//                 thunk={route.thunk}
-//             />
-//         ))}
-//     </Switch>
-// </Suspense>
-// </Router>
-
-// const Router = (props) => {
-//     const { children, history, context, location } = props;
-//     console.log('process.env.target=', process.env.target);
-//     return process.env.target === 'ssr' ? (
-//         // <StaticRouter history={history} context={context} location={location}>
-//         <MemoryRouter history={history} context={context} location={location}>
-//             {children}
-//         </MemoryRouter>
-//     ) : (
-//         // </StaticRouter>
-//         <BrowserRouter history={history}>{children}</BrowserRouter>
-//     );
-
-//     // return (
-//     //     <BrowserRouter history={history}>
-//     //         {Children.map(children, (child) => {
-//     //             return <>{child}</>;
-//     //         })}
-//     //     </BrowserRouter>
-//     // );
-// };  
- 
-/* 
-你好
-  asdf 
-*/
+import PropTypes from 'prop-types';
 const Routers = (props) => {
-    const { history, context } = props;
+    const {history, context} = props;
     return (
         <Router history={history} context={context}>
             <Routes>
                 {routesConfig.map((route) => {
-                    const { path, exact, Component } = route;
+                    const {path, exact, Component} = route;
                     return (
                         <Route
                             key={path}
@@ -80,8 +33,8 @@ const Routers = (props) => {
                 <Route
                     path="*"
                     element={
-                        <div style={{ padding: '1rem' }}>
-                            <p>There's nothing here!</p>
+                        <div style={{padding: '1rem'}}>
+                            <p>{'There s nothing here!'}</p>
                         </div>
                     }
                 />
@@ -90,4 +43,10 @@ const Routers = (props) => {
     );
 };
 
+Routers.propTypes = {
+    history: PropTypes.object,
+    dispatch: PropTypes.object,
+    state: PropTypes.object,
+    context: PropTypes.object,
+};
 export default Routers;

@@ -90,27 +90,25 @@ class WebpackPluginCopyFile {
 
     apply(compiler) {
         // // 开始编译 只会调用一次
-        // this.hook(compiler, 'afterPlugins', () => {
-        //     console.log('afterPlugins======== 开始');
-        //     this.watchFile();
-        // });
-
-        compiler.hooks.emit.tapAsync(
-            'afterPlugins',
-            (compilation, callback) => {
-                this.watchFile();
-                callback();
-            }
-        );
-        compiler.hooks.emit.tapAsync('done', (compilation, callback) => {
-            this.copyFile();
-            callback();
+        this.hook(compiler, 'afterPlugins', () => {
+            // console.log('afterPlugins======== 开始');
+            this.watchFile();
         });
-
-        // //   编译完成
-        // this.hook(compiler, 'done', () => {
-        //     console.log('done:编译完成');
+        //   编译完成
+        this.hook(compiler, 'done', () => {
+            // console.log('done:编译完成');
+            this.copyFile();
+        });
+        // compiler.hooks.emit.tapAsync(
+        //     'afterPlugins',
+        //     (compilation, callback) => {
+        //         this.watchFile();
+        //         callback();
+        //     }
+        // );
+        // compiler.hooks.emit.tapAsync('done', (compilation, callback) => {
         //     this.copyFile();
+        //     callback();
         // });
     }
 }

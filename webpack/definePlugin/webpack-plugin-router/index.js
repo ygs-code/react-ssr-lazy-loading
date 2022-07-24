@@ -58,7 +58,7 @@ class WebpackPluginRouter {
             }
             acc += `
 // 路由组件引入
-const Loadable${this.firstToUpper(name)} = Loadable({
+const Loadable${this.firstToUpper(name)} = loadable({
   loader: () => import('@${entry}'),
   loading: Loading,
 });
@@ -91,7 +91,7 @@ const Loadable${this.firstToUpper(name)} = Loadable({
     writeFile(routesConfigs) {
         let file = `
 // 按需加载插件
-import Loadable from 'react-loadable';
+import loadable from 'react-loadable';
 import Loading from '@/component/Loading';
 import RouterAddApi from '@/router/RouterAddApi';
 import React, { useEffect } from 'react';
@@ -164,16 +164,27 @@ export default routesComponentConfig;
         //   console.log("someHook======== 开始");
         // });
         // webpack  处理webpack选项的条目配置后调用。 只编译一次
-        // this.hook(compiler, 'entryOption', () => {
+        this.hook(compiler, 'entryOption', () => {
+            this.compilerFile();
+            // console.log('entryOption========');
+        });
+        this.hook(compiler, 'watchRun', () => {
+            this.compilerFile();
+            // console.log('entryOption========');
+        });
+
+        // compiler.hooks.emit.tapAsync('entryOption', (compilation, callback) => {
+        //     // console.log('watchRun==========');
         //     this.compilerFile();
-        //     // console.log('entryOption========');
+        //     callback();
         // });
 
-        compiler.hooks.emit.tapAsync('entryOption', (compilation, callback) => {
-            // console.log('watchRun==========');
-            this.compilerFile();
-            callback();
-        });
+        // compiler.hooks.emit.tapAsync('watchRun', (compilation, callback) => {
+        //     // console.log('watchRun==========');
+        //     this.compilerFile();
+        //     callback();
+        // });
+
 
         // // 创建编译参数后执行插件。执行多次
         // this.hook(compiler, 'beforeCompile', () => {
@@ -221,12 +232,7 @@ export default routesComponentConfig;
         //     );
         // });
 
-        compiler.hooks.emit.tapAsync('watchRun', (compilation, callback) => {
-            // console.log('watchRun==========');
-            this.compilerFile();
-            callback();
-        });
-
+      
         //    当监视编译无效时执行。此钩子不会复制到子编译器。
         // this.hook(compiler, 'invalid', () => {
         //     console.log('invalid==========');

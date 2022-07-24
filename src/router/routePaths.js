@@ -1,7 +1,7 @@
 // import routesConfig from '@/router/routesConfig';
 const getRoutePaths = (routesConfig, routePaths = {}, parentPath = '') => {
     return routesConfig.reduce((routePaths, item) => {
-        const { children, path, name,entry } = item;
+        const { children, path, name, entry } = item;
         if (children && children.length) {
             routePaths = {
                 ...routePaths,

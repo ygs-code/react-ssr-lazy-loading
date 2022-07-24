@@ -7,11 +7,10 @@ import React, {
     memo,
     useEffect,
 } from 'react';
+import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
+import {mapRedux} from '@/redux';
 
-import { Link } from 'react-router-dom';
-// import { getHistory, history, listen } from '@/router/history';
-import { mapRedux } from '@/redux';
-// import { dispatch, getState } from '@rematch/core';
 import {
     Button,
     CardGroup,
@@ -28,9 +27,10 @@ import Nav from '@/component/Nav';
 // 权限跳转登录页面可以在这控制
 const Index = (props) => {
     const [data, setData] = useState([]);
+
     const {
-        dispatch: { home: { setCount = () => {} } = {} } = {},
-        state: { home: { count, initState: { list = [] } = {} } = {} } = {},
+        dispatch: {home: {setCount = () => {}} = {}} = {},
+        state: {home: {count, initState: {list = []} = {}} = {}} = {},
     } = props;
 
     useEffect(() => {
@@ -40,7 +40,7 @@ const Index = (props) => {
         );
 
         console.log('store======', window.store);
-        console.log('props==', props);
+        console.log('props   fhjgf==', props);
         console.log('list======', list);
 
         // setTimeout(() => {
@@ -69,9 +69,9 @@ const Index = (props) => {
         */}
             <CardGroup className="card-group-box">
                 {list.map((item, index) => {
-                    const { id, title, type, url, scenery } = item;
+                    const {id, title, type, url, scenery} = item;
                     return (
-                        <Card className="card-box">
+                        <Card key={id} className="card-box">
                             <CardImg alt={title} src={url} top width="100%" />
                             <CardBody>
                                 <CardTitle tag="h5">{scenery}</CardTitle>
@@ -90,6 +90,15 @@ const Index = (props) => {
         */}
         </div>
     );
+};
+
+Index.propTypes = {
+    location: PropTypes.object,
+    store: PropTypes.object,
+    context: PropTypes.object,
+    history: PropTypes.object,
+    dispatch: PropTypes.object,
+    state: PropTypes.object,
 };
 
 export default mapRedux()(Index);

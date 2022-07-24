@@ -1,32 +1,32 @@
 
 // 按需加载插件
-import Loadable from 'react-loadable';
+import loadable from 'react-loadable';
 import Loading from '@/component/Loading';
 import RouterAddApi from '@/router/RouterAddApi';
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import pagesMarketingRouterRoutesconfig from '@/pages/marketing/router/routesConfig.js';
 import routerRoutesconfig from '@/router/routesConfig.js';
 
 // 路由组件引入
-const LoadableDiscountcoupon = Loadable({
+const LoadableDiscountcoupon = loadable({
   loader: () => import('@/pages/marketing/DiscountCoupon/index.js'),
   loading: Loading,
 });
   
 // 路由组件引入
-const LoadableMarketing = Loadable({
+const LoadableMarketing = loadable({
   loader: () => import('@/pages/marketing/index.js'),
   loading: Loading,
 });
   
 // 路由组件引入
-const LoadableHome = Loadable({
+const LoadableHome = loadable({
   loader: () => import('@/pages/Home/index.js'),
   loading: Loading,
 });
   
 // 路由组件引入
-const LoadableUser = Loadable({
+const LoadableUser = loadable({
   loader: () => import('@/pages/User/index.js'),
   loading: Loading,
 });
@@ -59,7 +59,7 @@ const LoadableUser = Loadable({
                  entry:'/pages/User/index.js',
                  Component:  LoadableUser
                },
-    ]
+    ];
 
 export default routesComponentConfig;
         

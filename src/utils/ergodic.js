@@ -1,4 +1,4 @@
-import { CheckDataType } from './CheckDataType';
+import {CheckDataType} from './CheckDataType';
 // 递归treeData 会给 treeData 添加index 索引
 const recursionTreeData = (parameter, _index = null) => {
     let {
@@ -139,4 +139,4 @@ const diffData = (oldData, newData) => {
     }
     return flag;
 };
-export { recursionTreeData, filterTreeData, deepCopy, diffData, findTreeData };
+export {recursionTreeData, filterTreeData, deepCopy, diffData, findTreeData};

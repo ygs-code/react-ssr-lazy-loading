@@ -7,7 +7,7 @@ import {
 //     deepCopy
 // } from './deepCopy'
 // import {SubscribePublished} from './SubscribePublished';
-import { CheckDataType } from './CheckDataType';
+import {CheckDataType} from './CheckDataType';
 import {
     filterTreeData,
     recursionTreeData,
@@ -16,7 +16,7 @@ import {
     findTreeData,
 } from './ergodic';
 // import {FloatingBall} from './FloatingBall';
-import { getStyle } from './getCssAttr';
+import {getStyle} from './getCssAttr';
 import {
     checkPhone,
     checkUser,
@@ -24,7 +24,7 @@ import {
     checkVerificationCode,
     firstToUpper,
 } from './regular';
-import { setInitData } from './setInitData';
+import {setInitData} from './setInitData';
 
 export {
     // FloatingBall, // 浮动球 类

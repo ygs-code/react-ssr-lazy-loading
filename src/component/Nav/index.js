@@ -1,14 +1,15 @@
-import React, { Component, useMemo } from 'react';
-import { Nav, NavItem, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import React, {Component, useMemo} from 'react';
+import {Nav, NavItem, NavLink} from 'reactstrap';
+import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
 import './index.less';
 //
-export default (props) => {
+const Navigation = (props) => {
     // console.log('props===', props);
     const {
-        history: { push } = {},
-        dispatch: { baseInitState: { setInitState, setMenuActive } = {} } = {},
-        state: { baseInitState: { menu = [], menuActive } = {} } = {},
+        history: {push} = {},
+        dispatch: {baseInitState: {setInitState, setMenuActive} = {}} = {},
+        state: {baseInitState: {menu = [], menuActive} = {}} = {},
     } = props;
     // const menu = useMemo(() => {}, []);
     return (
@@ -18,7 +19,7 @@ export default (props) => {
                     <NavLink
                         active
                         onClick={() => {
-                            setMenuActive('/')
+                            setMenuActive('/');
                             push('/');
                         }}
                     >
@@ -28,7 +29,7 @@ export default (props) => {
                 <NavItem>
                     <NavLink
                         onClick={() => {
-                            setMenuActive('/user')
+                            setMenuActive('/user');
                             push('/user');
                         }}
                     >
@@ -38,7 +39,7 @@ export default (props) => {
                 <NavItem>
                     <NavLink
                         onClick={() => {
-                            setMenuActive('/marketing/discount-coupon')
+                            setMenuActive('/marketing/discount-coupon');
                             push('/marketing/discount-coupon');
                         }}
                     >
@@ -49,3 +50,9 @@ export default (props) => {
         </div>
     );
 };
+Navigation.propTypes = {
+    history: PropTypes.object,
+    dispatch: PropTypes.object,
+    state: PropTypes.object,
+};
+export default Navigation;
