@@ -32,7 +32,7 @@ const Index = (props) => {
         dispatch: {home: {setCount = () => {}} = {}} = {},
         state: {home: {count, initState: {list = []} = {}} = {}} = {},
     } = props;
-
+//  123123;
     useEffect(() => {
         console.log(
             'window.__INITIAL_STATE__=',
@@ -43,10 +43,7 @@ const Index = (props) => {
         console.log('props   fhjgf==', props);
         console.log('list======', list);
 
-        // setTimeout(() => {
-        //     setData([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-        //     console.log('请求成功');
-        // }, 10000);
+        
     }, []);
 
     return (

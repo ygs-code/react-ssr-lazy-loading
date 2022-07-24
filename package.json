@@ -79,6 +79,7 @@
     "copy-webpack-plugin": "5.0.0",
     "cross-env": "^5.1.1",
     "css-loader": "^0.28.7",
+    "directory-named-webpack-plugin": "^4.0.1",
     "esbuild-loader": "^2.19.0",
     "eslint": "^8.20.0",
     "eslint-config-airbnb": "^19.0.4",
