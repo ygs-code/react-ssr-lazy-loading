@@ -94,7 +94,7 @@ Index.propTypes = {
     store: PropTypes.object,
     context: PropTypes.object,
     history: PropTypes.object,
-    dispatch: PropTypes.object,
+    dispatch: PropTypes.func,
     state: PropTypes.object,
 };
 

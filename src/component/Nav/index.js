@@ -52,7 +52,7 @@ const Navigation = (props) => {
 };
 Navigation.propTypes = {
     history: PropTypes.object,
-    dispatch: PropTypes.object,
+    dispatch: PropTypes.func,
     state: PropTypes.object,
 };
 export default Navigation;

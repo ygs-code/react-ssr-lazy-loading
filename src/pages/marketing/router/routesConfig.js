@@ -5,7 +5,7 @@ export default [
     //     exact: true,
     //     name: 'home',
     //     entry: `/pages/marketing/index.js`,
-    //     level: 2,
+    //     level: 2, 
     //  },  
     {
         path: '/marketing',

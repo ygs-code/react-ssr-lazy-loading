@@ -6,20 +6,19 @@ import './App.less';
 import '@/assets/css/base.less';
 import 'bootstrap/dist/css/bootstrap.css';
 const App = (props) => {
-    const {history, context, location, store} = props;
+    const {history, location, store} = props;
 
     return (
         <Provider store={store}>
-            <Routers history={history} context={context} location={location} />
+            <Routers history={history} location={location} />
         </Provider>
     );
 };
 App.propTypes = {
-    location: PropTypes.object,
+    location: PropTypes.string,
     store: PropTypes.object,
-    context: PropTypes.object,
     history: PropTypes.object,
-    dispatch: PropTypes.object,
+    dispatch: PropTypes.func,
     state: PropTypes.object,
 };
 

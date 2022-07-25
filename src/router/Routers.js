@@ -1,7 +1,3 @@
-
-
-
-
 import React, {Suspense, lazy, Children} from 'react';
 import {
     Router,
@@ -9,6 +5,7 @@ import {
     Switch as Routes,
     Route,
 } from 'react-router-dom';
+import InitState from '@/component/InitState';
 
 import routesConfig from './routesComponent';
 import PropTypes from 'prop-types';
@@ -26,7 +23,13 @@ const Routers = (props) => {
                             path={path}
                             // component={Component}
                             render={(props) => {
-                                return <Component {...props} />;
+                                return (
+                                    <InitState {...props}>
+                                        {(props) => {
+                                            return <Component {...props} />;
+                                        }}
+                                    </InitState>
+                                );
                             }}
                             // loader={async () => {
                             //     console.log('loader================loader');
@@ -49,7 +52,7 @@ const Routers = (props) => {
 
 Routers.propTypes = {
     history: PropTypes.object,
-    dispatch: PropTypes.object,
+    dispatch: PropTypes.func,
     state: PropTypes.object,
     context: PropTypes.object,
 };

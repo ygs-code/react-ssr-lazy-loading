@@ -57,7 +57,6 @@ class WebpackPluginCopyFile {
             // 开启转圈圈动画
             const spinner = ora('building.....');
             spinner.start();
-            // message && console.log(message);
             for (let item of this.paths) {
                 const { from, to, transform = (data) => data } = item;
                 copyFile(from, to, (content, absoluteFrom) => {

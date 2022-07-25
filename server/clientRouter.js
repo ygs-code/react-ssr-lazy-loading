@@ -125,12 +125,11 @@ const clientRouter = async (ctx, next) => {
     if (isMatchRoute) {
         let data = null;
         let initState = findInitData(routesConfig, isMatchRoute.name, 'name');
-        // console.log('baseInitState===', baseInitState);
         let baseInitStateData = {};
         for (let key in baseInitState) {
             baseInitStateData[key] = await baseInitState[key]();
         }
-        // console.log('baseInitStateData=========', baseInitStateData);
+       console.log('baseInitStateData====',baseInitStateData)
         if (Object.keys(baseInitState).length) {
             store.dispatch['baseInitState'].setInitState(baseInitStateData);
         }

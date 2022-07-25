@@ -21,7 +21,7 @@ router.get('/menu', async (ctx, next) => {
     ctx.body = JSON.stringify({
         code: 200,
         message: '请求成功',
-        menuList: menu(),
+        data: menu(),
     });
     await next();
 });
