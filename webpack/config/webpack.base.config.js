@@ -13,6 +13,7 @@ const { ProgressPlugin } = require('webpack');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const WebpackPluginRouter = require('../definePlugin/webpack-plugin-router');
 const MyExampleWebpackPlugin = require('../definePlugin/MyExampleWebpackPlugin');
+const HelloWorldCheckerPlugin = require('../definePlugin/HelloWorldCheckerPlugin');
 const HappyPack = require('happypack');
 const os = require('os');
 const WebpackBar = require('webpackbar');
@@ -234,6 +235,7 @@ module.exports = {
         ],
     },
     plugins: [
+        new HelloWorldCheckerPlugin(),
         // eslint 插件
         new ESLintPlugin({
             emitError: true, //发现的错误将始终被触发，将禁用设置为false。
@@ -298,8 +300,17 @@ module.exports = {
             threadPool: happyThreadPool,
         }),
 
-        // new MyExampleWebpackPlugin(),
-        new WebpackPluginRouter(),
+        new MyExampleWebpackPlugin(),
+        new WebpackPluginRouter({
+            entry: path.join(process.cwd(), '/src'),
+            //延迟监听时间
+            aggregateTimeout: 1000,
+            watch: ['routesConfig.js'],
+            output: {
+                routesComponent: '/src/router/routesComponent.js',
+                routePaths: '/src/router/routePaths.js',
+            },
+        }),
         // 注入全局常量
         new ExtendedDefinePlugin({
             process: {

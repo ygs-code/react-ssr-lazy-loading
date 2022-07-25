@@ -7,7 +7,6 @@ export default [
         path: '/',
         exact: true,
         name: 'home',
-        //   Component: <HomeRouterAddApi />,
         entry: `/pages/Home/index.js`,
         initState: async () => {
             return await axios
@@ -20,20 +19,12 @@ export default [
                     console.log('Error: ', err.message);
                 });
         },
+        level: 1,
     },
     {
         path: '/user',
         name: 'user',
         entry: `/pages/User/index.js`,
-        // children: [
-        //     // {
-        //     //     path: '/:id',
-        //     //     name: 'userDetails',
-        //     //     // Component: <UserRouterAddApi />,
-        //     //     entry: `/pages/User/index.js`,
-        //     //     children: [],
-        //     // },
-        // ],
-        // thunk: ()=>{},
+        level: 1,
     },
 ];

@@ -9,56 +9,57 @@ import routerRoutesconfig from '@/router/routesConfig.js';
 
 // 路由组件引入
 const LoadableDiscountcoupon = loadable({
-  loader: () => import('@/pages/marketing/DiscountCoupon/index.js'),
-  loading: Loading,
-});
-  
+    loader: () => import('@/pages/marketing/pages/DiscountCoupon/index.js'),
+    loading: Loading,
+}); 
 // 路由组件引入
 const LoadableMarketing = loadable({
-  loader: () => import('@/pages/marketing/index.js'),
-  loading: Loading,
-});
-  
+    loader: () => import('@/pages/marketing/index.js'),
+    loading: Loading,
+}); 
 // 路由组件引入
 const LoadableHome = loadable({
-  loader: () => import('@/pages/Home/index.js'),
-  loading: Loading,
-});
-  
+    loader: () => import('@/pages/Home/index.js'),
+    loading: Loading,
+}); 
 // 路由组件引入
 const LoadableUser = loadable({
-  loader: () => import('@/pages/User/index.js'),
-  loading: Loading,
-});
-  let routesComponentConfig=[
-                {  
-                 path: '/marketing/discount-coupon',
-                 exact: false,
-                 name:'DiscountCoupon',
-                 entry:'/pages/marketing/DiscountCoupon/index.js',
-                 Component:  LoadableDiscountcoupon
-               },
-                {  
-                 path: '/marketing',
-                 exact: true,
-                 name:'marketing',
-                 entry:'/pages/marketing/index.js',
-                 Component:  LoadableMarketing
-               },
-                {  
-                 path: '/',
-                 exact: true,
-                 name:'home',
-                 entry:'/pages/Home/index.js',
-                 Component:  LoadableHome
-               },
-                {  
-                 path: '/user',
-                 exact: false,
-                 name:'user',
-                 entry:'/pages/User/index.js',
-                 Component:  LoadableUser
-               },
+    loader: () => import('@/pages/User/index.js'),
+    loading: Loading,
+}); 
+let routesComponentConfig=[
+                    {  
+                     path: '/marketing/discount-coupon',
+                     exact: false,
+                     name:'DiscountCoupon',
+                     entry:'/pages/marketing/pages/DiscountCoupon/index.js',
+                     Component:LoadableDiscountcoupon,
+                     level:2
+                   },
+                    {  
+                     path: '/marketing',
+                     exact: true,
+                     name:'marketing',
+                     entry:'/pages/marketing/index.js',
+                     Component:LoadableMarketing,
+                     level:2
+                   },
+                    {  
+                     path: '/',
+                     exact: true,
+                     name:'home',
+                     entry:'/pages/Home/index.js',
+                     Component:LoadableHome,
+                     level:1
+                   },
+                    {  
+                     path: '/user',
+                     exact: false,
+                     name:'user',
+                     entry:'/pages/User/index.js',
+                     Component:LoadableUser,
+                     level:1
+                   },
     ];
 
 export default routesComponentConfig;

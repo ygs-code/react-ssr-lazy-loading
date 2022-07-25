@@ -9,15 +9,17 @@
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
-const {readFile} = require('../../utils');
+const { readFile } = require('../../utils');
 const dataDiff = require('./diff');
+const chalk = require('chalk');
 
 class WebpackPluginRouter {
     constructor(options) {
         this.options = options;
         this.routesConfigs = [];
         this.startTime = null;
-        this.compilerFile();
+        this.timer = null;
+        this.writeFile();
     }
 
     // 节流函数
@@ -35,9 +37,139 @@ class WebpackPluginRouter {
         return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
     }
 
-    writeImportRoutesConfig(routesConfig) {
-        return routesConfig.reduce((acc, item, index) => {
-            let { path, name, entry, exact, children = [] } = item;
+    mapRoutesConfig(
+        config,
+        routesConfigPath,
+        code = {},
+        compilation,
+        cacheNames,
+        cachePaths,
+        parentPath = ''
+    ) {
+        for (let item of config) {
+            let { path, name, entry, exact, children = [], level = 1 } = item;
+            path = parentPath ? parentPath + path : path;
+            let errorMessage = '';
+            if (cacheNames.has(name)) {
+                const { routesConfigPath: cacheRoutesConfigPath } =
+                    cacheNames.get(name);
+                errorMessage = `[webpack-plugin-router]
+ 路由name: ${name} 命名重名冲突，请重新修改 路由name: ${name} 
+   in ${cacheRoutesConfigPath}
+   in ${routesConfigPath}
+ ✖ 1 problem (1 error, 0 warnings)
+`;
+                if (
+                    compilation &&
+                    compilation.errors &&
+                    compilation.errors instanceof Array
+                ) {
+                    compilation.errors.push(errorMessage);
+                    // console.error(chalk.red(errorMessage));
+                    // process.exit(1);
+                    // throw chalk.red(errorMessage);
+                } else {
+                    // console.error(chalk.red(errorMessage));
+                    // process.exit(1);
+                    // throw chalk.red(errorMessage);
+                }
+                code.compilationErrors.push(errorMessage);
+            }
+
+            if (cachePaths.has(path)) {
+                const { routesConfigPath: cacheRoutesConfigPath } =
+                    cachePaths.get(path);
+                errorMessage = `[webpack-plugin-router]
+ 路由path: ${path} 命名重名冲突，请重新修改 路由path: ${path} 
+   in ${cacheRoutesConfigPath}
+   in ${routesConfigPath}  
+ ✖ 1 problem (1 error, 0 warnings)                     
+`;
+                if (
+                    compilation &&
+                    compilation.errors &&
+                    compilation.errors instanceof Array
+                ) {
+                    compilation.errors.push(errorMessage);
+                    // console.error(chalk.red(errorMessage));
+                    // process.exit(1);
+                    // throw chalk.red(errorMessage);
+                } else {
+                    // console.error(chalk.red(errorMessage));
+                    // process.exit(1);
+                    // throw chalk.red(errorMessage);
+                }
+                code.compilationErrors.push(errorMessage);
+            }
+
+            cacheNames.set(name, {
+                path: path,
+                name: name,
+                routesConfigPath: routesConfigPath,
+            });
+            cachePaths.set(path, {
+                path: path,
+                name: name,
+                routesConfigPath: routesConfigPath,
+            });
+            if (children && children.length) {
+                const { routesComponentConfig, loadableComponent, routePaths } =
+                    this.mapRoutesConfig(
+                        children,
+                        routesConfigPath,
+                        code,
+                        compilation,
+                        cacheNames,
+                        cachePaths,
+                        path
+                    );
+                code.loadableComponent = loadableComponent;
+                code.routesComponentConfig = routesComponentConfig;
+                code.routePaths = routePaths;
+            }
+
+            code.loadableComponent = `${code.loadableComponent || ''}
+// 路由组件引入
+const Loadable${this.firstToUpper(name)} = loadable({
+    loader: () => import('@${entry}'),
+    loading: Loading,
+}); `;
+            code.routesComponentConfig = `${code.routesComponentConfig || ''}
+                    {  
+                     path: '${path}',
+                     exact: ${exact ? true : false},
+                     name:'${name}',
+                     entry:'${entry}',
+                     Component:Loadable${this.firstToUpper(name)},
+                     level:${level}
+                   },`;
+
+            code.routePaths = `${code.routePaths || ''}
+                   {  
+                    path:'${path}',
+                    exact:${exact ? true : false},
+                    name:'${name}',
+                    entry:'${entry}',
+                    routesConfigPath:'${routesConfigPath}',
+                    level:${level}
+                  },`;
+        }
+        return code;
+    }
+    getDynamicCode(routesConfig, compilation) {
+        let cacheNames = new Map();
+        let cachePaths = new Map();
+
+        const code = {
+            routesComponentConfig: '',
+            loadableComponent: '',
+            importRoutesConfigCode: '',
+            routePaths: '',
+            compilationErrors: [],
+        };
+        for (let item of routesConfig) {
+            let { path, config = [] } = item;
+            let routesConfigPath = path;
             path = path.split(/\/src\//g)[1];
             let fileName = path.split(/\//g);
             fileName = fileName
@@ -46,50 +178,34 @@ class WebpackPluginRouter {
                 })
                 .join('');
             fileName = fileName.replace(/\.js$/g, '');
-            acc += `import ${fileName} from '@/${path}';\n`;
-            return acc;
-        }, '');
-    }
-    writeLoadableComponent(routesConfig) {
-        return routesConfig.reduce((acc, item, index) => {
-            const { path, name, entry, exact, children = [] } = item;
-            if (children && children.length) {
-                acc += this.writeLoadableComponent(children);
-            }
-            acc += `
-// 路由组件引入
-const Loadable${this.firstToUpper(name)} = loadable({
-  loader: () => import('@${entry}'),
-  loading: Loading,
-});
-  `;
-            return acc;
-        }, '');
-    }
+            code.importRoutesConfigCode += `import ${fileName} from '@/${path}';\n`;
 
-    writeRoutesComponentConfig(routesConfig, parentPath) {
-        return routesConfig.reduce((acc, item, index) => {
-            const { path, name, entry, exact, children = [] } = item;
-            if (children && children.length) {
-                acc += this.writeRoutesComponentConfig(
-                    children,
-                    parentPath ? parentPath + path : path
+            const { routesComponentConfig, loadableComponent, routePaths } =
+                this.mapRoutesConfig(
+                    config,
+                    routesConfigPath,
+                    code,
+                    compilation,
+                    cacheNames,
+                    cachePaths
                 );
-            }
-            acc += `
-                {  
-                 path: '${parentPath ? parentPath + path : path}',
-                 exact: ${exact ? true : false},
-                 name:'${name}',
-                 entry:'${entry}',
-                 Component:  Loadable${this.firstToUpper(name)}
-               },`;
-            return acc;
-        }, '');
-    }
+            code.loadableComponent = loadableComponent;
+            code.routesComponentConfig = routesComponentConfig;
+            code.routePaths = routePaths;
+        }
 
-    writeFile(routesConfigs) {
-        let file = `
+        return code;
+    }
+    getCode(routesConfigs, compilation) {
+        const {
+            routesComponentConfig = '',
+            loadableComponent = '',
+            importRoutesConfigCode = '',
+            routePaths = '',
+            compilationErrors = [],
+        } = this.getDynamicCode(routesConfigs, compilation);
+
+        let routesComponentFile = `
 // 按需加载插件
 import loadable from 'react-loadable';
 import Loading from '@/component/Loading';
@@ -97,40 +213,45 @@ import RouterAddApi from '@/router/RouterAddApi';
 import React, { useEffect } from 'react';
 `;
 
-        file += this.writeImportRoutesConfig(routesConfigs);
+        routesComponentFile += importRoutesConfigCode;
 
-        for (let item of routesConfigs) {
-            const { config = [] } = item;
-            file += this.writeLoadableComponent(config);
-        }
+        routesComponentFile += loadableComponent;
 
-        file += `let routesComponentConfig=[`;
+        routesComponentFile += `
+let routesComponentConfig=[`;
 
-        for (let item of routesConfigs) {
-            const { config = [] } = item;
-            file += this.writeRoutesComponentConfig(config);
-        }
-
-        file += `
+        routesComponentFile += routesComponentConfig;
+        routesComponentFile += `
     ]`;
 
-        file += `
+        routesComponentFile += `
 
 export default routesComponentConfig;
         `;
 
-        fs.writeFileSync(
-            path.join(process.cwd(), '/src/router/routesComponent.js'),
-            file
-        );
+        let routePathsFile = `export default [${routePaths}
+    ]`;
+        return {
+            routesComponentFile,
+            routePathsFile,
+            compilationErrors,
+        };
     }
 
-    compilerFile() {
-        this.throttle(2000, () => {
+    writeFile(compilation) {
+        const {
+            entry,
+            aggregateTimeout,
+            output: { routesComponent, routePaths },
+            watch = [],
+        } = this.options;
+
+        this.throttle(aggregateTimeout, () => {
             let routesConfigs = [];
-            readFile(path.join(process.cwd(), '/src'), (value) => {
+            readFile(entry, (value) => {
                 const { path, filename } = value;
-                if (filename === 'routesConfig.js') {
+                watch.includes();
+                if (watch.includes(filename)) {
                     const content = require(path).default;
                     routesConfigs.push({
                         path,
@@ -139,12 +260,54 @@ export default routesComponentConfig;
                     delete require.cache[require.resolve(path)];
                 }
             });
-            
+
             if (!dataDiff(routesConfigs, this.routesConfigs)) {
                 this.routesConfigs = _.cloneDeep(routesConfigs);
-                this.writeFile(routesConfigs);
+                const {
+                    routesComponentFile,
+                    routePathsFile,
+                    compilationErrors,
+                } = this.getCode(routesConfigs, compilation);
+                if (compilationErrors.length) {
+                    return false;
+                }
+                fs.writeFileSync(
+                    path.join(process.cwd(), routesComponent),
+                    routesComponentFile
+                );
+                fs.writeFileSync(
+                    path.join(process.cwd(), routePaths),
+                    routePathsFile
+                );
             }
         });
+    }
+    compilerFile(compilation) {
+        const {
+            entry,
+            aggregateTimeout,
+            output: { routesComponent, routePaths },
+            watch = [],
+        } = this.options;
+
+        let routesConfigs = [];
+        readFile(entry, (value) => {
+            const { path, filename } = value;
+            if (filename === 'routesConfig.js') {
+                const content = require(path).default;
+                routesConfigs.push({
+                    path,
+                    config: content,
+                });
+                delete require.cache[require.resolve(path)];
+            }
+        });
+
+        this.routesConfigs = _.cloneDeep(routesConfigs);
+        const { routesComponentFile, routePathsFile } = this.getCode(
+            routesConfigs,
+            compilation
+        );
     }
     //   做兼容
     hook(compiler, hookName, pluginName, fn) {
@@ -160,112 +323,34 @@ export default routesComponentConfig;
     }
 
     apply(compiler) {
-        // this.hook(compiler, "someHook", () => {
-        //   console.log("someHook======== 开始");
-        // });
         // webpack  处理webpack选项的条目配置后调用。 只编译一次
-        this.hook(compiler, 'entryOption', () => {
-            this.compilerFile();
-            // console.log('entryOption========');
-        });
-        this.hook(compiler, 'watchRun', () => {
-            this.compilerFile();
-            // console.log('entryOption========');
+        // this.hook(compiler, 'entryOption', () => {
+        // this.compilerFile(compiler);
+        // });
+        this.hook(compiler, 'watchRun', (compilation) => {
+            this.writeFile(compilation);
         });
 
-        // compiler.hooks.emit.tapAsync('entryOption', (compilation, callback) => {
-        //     // console.log('watchRun==========');
-        //     this.compilerFile();
+        compiler.hooks.emit.tapAsync(
+            'WebpackPluginRouter',
+            (compilation, callback) => {
+                this.compilerFile(compilation);
+                callback();
+            }
+        );
+
+        // compiler.plugin('make', (compilation, callback) => {
+        //     this.compilerFile(compilation);
         //     callback();
         // });
-
-        // compiler.hooks.emit.tapAsync('watchRun', (compilation, callback) => {
-        //     // console.log('watchRun==========');
-        //     this.compilerFile();
-        //     callback();
-        // });
-
-
-        // // 创建编译参数后执行插件。执行多次
-        // this.hook(compiler, 'beforeCompile', () => {
-        //     //编译中
-        //     console.log('beforeCompile======');
-        // });
-
-        // this.hook(compiler, 'shouldEmit', () => {
-        //     console.log('shouldEmit==========');
-        // });
-
-        // // this.hook(compiler, 'assetEmitted', () => {
-        // //     // console.log('assetEmitted==========');
-        // // });
-        // //  编译完成 回调一次
-        // this.hook(compiler, 'done', () => {
-        //     console.log('done:编译完成');
-        // });
-
-        // //  在设置初始的内部插件集之后调用。 只会调用一次
-        // this.hook(compiler, 'afterPlugins', () => {
-        //     console.log('afterPlugins======== 开始');
-        // });
-
-        // // 在解析器安装完成后触发。只会调用一次
-        // this.hook(compiler, 'afterResolvers', () => {
-        //     console.log('afterResolvers======== 开始');
-        // });
-        // 编译
-        // this.hook(compiler, 'compile', () => {
-        //     //编译中
-        //     console.log('compile======');
-        // });
-
-        // 监听编译 每次文件改动只编译一次
-        // this.hook(compiler, 'watchRun', () => {
-        //     console.log('watchRun==========');
-        // });
-
-        // compiler.hooks.emit.tapPromise('watchRun', (compiler) => {
-        //     return new Promise((resolve) => setTimeout(resolve, 10000)).then(
-        //         () => {
-        //             console.log('以具有延迟的异步方式触及 run 钩子');
-        //         }
-        //     );
-        // });
-
-      
-        //    当监视编译无效时执行。此钩子不会复制到子编译器。
-        // this.hook(compiler, 'invalid', () => {
-        //     console.log('invalid==========');
-        // });
-
-        //   compiler.hooks.compile.tap("MyPlugin", (params) => {
-        //     console.log("以同步方式触及 compile 钩子。");
-        //   });
-
-        //   compiler.hooks.emit.tapAsync("MyPlugin", (compilation, callback) => {
-        //   console.log("以异步方式触及 run 钩子。");
-        //    在生成文件中，创建一个头部字符串：
-        //   var filelist = "In this build:\n\n";
-        //   for (var filename in compilation.assets) {
-        //     filelist += "- " + filename + "\n";
-        //   }
-        //   // 将这个作为一个新的文件资源，插入到 webpack 构建中：
-        //   // 写入一个新文件
-        //   compilation.assets["filelist.md"] = {
-        //     source: function () {
-        //       return filelist;
-        //     },
-        //     size: function () {
-        //       return filelist.length;
-        //     },
-        //   };
-        //   callback();
-        // });
-
-        // compiler.hooks.emit.tapPromise("MyPlugin", (compiler) => {
-        //   return new Promise((resolve) => setTimeout(resolve, 10000)).then(() => {
-        //     console.log("以具有延迟的异步方式触及 run 钩子");
-        //   });
+        // this.hook(compiler, 'done', (stats) => {
+        //     if (stats.compilation.errors && stats.compilation.errors.length) {
+        //         console.log(
+        //             ' stats.compilation.errors===',
+        //             chalk.red(stats.compilation.errors)
+        //         );
+        //         // process.exit(1);
+        //     }
         // });
     }
 }
