@@ -6,8 +6,7 @@
  * @FilePath: /webpack-cli/user-webpack-config/definePlugin/MyExampleWebpackPlugin.js
  * @Description:
  */
-const fs = require('fs');
-const path = require('path');
+const ora = require('ora');
 const { copyFile, watchFile } = require('../../utils/index');
 const ResolveAlias = require('../webpack-plugin-resolve-alias');
 
@@ -49,15 +48,16 @@ class WebpackPluginCopyFile {
                 prefixFrom = from.match(/[\w\W]+(?=\/\*)/g)[0];
             }
             new watchFile(prefixFrom, (path, message) => {
-                // console.log('path===', path);
-
                 this.copyFile(message);
             });
         }
     }
-    copyFile(message = '') {
-        this.throttle(500, () => {
-            message && console.log(message);
+    copyFile() {
+        this.throttle(200, () => {
+            // 开启转圈圈动画
+            const spinner = ora('building.....');
+            spinner.start();
+            // message && console.log(message);
             for (let item of this.paths) {
                 const { from, to, transform = (data) => data } = item;
                 copyFile(from, to, (content, absoluteFrom) => {
@@ -72,6 +72,7 @@ class WebpackPluginCopyFile {
                     return transform(content, absoluteFrom);
                 });
             }
+            spinner.stop();
         });
     }
 

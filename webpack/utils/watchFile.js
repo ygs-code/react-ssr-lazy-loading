@@ -8,78 +8,108 @@
  */
 const chokidar = require('chokidar');
 const path = require('path');
+
 class watchFile {
     constructor(filepath, callback) {
         this.filepath = filepath;
         this.callback = callback;
-        this.init();
+        try {
+            this.init();
+        } catch (error) {}
     }
     init() {
         if (!this.watcher) {
             this.watcher = chokidar.watch(this.filepath);
         }
         this.watcher
-            .on('add', (path_) => {
-                this.addFileListener(path_);
-            })
-            .on('addDir', (path_) => {
-                this.addDirecotryListener(path_);
-            })
-            .on('change', (path_) => {
-                this.fileChangeListener(path_);
-            })
-            .on('unlink', (path_) => {
-                this.fileRemovedListener(path_);
-            })
-            .on('unlinkDir', (path_) => {
-                this.directoryRemovedListener(path_);
-            })
+            .on('add', (path) => this.addFileListener(path))
+            .on('addDir', (path) => this.addDirecotryListener(path))
+            .on('change', (path) => this.fileChangeListener(path))
+            .on('unlink', (path) => this.fileRemovedListener(path))
+            .on('unlinkDir', (path) => this.directoryRemovedListener(path))
             .on('error', (error) => {
-                console.info('发生了错误：', error);
+                // console.info('watchFile error：', error);
             })
             .on('ready', () => {
                 // console.info('准备监听');
                 this.ready = true;
             });
     }
-    // 文件新增时
-    addFileListener(path_) {
-        if (this.ready) {
-            this.callback(path_, `文件${path_}有新增`);
-        }
+    // 转换路径
+    transformPath(path) {
+        let reg = /(\\\\)|(\\)/g;
+        return path.replace(reg, '/');
     }
-    addDirecotryListener(path_) {
+    // 文件新增时
+    addFileListener(path) {
+        path = this.transformPath(path);
         if (this.ready) {
-            this.callback(path_, `目录${path_}有新增`);
+            this.callback({
+                path,
+                message: `文件${path}有新增`,
+                type: 'file',
+                action: 'add',
+            });
         }
     }
 
     // 文件内容改变时
-    fileChangeListener(path_) {
+    fileChangeListener(path) {
+        path = this.transformPath(path);
         if (this.ready) {
-            this.callback(path_, `文件${path_}有修改`);
+            this.callback({
+                path,
+                message: `文件${path}有修改`,
+                type: 'file',
+                action: 'change',
+            });
         }
     }
 
     // 删除文件
-    fileRemovedListener(path_) {
+    fileRemovedListener(path) {
+        path = this.transformPath(path);
         if (this.ready) {
-            this.callback(path_, `文件${path_}被删除了`);
+            this.callback({
+                path,
+                message: `文件${path}被删除了`,
+                type: 'file',
+                action: 'delete',
+            });
         }
     }
 
-    // 删除目录时
-    directoryRemovedListener(path_) {
+    // 添加目录
+    addDirecotryListener(path) {
+        path = this.transformPath(path);
         if (this.ready) {
-            this.callback(path_, `目录${path_}被删除了`);
+            this.callback({
+                path,
+                message: `目录${path}有新增`,
+                type: 'directory',
+                action: 'add',
+            });
+        }
+    }
+    // 删除目录时
+    directoryRemovedListener(path) {
+        path = this.transformPath(path);
+        if (this.ready) {
+            this.callback({
+                path,
+                message: `目录${path}被删除了`,
+                type: 'directory',
+                action: 'delete',
+            });
         }
     }
 }
 
 // new watchFile(
 //     'C:/Users/86185/Desktop/React-universal-ssr-master/server',
-//     (path) => {
-//         console.log('path===', path);
+//     (value) => {
+//         // console.log('path===', path);
+//         console.log('value===', value);
 //     }
 // );
 module.exports = watchFile;

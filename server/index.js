@@ -11,7 +11,7 @@ import app from './app.js';
 const port = process.env.port || 3002;
 
 app.use(cors());
-
+ 
 const router = koaRouter({
     prefix: '/api', // 路由前缀
 });
@@ -37,9 +37,12 @@ app.use(
     })
 );
 
-console.log(
-    `\n==> 🌎  node服务器启动成功，监听端口：${port}. 请打开浏览器 http://localhost:${port}/ \n`
-);
 Loadable.preloadAll().then(() => {
-    app.listen(port);
+    const server = app.listen(port, function () {
+        // var host = server.address().address;
+        var port = server.address().port;
+        console.log(
+            `\n==> 🌎  node服务器启动成功，监听端口：${port}. 请打开浏览器 http://localhost:${port}/ \n`
+        );
+    });
 });
