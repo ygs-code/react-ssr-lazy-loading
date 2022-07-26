@@ -1,20 +1,46 @@
-# React-universal-ssr
-webpack+router4+按需加载+webpack-dev-server
+##  webpack react react loadable redux ssr
 
-开发环境使用webpack-dev-server做服务端，实现热加载，生产环境使用koa做后端，实现按需加载，页面渲染前加载数据
-具体介绍可以查看 https://juejin.im/post/5a392018f265da431b6d5501
+安装所需的依赖
 
-1. npm install
-2. npm start 运行开发版环境
+```
+npm install
+```
+
+ 如果不需要ssr渲染，可以选择 web:dev:server
+
+启动 不需要 ssr 服务器选择的开发命令
+
+```
+npm  run  web:dev:server
+```
+
+打包 不需要 ssr 服务器的渲染的 线上打包命名
+
+```
+npm  run web:prod:build
+```
 
 
--------------------------------------------------
 
-1. npm install
-2. npm run build 生产环境编译 dist/client+dist/server
-3. npm run server 运行koa
+ssr 服务器渲染命令
+
+ssr服务器渲染开发打包命令 ssr:dev:build
+
+```
+npm  run ssr:dev:build
+```
+
+ssr服务器渲染线上打包命令 ssr:dev:build
+
+```
+npm  run  ssr:prod:build
+```
 
 
 
--------------------------------------------------
-想了解更多可以看下 https://github.com/tzuser/ssr ，不同风格，同样的功能，也是用的 react16+router5+koa2
+启动 ssr 服务器命令 server
+
+```
+npm  run   server
+```
+
