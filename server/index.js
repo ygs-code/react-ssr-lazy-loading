@@ -1,5 +1,4 @@
 require('./ignore.js')();
-
 import clientRouter from './clientRouter.js';
 import staticCache from 'koa-static-cache';
 import path from 'path';
