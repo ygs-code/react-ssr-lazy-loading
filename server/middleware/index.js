@@ -1,6 +1,6 @@
 import staticCache from 'koa-static-cache';
 import cors from 'koa2-cors';
-import clientRouter from '../clientRouter.js';
+import clientRouter from './clientRouter.js';
 import path from 'path';
 
 export default class Middleware {
