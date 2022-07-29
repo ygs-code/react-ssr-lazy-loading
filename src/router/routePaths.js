@@ -4,7 +4,7 @@ export default [
                     exact:false,
                     name:'DiscountCoupon',
                     entry:'/pages/marketing/pages/DiscountCoupon/index.js',
-                    routesConfigPath:'C:/Users/86185/Desktop/React-universal-ssr-master/src/pages/marketing/router/routesConfig.js',
+                    routesConfigPath:'K:/react-loading-ssr/src/pages/marketing/router/routesConfig.js',
                     level:2
                   },
                    {  
@@ -12,7 +12,7 @@ export default [
                     exact:true,
                     name:'marketing',
                     entry:'/pages/marketing/index.js',
-                    routesConfigPath:'C:/Users/86185/Desktop/React-universal-ssr-master/src/pages/marketing/router/routesConfig.js',
+                    routesConfigPath:'K:/react-loading-ssr/src/pages/marketing/router/routesConfig.js',
                     level:2
                   },
                    {  
@@ -20,7 +20,7 @@ export default [
                     exact:true,
                     name:'home',
                     entry:'/pages/Home/index.js',
-                    routesConfigPath:'C:/Users/86185/Desktop/React-universal-ssr-master/src/router/routesConfig.js',
+                    routesConfigPath:'K:/react-loading-ssr/src/router/routesConfig.js',
                     level:1
                   },
                    {  
@@ -28,7 +28,7 @@ export default [
                     exact:false,
                     name:'user',
                     entry:'/pages/User/index.js',
-                    routesConfigPath:'C:/Users/86185/Desktop/React-universal-ssr-master/src/router/routesConfig.js',
+                    routesConfigPath:'K:/react-loading-ssr/src/router/routesConfig.js',
                     level:1
                   },
     ]

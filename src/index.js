@@ -1,9 +1,9 @@
 //18
-import { hydrate, render } from 'react-dom';
-import React, { Suspense, lazy } from 'react';
+import {hydrate, render} from 'react-dom';
+import React, {Suspense, lazy} from 'react';
 import app from './App/index.js';
 import Loadable from 'react-loadable';
-import { getHistory } from '@/router/history';
+import {getHistory} from '@/router/history';
 import createStore from '@/redux';
 
 const store = createStore(window);

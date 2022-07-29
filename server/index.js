@@ -1,16 +1,21 @@
 require('./ignore.js')();
-import clientRouter from './clientRouter.js';
+
 import staticCache from 'koa-static-cache';
 import path from 'path';
 import cors from 'koa2-cors';
 import Loadable from 'react-loadable';
 import koaRouter from 'koa-router';
+import Koa from 'koa';
 import { menu } from './baseInitState';
-import app from './app.js';
+
+
+import clientRouter from './clientRouter.js';
+
+const app = new Koa();
 const port = process.env.port || 3002;
 
 app.use(cors());
- 
+
 const router = koaRouter({
     prefix: '/api', // 路由前缀
 });
@@ -28,7 +33,9 @@ router.get('/menu', async (ctx, next) => {
 // 加载路由中间件
 app.use(router.routes());
 
-app.use(clientRouter);
+
+app.use(clientRouter());
+
 app.use(
     staticCache(path.resolve(__dirname, '../../web'), {
         maxAge: 365 * 24 * 60 * 60,

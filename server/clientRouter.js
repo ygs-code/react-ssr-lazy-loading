@@ -8,10 +8,8 @@ import {
     createHashHistory,
 } from 'history';
 import { getBundles } from 'react-loadable/webpack';
-import stats from '../../web/react-loadable.json';
 import Helmet from 'react-helmet';
 import { matchPath } from 'react-router-dom';
-// import { matchRoutes } from 'react-router-config';
 import createStore from '@/redux';
 import routesComponent from '@/router/routesComponent';
 import routesConfig from '@/router/routesConfig';
@@ -19,6 +17,8 @@ import { findTreeData } from '@/utils';
 import * as baseInitState from './baseInitState/index';
 import path from 'path';
 import fs from 'fs';
+import stats from '../../web/react-loadable.json';
+
 const CreateApp = require('@/App').default;
 // 创建 store
 const store = createStore({});
@@ -116,7 +116,7 @@ const makeup = (ctx, store, CreateApp, html, isMatchRoute) => {
 };
 
 // 中间件
-const clientRouter = async (ctx, next) => {
+const clientRouter =()=> async (ctx, next) => {
     let html = fs.readFileSync(
         path.join(path.resolve(__dirname, '../../web'), 'index.html'),
         'utf-8'
