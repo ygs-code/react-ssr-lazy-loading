@@ -17,6 +17,7 @@ import { findTreeData } from '@/utils';
 import * as baseInitState from './baseInitState/index';
 import path from 'path';
 import fs from 'fs';
+// import stats from '../../web/react-loadable.json';
 import stats from '../../web/react-loadable.json';
 
 const CreateApp = require('@/App').default;

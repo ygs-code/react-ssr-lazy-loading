@@ -1,54 +1,49 @@
 require('./ignore.js')();
-
-import staticCache from 'koa-static-cache';
-import path from 'path';
-import cors from 'koa2-cors';
 import Loadable from 'react-loadable';
-import koaRouter from 'koa-router';
 import Koa from 'koa';
-import { menu } from './baseInitState';
+import Router from './router';
+import Middleware from './middleware';
 
+let {
+    NODE_ENV, // 环境参数
+    WEB_ENV, // 环境参数
+    target, // 环境参数
+    htmlWebpackPluginOptions = '',
+} = process.env; // 环境参数
 
-import clientRouter from './clientRouter.js';
+//    是否是生产环境
+const isEnvProduction = NODE_ENV === 'production';
+//   是否是测试开发环境
+const isEnvDevelopment = NODE_ENV === 'development';
 
-const app = new Koa();
 const port = process.env.port || 3002;
 
-app.use(cors());
+class App {
+    constructor() {
+        this.init();
+    }
+    init() {
+        this.app = new Koa();
+        this.addRouter();
+        this.addMiddleware();
+        this.listen();
+    }
+    addRouter() {
+        new Router(this.app);
+    }
+    addMiddleware() {
+        new Middleware(this.app);
+    }
+    listen() {
+        Loadable.preloadAll().then(() => {
+            const server = this.app.listen(port, function () {
+                var port = server.address().port;
+                console.log(
+                    `\n==> 🌎  node服务器启动成功，监听端口：${port}. 请打开浏览器 http://localhost:${port}/ \n`
+                );
+            });
+        });
+    }
+}
 
-const router = koaRouter({
-    prefix: '/api', // 路由前缀
-});
-
-// 修改为其他请求类型，只需要将get改成需要的类型即可
-router.get('/menu', async (ctx, next) => {
-    ctx.body = JSON.stringify({
-        code: 200,
-        message: '请求成功',
-        data: menu(),
-    });
-    await next();
-});
-
-// 加载路由中间件
-app.use(router.routes());
-
-
-app.use(clientRouter());
-
-app.use(
-    staticCache(path.resolve(__dirname, '../../web'), {
-        maxAge: 365 * 24 * 60 * 60,
-        gzip: true,
-    })
-);
-
-Loadable.preloadAll().then(() => {
-    const server = app.listen(port, function () {
-        // var host = server.address().address;
-        var port = server.address().port;
-        console.log(
-            `\n==> 🌎  node服务器启动成功，监听端口：${port}. 请打开浏览器 http://localhost:${port}/ \n`
-        );
-    });
-});
+export default new App();
