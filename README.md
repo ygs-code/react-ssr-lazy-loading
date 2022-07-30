@@ -58,6 +58,6 @@ npm  run  ssr:prod:build
 This command is used to start the SSR server (启动 ssr 服务器命令)  start:server
 
 ```
-npm  run  tart:server 
+npm  run  sart:server 
 ```
 
