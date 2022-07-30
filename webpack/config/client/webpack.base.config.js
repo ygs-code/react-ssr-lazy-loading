@@ -304,24 +304,26 @@ module.exports = {
             threadPool: happyThreadPool,
         }),
 
-        // new WebpackPluginRouter({
-        //     entry: path.join(process.cwd(), '/src'),
-        //     //延迟监听时间
-        //     aggregateTimeout: 2000,
-        //     watch: ['routesConfig.js'],
-        //     output: {
-        //         routesComponent: '/src/router/routesComponent.js',
-        //         routePaths: '/src/router/routePaths.js',
-        //     },
-        // }),
+        new WebpackPluginRouter({
+            entry: path.join(process.cwd(), '/src'),
+            //延迟监听时间
+            aggregateTimeout: 300,
+            watch: ['routesConfig.js'],
+            output: {
+                routesComponent: '/src/router/routesComponent.js',
+                routePaths: '/src/router/routePaths.js',
+            },
+        }),
         // 注入全局常量
         new ExtendedDefinePlugin({
             process: {
                 // ...process,
                 env: {
+                    // ...process.env,
                     NODE_ENV, // 环境参数
                     WEB_ENV, // 环境参数
                     target, // 环境参数
+                    COMPILER_ENV,
                 },
             },
             htmlWebpackPluginOptions,

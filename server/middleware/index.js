@@ -9,7 +9,11 @@ let {
     WEB_ENV, // 环境参数
     target, // 环境参数
     htmlWebpackPluginOptions = '',
+    COMPILER_ENV,
 } = process.env; // 环境参数
+
+// 如果是中间件编译
+const isCompile = COMPILER_ENV === 'middleware';
 
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === 'production';
@@ -49,7 +53,7 @@ export default class Middleware {
     addMiddleware() {
         this.addCorsMiddleware();
 
-        if (isEnvDevelopment) {
+        if (isCompile) {
             this.addWebpackHotMiddleware();
         } else {
             this.addStaticCacheMiddleware();

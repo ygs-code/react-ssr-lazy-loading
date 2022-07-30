@@ -37,17 +37,20 @@ htmlWebpackPluginOptions = (() => {
 })();
 
 module.exports = {
+    mode: NODE_ENV,
     ...(isDevelopment
         ? {
               watch: true,
               watchOptions: {
                   //延迟监听时间
-                  aggregateTimeout: 500,
+                  aggregateTimeout: 300,
                   //忽略监听文件夹
                   ignored: '/node_modules/',
               },
           }
-        : {}),
+        : {
+              watch: false,
+          }),
 
     module: {
         rules: [

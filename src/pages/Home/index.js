@@ -20,7 +20,7 @@ import {
     CardSubtitle,
     CardText,
 } from 'reactstrap';
-import './index.less';
+// import './index.less';
 import Nav from '@/component/Nav';
 
 // 权限跳转登录页面可以在这控制

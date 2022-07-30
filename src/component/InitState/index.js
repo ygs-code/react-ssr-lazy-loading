@@ -4,7 +4,6 @@ import routesConfig from '@/router/routesConfig';
 import {matchPath} from 'react-router-dom';
 import {mapRedux} from '@/redux';
 import {findTreeData} from '@/utils';
-// import './index.less';
 
 // 注入initState
 const InitState = (props) => {

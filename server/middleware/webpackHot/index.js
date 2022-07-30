@@ -10,7 +10,6 @@ class WebpackHot {
     }
     init() {
         this.compiler = compiler();
-        console.log('this.compiler======', this.compiler);
         this.addMiddleware();
     }
     addMiddleware() {

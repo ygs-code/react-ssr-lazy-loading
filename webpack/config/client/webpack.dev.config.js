@@ -31,7 +31,7 @@ htmlWebpackPluginOptions = (() => {
 })();
 
 module.exports = {
-    mode: 'development',
+    mode: NODE_ENV,
     devServer: {
         open: true,
         contentBase: 'assets',
@@ -44,7 +44,7 @@ module.exports = {
     watch: true,
     watchOptions: {
         //延迟监听时间
-        aggregateTimeout: 2000,
+        aggregateTimeout: 300,
         //忽略监听文件夹
         ignored: '/node_modules/',
     },

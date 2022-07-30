@@ -18,14 +18,16 @@ import * as baseInitState from '../baseInitState/index';
 import path, { resolve } from 'path';
 import fs from 'fs';
 const absolutePath = resolve('./');
-
 let {
     NODE_ENV, // 环境参数
     WEB_ENV, // 环境参数
     target, // 环境参数
     htmlWebpackPluginOptions = '',
+    COMPILER_ENV,
 } = process.env; // 环境参数
 
+// 如果是中间件编译
+const isCompile = COMPILER_ENV === 'middleware';
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === 'production';
 //   是否是测试开发环境
@@ -51,7 +53,7 @@ class ClientRouter {
             path.join(
                 path.join(
                     absolutePath,
-                    isEnvDevelopment ? '/src/public' : 'dist/web'
+                    isCompile ? '/src/public' : 'dist/web'
                 ),
                 'index.html'
             ),
@@ -108,11 +110,11 @@ class ClientRouter {
             '/dist/web/react-loadable.json'
         ));
         let bundles = getBundles(stats, modules);
-        if (isEnvDevelopment) {
-            bundles.push({
-                file: '/static/js/main.js',
-            });
-        }
+        // if (isCompile) {
+        //     bundles.push({
+        //         file: '/static/js/main.js',
+        //     });
+        // }
 
         let scriptfiles = bundles.filter((bundle) =>
             bundle.file.endsWith('.js')

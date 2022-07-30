@@ -2,7 +2,7 @@ import React, {Component, useMemo} from 'react';
 import {Nav, NavItem, NavLink} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import './index.less';
+// import './index.less';
 
 const Navigation = (props) => {
 
