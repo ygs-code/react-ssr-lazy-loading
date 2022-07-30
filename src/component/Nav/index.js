@@ -3,9 +3,9 @@ import {Nav, NavItem, NavLink} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './index.less';
-//
+
 const Navigation = (props) => {
-    // console.log('props===', props);
+
     const {
         history: {push} = {},
         dispatch: {baseInitState: {setInitState, setMenuActive} = {}} = {},

@@ -70,7 +70,7 @@ class ClientRouter {
             for (let key in baseInitState) {
                 baseInitStateData[key] = await baseInitState[key]();
             }
-            console.log('baseInitStateData====', baseInitStateData);
+
             if (Object.keys(baseInitState).length) {
                 store.dispatch['baseInitState'].setInitState(baseInitStateData);
             }
@@ -82,7 +82,7 @@ class ClientRouter {
                     initState: data,
                 });
             }
-            console.log('store===', store.getState());
+
             // 渲染html
             let renderedHtml = await this.makeup(
                 ctx,
@@ -91,7 +91,7 @@ class ClientRouter {
                 html,
                 isMatchRoute
             );
-            console.log('renderedHtml===========', renderedHtml);
+
             ctx.body = renderedHtml;
         }
         next();
@@ -103,8 +103,6 @@ class ClientRouter {
 
     // 创建标签
     createTags(modules) {
-        // console.log('isEnvDevelopment===========', isEnvDevelopment);
-        console.log('resolve========', resolve('./'))
         const stats = require(path.join(
             absolutePath,
             '/dist/web/react-loadable.json'
@@ -197,15 +195,13 @@ class ClientRouter {
             styles,
             initState,
         });
-        console.log('renderedHtml==', renderedHtml);
+
         return renderedHtml;
     }
 }
 
 export const serverRenderer = ({ clientStats, serverStats, foo } = {}) => {
-    console.log('serverRenderer1111111111111111===========');
     return async (ctx, next) => {
-        console.log('serverRenderer2222222222222222===========');
         await new Promise((reslove, reject) => {
             new ClientRouter(ctx, reslove);
         });

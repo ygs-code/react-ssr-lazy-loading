@@ -7,9 +7,9 @@ import React, {
     memo,
     useEffect,
 } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {mapRedux} from '@/redux';
+import { mapRedux } from '@/redux';
 import {
     Button,
     CardGroup,
@@ -28,21 +28,15 @@ const Index = (props) => {
     const [data, setData] = useState([]);
 
     const {
-        dispatch: {home: {setCount = () => {}} = {}} = {},
-        state: {home: {count, initState: {list = []} = {}} = {}} = {},
+        dispatch: { home: { setCount = () => {} } = {} } = {},
+        state: { home: { count, initState: { list = [] } = {} } = {} } = {},
     } = props;
-//  123123;
+    //  123123;
     useEffect(() => {
         console.log(
             'window.__INITIAL_STATE__=',
             window && window.__INITIAL_STATE__
         );
-
-        console.log('store======', window.store);
-        console.log('props   fhjgf==', props);
-        console.log('list======', list);
-
-        
     }, []);
 
     return (
@@ -65,7 +59,7 @@ const Index = (props) => {
         */}
             <CardGroup className="card-group-box">
                 {list.map((item, index) => {
-                    const {id, title, type, url, scenery} = item;
+                    const { id, title, type, url, scenery } = item;
                     return (
                         <Card key={id} className="card-box">
                             <CardImg alt={title} src={url} top width="100%" />

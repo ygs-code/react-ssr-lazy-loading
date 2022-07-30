@@ -9,7 +9,7 @@ const setInitData = ($window, name) => {
     ) {
         initState = $window.__INITIAL_STATE__[name];
     }
-    console.log('initState==================', initState);
+   
     return initState;
 };
 export default ($window) => {

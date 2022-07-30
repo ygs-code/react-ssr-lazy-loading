@@ -11,8 +11,6 @@ let {
     htmlWebpackPluginOptions = '',
 } = process.env; // 环境参数
 
-console.log('NODE_ENV===============', NODE_ENV);
-
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === 'production';
 //   是否是测试开发环境
@@ -20,7 +18,6 @@ const isEnvDevelopment = NODE_ENV === 'development';
 
 export default class Middleware {
     constructor(app) {
-        console.log('app=============', app);
         this.app = app;
         this.init();
     }
@@ -41,21 +38,17 @@ export default class Middleware {
         this.app.use(clientRouter());
     }
     addCorsMiddleware() {
-        console.log('this.app==========', this.app);
         this.app.use(cors());
     }
 
     addWebpackHotMiddleware() {
-        
-            const WebpackHot = require('./webpackHot').default
-            console.log('WebpackHot======',WebpackHot)
-            new WebpackHot(this.app);
-         
+        const WebpackHot = require('./webpackHot').default;
+        new WebpackHot(this.app);
     }
 
     addMiddleware() {
         this.addCorsMiddleware();
-        console.log('isEnvDevelopment===============', isEnvDevelopment);
+
         if (isEnvDevelopment) {
             this.addWebpackHotMiddleware();
         } else {
