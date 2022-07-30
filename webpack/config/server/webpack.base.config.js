@@ -349,16 +349,16 @@ module.exports = {
                 COMPILER_ENV,
                 htmlWebpackPluginOptions
             },
-            process: {
-                // ...process,
-                env: {
-                    // ...process.env,
-                    NODE_ENV, // 环境参数
-                    WEB_ENV, // 环境参数
-                    target, // 环境参数
-                    COMPILER_ENV,
-                },
-            },
+            // process: {
+            //     // ...process,
+            //     env: {
+            //         // ...process.env,
+            //         NODE_ENV, // 环境参数
+            //         WEB_ENV, // 环境参数
+            //         target, // 环境参数
+            //         COMPILER_ENV,
+            //     },
+            // },
             // htmlWebpackPluginOptions,
         }),
         // // html静态页面
