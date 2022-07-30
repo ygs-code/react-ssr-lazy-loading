@@ -23,7 +23,7 @@ const Navigation = (props) => {
                             push('/');
                         }}
                     >
-                        首页
+                        首页 
                     </NavLink>
                 </NavItem>
                 <NavItem>

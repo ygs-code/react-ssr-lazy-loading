@@ -8,13 +8,14 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ExtendedDefinePlugin = require('extended-define-webpack-plugin');
-const webpackPluginCopyFile = require('../definePlugin/webpack-plugin-copy-file');
+const webpackPluginCopyFile = require('../../definePlugin/webpack-plugin-copy-file');
 const rootPath = process.cwd();
 let {
     NODE_ENV, // 环境参数
     WEB_ENV, // 环境参数
     target, // 环境参数
     htmlWebpackPluginOptions = '',
+    COMPILER_ENV,
 } = process.env; // 环境参数
 const isDevelopment = NODE_ENV == 'development';
 
@@ -153,7 +154,7 @@ module.exports = {
     plugins: [
         ...(isDevelopment ? [new webpack.HotModuleReplacementPlugin()] : []),
 
-        ...(target == 'ssr'
+        ...(target == 'ssr' && COMPILER_ENV != 'middleware'
             ? [
                   new webpackPluginCopyFile(
                       [
@@ -222,12 +223,23 @@ module.exports = {
             filename: 'static/css/[name].[contenthash:8].css',
             chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
         }),
-        // new CopyWebpackPlugin([
-        //     { from: 'favicon.ico', to: rootPath + './dist' },
-        // ]),
+
         new CleanWebpackPlugin(['./dist/server', './dist/web'], {
             root: rootPath,
         }),
+
+        // // 复制
+        // new CopyWebpackPlugin([
+        //     {
+        //         from: path
+        //             .join(process.cwd(), '/src/static/**/*')
+        //             .replace(/\\/gi, '/'),
+        //         to: path
+        //             .join(process.cwd(), '/dist/web/static')
+        //             .replace(/\\/gi, '/')
+        //     },
+        // ]),
+
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         }),
@@ -240,11 +252,11 @@ module.exports = {
         // new ReactLoadablePlugin({
         //     filename: path.join(rootPath, './dist/react-loadable.json'),
         // }),
-        new ReactLoadablePlugin({
-            filename: path.join(
-                process.cwd(),
-                './dist/web/react-loadable.json'
-            ),
-        }),
+        // new ReactLoadablePlugin({
+        //     filename: path.join(
+        //         process.cwd(),
+        //         '/dist/web/react-loadable.json'
+        //     ),
+        // }),
     ],
 };

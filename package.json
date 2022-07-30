@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "web:dev:server": "cross-env NODE_ENV=development    target=web  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack-dev-server -r @babel/register  --hotOnly   --progress --config ./webpack/config/index.js",
-    "web:prod:build": "cross-env NODE_ENV=production     target=web  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack  -r @babel/register  --progress --config  ./webpack/config/index.js",
-    "ssr:dev:build": "cross-env NODE_ENV=development     target=ssr  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack  -r @babel/register  --progress -p --config   ./webpack/config/index.js",
-    "ssr:prod:build": "cross-env NODE_ENV=production     target=ssr  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack  -r @babel/register  --progress --config  ./webpack/config/index.js",
-    "server:dev:build": "cross-env NODE_ENV=development  target=ssr  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack -r @babel/register   --progress --config  ./webpack/config/webpack.server.config.js",
-    "server:prod:build": "cross-env NODE_ENV=production  target=ssr  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack  -r @babel/register  --progress --config ./webpack/config/webpack.server.config.js",
-    "server": "cross-env NODE_ENV=development   target=ssr  nodemon  -r @babel/register  ./dist/server/server/index.js",
-    "pm2:server": "cross-env NODE_ENV=development   target=ssr   pm2 start   -r @babel/register  ./dist/server/server/index.js --watch",
+    "webpack:compiler": "cross-env NODE_ENV=development   target=web  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}' webpack  -r @babel/register    --config ./webpack/index.js",
+    "web:dev:server": "cross-env NODE_ENV=development     COMPILER_ENV='webpackDevServer'   target=web  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack-dev-server -r @babel/register    --progress --config ./webpack/config/client/index.js",
+    "web:prod:build": "cross-env NODE_ENV=production      COMPILER_ENV='webpack'    target=web  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack  -r @babel/register   --config  ./webpack/config/client/index.js",
+    "ssr:dev:middleware": "cross-env NODE_ENV=development COMPILER_ENV='middleware'    target=ssr  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  node  -r @babel/register     ./server/index.js",
+    "ssr:dev:build": "cross-env NODE_ENV=development      COMPILER_ENV='webpack'    target=ssr  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack  -r @babel/register    --config   ./webpack/config/client/index.js",
+    "ssr:prod:build": "cross-env NODE_ENV=production      COMPILER_ENV='webpack'   target=ssr  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack  -r @babel/register    --config    ./webpack/config/client/index.js",
+    "start:server:dev": "cross-env NODE_ENV=development   target=ssr  nodemon  -r @babel/register  ./dist/server/server/index.js",
+    "start:server:prod": "cross-env NODE_ENV=production   target=ssr  nodemon  -r @babel/register  ./dist/server/server/index.js",
+    "server:dev:build": "cross-env NODE_ENV=development   target=ssr  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack -r @babel/register    --config  ./webpack/config/webpack.server.config.js",
+    "server:prod:build": "cross-env NODE_ENV=production   target=ssr  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack  -r @babel/register   --config ./webpack/config/webpack.server.config.js",
     "copyFile": "node ./webpack/utils/copyFile.js",
     "webpack-plugin-copy-file": "node  ./webpack/definePlugin/webpack-plugin-copy-file/index.js",
     "//注释10": "eslint校验",
@@ -127,8 +129,12 @@
     "webpack": "4.46.0",
     "webpack-cli": "3.3.10",
     "webpack-dev-server": "3.9.0",
+    "webpack-hot-server-middleware": "^0.6.1",
     "webpack-manifest-plugin": "2.0.4",
     "webpack-merge": "4.1.0",
-    "webpackbar": "^5.0.2"
+    "webpack-omit-js-for-css-plugin": "^3.2.0",
+    "webpackbar": "^5.0.2",
+    "webpack-dev-middleware": "^3.0.1",
+    "webpack-hot-middleware": "^2.25.1"
   }
 }

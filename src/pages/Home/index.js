@@ -10,7 +10,6 @@ import React, {
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {mapRedux} from '@/redux';
-
 import {
     Button,
     CardGroup,

@@ -3,7 +3,7 @@
 import loadable from 'react-loadable';
 import Loading from '@/component/Loading';
 import RouterAddApi from '@/router/RouterAddApi';
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import pagesMarketingRouterRoutesconfig from '@/pages/marketing/router/routesConfig.js';
 import routerRoutesconfig from '@/router/routesConfig.js';
 
@@ -60,7 +60,7 @@ let routesComponentConfig=[
                      Component:LoadableUser,
                      level:1
                    },
-    ];
+    ]
 
 export default routesComponentConfig;
         

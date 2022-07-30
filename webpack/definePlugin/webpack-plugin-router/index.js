@@ -262,6 +262,7 @@ export default routesComponentConfig;
             });
 
             if (!dataDiff(routesConfigs, this.routesConfigs)) {
+                console.log('dataDiff=============================')
                 this.routesConfigs = _.cloneDeep(routesConfigs);
                 const {
                     routesComponentFile,

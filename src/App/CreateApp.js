@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Loadable, {Capture} from 'react-loadable';
 import PropTypes from 'prop-types';
 import App from './App.js';
-import './App.less';
+// import './App.less';
 
 const CreateApp = (props = {}) => {
     const {modules = []} = props;

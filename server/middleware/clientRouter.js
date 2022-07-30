@@ -15,32 +15,49 @@ import routesComponent from '@/router/routesComponent';
 import routesConfig from '@/router/routesConfig';
 import { findTreeData } from '@/utils';
 import * as baseInitState from '../baseInitState/index';
-import path from 'path';
+import path, { resolve } from 'path';
 import fs from 'fs';
-// import stats from '../../web/react-loadable.json';
-import stats from '../../../web/react-loadable.json';
+const absolutePath = resolve('./');
+
+let {
+    NODE_ENV, // 环境参数
+    WEB_ENV, // 环境参数
+    target, // 环境参数
+    htmlWebpackPluginOptions = '',
+} = process.env; // 环境参数
+
+//    是否是生产环境
+const isEnvProduction = NODE_ENV === 'production';
+//   是否是测试开发环境
+const isEnvDevelopment = NODE_ENV === 'development';
 
 const CreateApp = require('@/App').default;
 // 创建 store
 const store = createStore({});
 
 // 中间件
-async function ClientRouter(ctx, next) {
-    this.context = {
-        ctx,
-        next,
-    };
-    await this.init();
-}
-
-ClientRouter.prototype = {
-    // 初始化
+class ClientRouter {
+    constructor(ctx, next) {
+        this.context = {
+            ctx,
+            next,
+        };
+        this.init();
+    }
+    //      初始化
     async init() {
         const { ctx, next } = this.context;
         let html = fs.readFileSync(
-            path.join(path.resolve(__dirname, '../../../web'), 'index.html'),
+            path.join(
+                path.join(
+                    absolutePath,
+                    isEnvDevelopment ? '/src/public' : 'dist/web'
+                ),
+                'index.html'
+            ),
             'utf-8'
         );
+
         let isMatchRoute = this.getMatch(routesComponent, ctx.req.url);
         if (isMatchRoute) {
             let data = null;
@@ -74,18 +91,31 @@ ClientRouter.prototype = {
                 html,
                 isMatchRoute
             );
+            console.log('renderedHtml===========', renderedHtml);
             ctx.body = renderedHtml;
         }
-        // await next();
-    },
+        next();
+    }
     // 查找初始化数据
     findInitData(routesConfig, value, key) {
         return (findTreeData(routesConfig, value, key) || {}).initState;
-    },
+    }
 
     // 创建标签
     createTags(modules) {
+        // console.log('isEnvDevelopment===========', isEnvDevelopment);
+        console.log('resolve========', resolve('./'))
+        const stats = require(path.join(
+            absolutePath,
+            '/dist/web/react-loadable.json'
+        ));
         let bundles = getBundles(stats, modules);
+        if (isEnvDevelopment) {
+            bundles.push({
+                file: '/static/js/main.js',
+            });
+        }
+
         let scriptfiles = bundles.filter((bundle) =>
             bundle.file.endsWith('.js')
         );
@@ -95,11 +125,12 @@ ClientRouter.prototype = {
         let scripts = scriptfiles
             .map((script) => `<script src="/${script.file}"></script>`)
             .join('\n');
+
         let styles = stylefiles
             .map((style) => `<link href="/${style.file}" rel="stylesheet"/>`)
             .join('\n');
         return { scripts, styles };
-    },
+    }
     // 解析html
     prepHTML(data, { html, head, rootString, scripts, styles, initState }) {
         // rootString = rootString;
@@ -117,7 +148,7 @@ ClientRouter.prototype = {
         );
         data = data.replace('</body>', `${scripts}</body>`);
         return data;
-    },
+    }
     // 获取路由
     getMatch(routesArray, url) {
         for (let router of routesArray) {
@@ -133,7 +164,7 @@ ClientRouter.prototype = {
                 };
             }
         }
-    },
+    }
     // 创建react文本
     makeup(ctx, store, CreateApp, html, isMatchRoute) {
         let initState = store.getState();
@@ -166,13 +197,21 @@ ClientRouter.prototype = {
             styles,
             initState,
         });
+        console.log('renderedHtml==', renderedHtml);
         return renderedHtml;
-    },
-};
+    }
+}
 
-export default () => {
+export const serverRenderer = ({ clientStats, serverStats, foo } = {}) => {
+    console.log('serverRenderer1111111111111111===========');
     return async (ctx, next) => {
-        await new ClientRouter(ctx, next);
+        console.log('serverRenderer2222222222222222===========');
+        await new Promise((reslove, reject) => {
+            new ClientRouter(ctx, reslove);
+        });
+
         await next();
     };
 };
+
+export default serverRenderer;

@@ -22,4 +22,4 @@ const Index = (props) => {
     );
 };
 
-export default mapRedux()(Index);
+export default   Index;// mapRedux()(Index);

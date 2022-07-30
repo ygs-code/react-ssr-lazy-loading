@@ -1,5 +1,5 @@
-const CopyPlugin = require('copy-webpack-plugin');
-const ResolveAlias = require('../definePlugin/webpack-plugin-resolve-alias');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ResolveAlias = require('../../definePlugin/webpack-plugin-resolve-alias');
 
 const path = require('path');
 
@@ -78,7 +78,7 @@ module.exports = {
     },
     plugins: [
         // 复制
-        new CopyPlugin([
+        new CopyWebpackPlugin([
             {
                 from: path
                     .join(process.cwd(), '/server/**/*')
@@ -96,7 +96,7 @@ module.exports = {
                 },
             },
         ]),
-        new CopyPlugin([
+        new CopyWebpackPlugin([
             {
                 from: path
                     .join(process.cwd(), '/src/**/*')
