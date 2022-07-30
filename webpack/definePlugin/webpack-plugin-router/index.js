@@ -170,7 +170,7 @@ const Loadable${this.firstToUpper(name)} = loadable({
         for (let item of routesConfig) {
             let { path, config = [] } = item;
             let routesConfigPath = path;
-            path = path.split(/\/src\//g)[1];
+            path = path.split(/\/client\//g)[1];
             let fileName = path.split(/\//g);
             fileName = fileName
                 .map((item, index) => {

@@ -150,7 +150,7 @@ module.exports = {
         // 你可以使用 `!field` 来反转排序。默认是按照 `id` 排序。
         chunksSort: 'id',
         // 用于缩短 request 的上下文目录
-        // context: "../src/",
+        // context: "../client/",
         // `webpack --colors` 等同于 显示日志不同的颜色
         colors: true,
         // 显示每个模块到入口起点的距离(distance)
@@ -213,7 +213,7 @@ module.exports = {
     resolve: {
         // 路径配置
         alias: {
-            '@': path.join(process.cwd(), '/src'),
+            '@': path.join(process.cwd(), '/client'),
         },
         extensions: [
             '.js',
@@ -226,7 +226,7 @@ module.exports = {
             '.svg',
         ],
         // modules: [
-        //     path.resolve(rootPath, 'src'),
+        //     path.resolve(rootPath, 'client'),
         //     path.resolve(rootPath, 'server'),
         //     'node_modules',
         // ],
@@ -236,7 +236,7 @@ module.exports = {
             {
                 test: /(\.jsx?$)|(\.js?$)/,
                 exclude: /node_modules/,
-                // include: path.resolve(rootPath, 'src'),
+                // include: path.resolve(rootPath, 'client'),
                 use: cacheLoader('jsx'),
                 // {
                 //     loader: 'babel-loader',
@@ -330,17 +330,25 @@ module.exports = {
 
         // new MyExampleWebpackPlugin(),
         // new WebpackPluginRouter({
-        //     entry: path.join(process.cwd(), '/src'),
+        //     entry: path.join(process.cwd(), '/client'),
         //     //延迟监听时间
         //     aggregateTimeout: 1000,
         //     watch: ['routesConfig.js'],
         //     output: {
-        //         routesComponent: '/src/router/routesComponent.js',
-        //         routePaths: '/src/router/routePaths.js',
+        //         routesComponent: '/client/router/routesComponent.js',
+        //         routePaths: '/client/router/routePaths.js',
         //     },
         // }),
         // 注入全局常量
         new ExtendedDefinePlugin({
+            GLOBAL_VARIABLE: {
+                // ...process.env,
+                NODE_ENV, // 环境参数
+                WEB_ENV, // 环境参数
+                target, // 环境参数
+                COMPILER_ENV,
+                htmlWebpackPluginOptions
+            },
             process: {
                 // ...process,
                 env: {
@@ -348,10 +356,10 @@ module.exports = {
                     NODE_ENV, // 环境参数
                     WEB_ENV, // 环境参数
                     target, // 环境参数
-                    COMPILER_ENV
+                    COMPILER_ENV,
                 },
             },
-            htmlWebpackPluginOptions,
+            // htmlWebpackPluginOptions,
         }),
         // // html静态页面
         // new HtmlWebpackPlugin({
@@ -361,7 +369,7 @@ module.exports = {
         //     // 生成出来的html文件名
         //     filename: 'index.html',
         //     // 每个html的模版，这里多个页面使用同一个模版
-        //     template: path.join(process.cwd(), '/src/public/index.html'),
+        //     template: path.join(process.cwd(), '/client/public/index.html'),
         //     // 自动将引用插入html
         //     // inject: 'body',
         //     // hash: true,

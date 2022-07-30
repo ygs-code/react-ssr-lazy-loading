@@ -7,7 +7,6 @@ const { ReactLoadablePlugin } = require('react-loadable/webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ExtendedDefinePlugin = require('extended-define-webpack-plugin');
 const webpackPluginCopyFile = require('../../definePlugin/webpack-plugin-copy-file');
 const rootPath = process.cwd();
 let {
@@ -192,7 +191,7 @@ module.exports = {
                           },
                           {
                               from: path
-                                  .join(process.cwd(), '/src/**/*')
+                                  .join(process.cwd(), '/client/**/*')
                                   .replace(/\\/gi, '/'),
                               to: path
                                   .join(process.cwd(), '/dist/server')
@@ -208,7 +207,7 @@ module.exports = {
                               alias: {
                                   '@/': path.join(
                                       process.cwd(),
-                                      '/dist/server/src/'
+                                      '/dist/server/client/'
                                   ),
                               },
                           },
@@ -235,7 +234,7 @@ module.exports = {
         // new CopyWebpackPlugin([
         //     {
         //         from: path
-        //             .join(process.cwd(), '/src/static/**/*')
+        //             .join(process.cwd(), '/client/static/**/*')
         //             .replace(/\\/gi, '/'),
         //         to: path
         //             .join(process.cwd(), '/dist/web/static')

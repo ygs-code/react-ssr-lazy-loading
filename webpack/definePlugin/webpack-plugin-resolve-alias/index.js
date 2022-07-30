@@ -99,11 +99,11 @@ const alias = ({ config, filePath, content }) => {
 //     路径配置
 //     resolve: {
 //       alias: {
-//         '@': path.join(process.cwd(), '/src')
+//         '@': path.join(process.cwd(), '/client')
 //       }
 //     }
 //   },
-//   filePath: 'K:/Blogs/src/a.js',
+//   filePath: 'K:/Blogs/client/a.js',
 //   content: `import b from '@/b'
 //     export default b`
 // });

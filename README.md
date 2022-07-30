@@ -55,9 +55,9 @@ SSR server render line pack command  (ssr服务器渲染线上打包命令 ) ssr
 npm  run  ssr:prod:build
 ```
 
-This command is used to start the SSR server (启动 ssr 服务器命令)  server
+This command is used to start the SSR server (启动 ssr 服务器命令)  start:server
 
 ```
-npm  run   server 
+npm  run  tart:server 
 ```
 

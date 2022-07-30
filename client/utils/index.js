@@ -25,6 +25,7 @@ import {
     firstToUpper,
 } from './regular';
 import {setInitData} from './setInitData';
+import {getEv} from './getEv';
 
 export {
     // FloatingBall, // 浮动球 类
@@ -45,6 +46,7 @@ export {
     checkVerificationCode,
     firstToUpper,
     setInitData,
+    getEv
 };
 // 整体输出
 export * from './regular.js';

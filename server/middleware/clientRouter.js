@@ -13,7 +13,7 @@ import { matchPath } from 'react-router-dom';
 import createStore from '@/redux';
 import routesComponent from '@/router/routesComponent';
 import routesConfig from '@/router/routesConfig';
-import { findTreeData } from '@/utils';
+import { findTreeData, getEv } from '@/utils';
 import * as baseInitState from '../baseInitState/index';
 import path, { resolve } from 'path';
 import fs from 'fs';
@@ -24,7 +24,7 @@ let {
     target, // 环境参数
     htmlWebpackPluginOptions = '',
     COMPILER_ENV,
-} = process.env; // 环境参数
+} = getEv(); // 环境参数
 
 // 如果是中间件编译
 const isCompile = COMPILER_ENV === 'middleware';
@@ -51,10 +51,7 @@ class ClientRouter {
         const { ctx, next } = this.context;
         let html = fs.readFileSync(
             path.join(
-                path.join(
-                    absolutePath,
-                    isCompile ? '/src/public' : 'dist/web'
-                ),
+                path.join(absolutePath, isCompile ? '/client/public' : 'dist/web'),
                 'index.html'
             ),
             'utf-8'

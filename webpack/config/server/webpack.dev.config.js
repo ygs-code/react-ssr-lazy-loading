@@ -4,7 +4,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const ExtendedDefinePlugin = require('extended-define-webpack-plugin');
 const rootPath = process.cwd();
 let {
     NODE_ENV, // 环境参数
@@ -47,7 +46,7 @@ module.exports = {
         //忽略监听文件夹
         ignored: '/node_modules/',
     },
-    // context: path.join(process.cwd(), '/src'),
+    // context: path.join(process.cwd(), '/client'),
     devtool: 'source-map',
     module: {
         rules: [

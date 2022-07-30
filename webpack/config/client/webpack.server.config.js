@@ -7,7 +7,7 @@ let $ResolveAlias = new ResolveAlias({
     resolve: {
         // 路径配置
         alias: {
-            '@/': path.join(process.cwd(), '/dist/server/src/'),
+            '@/': path.join(process.cwd(), '/dist/server/client/'),
         },
     },
 });
@@ -50,7 +50,7 @@ module.exports = {
           }
         : {}),
     devtool: 'source-map',
-    // context: path.join(process.cwd(), '/src'),
+    // context: path.join(process.cwd(), '/client'),
     entry: {
         test: path.join(process.cwd(), '/server/test.js'),
     },
@@ -68,10 +68,10 @@ module.exports = {
     // resolve: {
     //     // 路径配置
     //     alias: {
-    //         '@': path.join(process.cwd(), '/src'),
+    //         '@': path.join(process.cwd(), '/client'),
     //     },
     //     extensions: ['.js', '.jsx', '.css', '.less', '.scss', '.png', '.jpg'],
-    //     modules: [path.resolve(process.cwd(), 'src'), 'node_modules'],
+    //     modules: [path.resolve(process.cwd(), 'client'), 'node_modules'],
     // },
     module: {
         rules: [],
@@ -99,7 +99,7 @@ module.exports = {
         new CopyWebpackPlugin([
             {
                 from: path
-                    .join(process.cwd(), '/src/**/*')
+                    .join(process.cwd(), '/client/**/*')
                     .replace(/\\/gi, '/'),
                 to: path
                     .join(process.cwd(), '/dist/server')
