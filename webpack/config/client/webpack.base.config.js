@@ -14,7 +14,6 @@ const WebpackPluginRouter = require('../../definePlugin/webpack-plugin-router');
 const HappyPack = require('happypack');
 const os = require('os');
 const WebpackBar = require('webpackbar');
-const ReactLoadableSSRAddon = require('react-loadable-ssr-addon');
 const { ESBuildPlugin, ESBuildMinifyPlugin } = require('esbuild-loader');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
@@ -308,7 +307,7 @@ module.exports = {
         new WebpackPluginRouter({
             entry: path.join(process.cwd(), '/client'),
             //延迟监听时间
-            aggregateTimeout: 300,
+            aggregateTimeout: 30,
             watch: ['routesConfig.js'],
             output: {
                 routesComponent: '/client/router/routesComponent.js',
@@ -373,9 +372,6 @@ module.exports = {
         }),
         new ReactLoadablePlugin({
             filename: path.join(rootPath, './dist/web/react-loadable.json'),
-        }),
-        new ReactLoadableSSRAddon({
-            filename: path.join(rootPath, './dist/web/assets-manifest.json'),
         }),
     ],
 };

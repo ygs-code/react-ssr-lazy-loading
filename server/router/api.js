@@ -1,5 +1,5 @@
 import koaRouter from 'koa-router';
-import { menu } from '../baseInitState';
+// import { menu } from '../baseInitState';
 export default class Api {
     constructor(app) {
         this.app = app;
@@ -16,7 +16,7 @@ export default class Api {
             ctx.body = JSON.stringify({
                 code: 200,
                 message: '请求成功',
-                data: menu(),
+                // data: menu(),
             });
             await next();
         });

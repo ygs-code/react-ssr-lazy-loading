@@ -6,10 +6,10 @@ export default class Router {
         this.init();
     }
     init() {
-        this.addRouter();
+        this.addRouter(); 
     }
 
     addRouter() {
-        new Api(this.app);
+        // new Api(this.app);
     }
 }
