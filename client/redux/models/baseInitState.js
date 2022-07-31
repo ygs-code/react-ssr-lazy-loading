@@ -9,7 +9,7 @@ const setInitData = ($window, name) => {
     ) {
         initState = $window.__INITIAL_STATE__[name];
     }
-   
+
     return initState;
 };
 export default ($window) => {
@@ -20,16 +20,12 @@ export default ($window) => {
         },
         reducers: {
             setInitState(state, newState) {
-                console.log('newState=', newState);
-
                 return {
                     ...state,
                     ...newState,
                 };
             },
             setMenuActive(state, newState) {
-                console.log('newState=', newState);
-
                 return {
                     ...state,
                     ...newState,
@@ -49,14 +45,16 @@ export default ($window) => {
         // },
         effects: (dispatch) => {
             return {
-                async getMenuAsync(num1, rootState, num2) {
+                async getWeatherAsync(num1, rootState, num2) {
                     return await axios
-                        .get('http://localhost:3002/api/menu')
+                        .get(
+                            'https://restapi.amap.com/v3/weather/weatherInfo?key=2d935fc56c5f9ab2ef2165822cedff56&city=440300&extensions=all'
+                        )
                         .then((res) => {
-                            const {code, data: {data} = {}} = res;
-                            console.log('data==', data);
+                            const { code, data = {} } = res;
+
                             dispatch.baseInitState.setInitState({
-                                menu: data,
+                                weather: data.forecasts[0],
                             });
                             return data;
                         })

@@ -26,8 +26,10 @@ import {
 } from './regular';
 import {setInitData} from './setInitData';
 import {getEv} from './getEv';
+import {getBaseInitState} from './getBaseInitState';
 
 export {
+    getBaseInitState,
     // FloatingBall, // 浮动球 类
     throttle, // 节流函数
     stabilization, // 防抖函数

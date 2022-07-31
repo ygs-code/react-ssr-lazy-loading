@@ -4,9 +4,9 @@ import {
     Router as BrowserRouter,
     Switch as Routes,
     Route,
+    withRouter,
 } from 'react-router-dom';
 import InitState from '@/component/InitState';
-
 import routesConfig from './routesComponent';
 import PropTypes from 'prop-types';
 const Routers = (props) => {

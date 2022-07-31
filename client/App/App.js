@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Provider} from 'react-redux';
 import Routers from '@/router';
-// import './App.less';
-// import '@/assets/css/base.less';
-// import 'bootstrap/dist/css/bootstrap.css';  
+import './App.less';
+import '@/assets/css/base.less';
+import 'bootstrap/dist/css/bootstrap.css';  
 const App = (props) => {
     const {history, location, store} = props;
 

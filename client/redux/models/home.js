@@ -1,4 +1,4 @@
-import {setInitData} from '@/utils';
+import { setInitData } from '@/utils';
 export default ($window) => {
     return {
         state: {
@@ -14,8 +14,6 @@ export default ($window) => {
             },
 
             setInitState(state, newState) {
-                // console.log('newState=', newState);
-
                 return {
                     ...state,
                     ...newState,

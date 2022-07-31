@@ -164,6 +164,7 @@ const Loadable${this.firstToUpper(name)} = loadable({
             routesComponentConfig: '',
             loadableComponent: '',
             importRoutesConfigCode: '',
+            exportRoutesConfigCode: '',
             routePaths: '',
             compilationErrors: [],
         };
@@ -178,6 +179,8 @@ const Loadable${this.firstToUpper(name)} = loadable({
                 })
                 .join('');
             fileName = fileName.replace(/\.js$/g, '');
+            code.exportRoutesConfigCode += `
+  ...${fileName},`;
             code.importRoutesConfigCode += `import ${fileName} from '@/${path}';\n`;
 
             const { routesComponentConfig, loadableComponent, routePaths } =
@@ -203,6 +206,7 @@ const Loadable${this.firstToUpper(name)} = loadable({
             importRoutesConfigCode = '',
             routePaths = '',
             compilationErrors = [],
+            exportRoutesConfigCode = '',
         } = this.getDynamicCode(routesConfigs, compilation);
 
         let routesComponentFile = `
@@ -225,6 +229,9 @@ let routesComponentConfig=[`;
     ]`;
 
         routesComponentFile += `
+
+export const routesConfigs = [${exportRoutesConfigCode}
+];     
 
 export default routesComponentConfig;
         `;

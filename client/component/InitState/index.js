@@ -1,19 +1,18 @@
-import React, {useEffect, useCallback} from 'react';
-import routesComponent from '@/router/routesComponent';
-import routesConfig from '@/router/routesConfig';
-import {matchPath} from 'react-router-dom';
-import {mapRedux} from '@/redux';
-import {findTreeData} from '@/utils';
+import React, { useEffect, useCallback } from 'react';
+import routesComponent, { routesConfigs } from '@/router/routesComponent';
+import { matchPath } from 'react-router-dom';
+import { mapRedux } from '@/redux';
+import { findTreeData, getBaseInitState } from '@/utils';
 
 // 注入initState
 const InitState = (props) => {
     const {
         children = () => {},
-        history: {location: {pathname} = {}} = {},
+        history: { location: { pathname } = {} } = {},
         state = {},
         dispatch,
     } = props;
-    const {baseInitState = {}} = state;
+    const { baseInitState = {} } = state;
 
     const getMatch = useCallback((routesArray, url) => {
         for (let router of routesArray) {
@@ -32,32 +31,12 @@ const InitState = (props) => {
     }, []);
 
     // 获取组件初始化数据
-    const findInitData = useCallback((routesConfig, value, key) => {
-        return (findTreeData(routesConfig, value, key) || {}).initState;
-    }, []);
-
-    // 这种方式需要前后命名一致才行能做到这样效果
-    const getBaseInitState = useCallback(async () => {
-        let dispatchBaseInitState = dispatch.baseInitState;
-        // 函数命名必须是这样
-        var reg = /(?<=^get)(.+?)(?=Async$)/g;
-        // let reg1 = /Async$/g;
-        for (let key in dispatchBaseInitState) {
-            let dataKey = key.match(reg);
-            if (dataKey) {
-                dataKey =
-                    dataKey[0].substr(0, 1).toLocaleLowerCase() +
-                    dataKey[0].substr(1);
-                if (baseInitState[dataKey]) {
-                    return false;
-                }
-                dispatchBaseInitState.getMenuAsync();
-            }
-        }
+    const findInitData = useCallback((routesConfigs, value, key) => {
+        return (findTreeData(routesConfigs, value, key) || {}).initState;
     }, []);
 
     const getInitState = useCallback(async () => {
-        let {name} = getMatch(routesComponent, pathname);
+        let { name } = getMatch(routesComponent, pathname);
         if (
             state[name]?.initState &&
             state[name]?.initState instanceof Object &&
@@ -65,7 +44,7 @@ const InitState = (props) => {
         ) {
             return false;
         }
-        let initStateFn = findInitData(routesConfig, name, 'name');
+        let initStateFn = findInitData(routesConfigs, name, 'name');
         if (initStateFn && initStateFn instanceof Function) {
             let data = await initStateFn();
             dispatch[name].setInitState({
@@ -75,7 +54,7 @@ const InitState = (props) => {
     }, []);
 
     useEffect(() => {
-        getBaseInitState();
+        getBaseInitState(dispatch, state);
         getInitState();
     }, []);
     return <> {children(props)}</>;

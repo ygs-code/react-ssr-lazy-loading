@@ -20,18 +20,22 @@ import {
     CardSubtitle,
     CardText,
 } from 'reactstrap';
-// import './index.less';
+import './index.less';
 import Nav from '@/component/Nav';
-
+import Head from '@/component/Head';
+import LazyLoadingImg from '@/component/LazyLoadingImg';
+import routesComponent, { routesConfigs } from '@/router/routesComponent';
+import { findTreeData } from '@/utils';
 // 权限跳转登录页面可以在这控制
 const Index = (props) => {
-    const [data, setData] = useState([]);
+    let [page, setPage] = useState(1);
+    let [loading, setLoading] = useState(false);
 
     const {
-        dispatch: { home: { setCount = () => {} } = {} } = {},
+        dispatch: { home: { setInitState = () => {} } = {} } = {},
         state: { home: { count, initState: { list = [] } = {} } = {} } = {},
     } = props;
-    //  123123;
+
     useEffect(() => {
         console.log(
             'window.__INITIAL_STATE__=',
@@ -39,45 +43,45 @@ const Index = (props) => {
         );
     }, []);
 
+    // 获取组件初始化数据
+    const findInitData = useCallback((routesConfigs, value, key) => {
+        return (findTreeData(routesConfigs, value, key) || {}).initState;
+    }, []);
+
+    const getImages = useCallback(async () => {
+        if (loading) {
+            return false;
+        }
+        setLoading(true);
+        page += 1;
+        let initStateFn = findInitData(routesConfigs, 'home', 'name');
+        setPage(page);
+        let data = await initStateFn({
+            page,
+            size: 10,
+        });
+        const { total, list: resList = [] } = data;
+        setInitState({
+            initState: {
+                total,
+                list: list.concat(resList),
+            },
+        });
+        setLoading(false);
+    }, [page, list, loading]);
+
     return (
         <div className="home">
-            <Nav {...props} />
-            {/*
-            <div className="home">
-                <Link to={`/user/123`}>跳转到用户页面</Link>
-            </div>
-            <div>
-                <Button
-                    onClick={() => {
-                        setCount(count + 1);
+            <Head />
+            <Nav />
+            <div className="center-box">
+                <LazyLoadingImg
+                    list={list}
+                    callback={(data) => {
+                        getImages();
                     }}
-                >
-                    点击count++
-                </Button>
-                count : {count}
+                />
             </div>
-        */}
-            <CardGroup className="card-group-box">
-                {list.map((item, index) => {
-                    const { id, title, type, url, scenery } = item;
-                    return (
-                        <Card key={id} className="card-box">
-                            <CardImg alt={title} src={url} top width="100%" />
-                            <CardBody>
-                                <CardTitle tag="h5">{scenery}</CardTitle>
-                                <CardSubtitle
-                                    className="mb-2 text-muted"
-                                    tag="h6"
-                                ></CardSubtitle>
-                                <CardText>{title}</CardText>
-                            </CardBody>
-                        </Card>
-                    );
-                })}
-            </CardGroup>
-            {/*
-        <div onClick={() => {}}>跳转到DiscountCoupon页面</div>
-        */}
         </div>
     );
 };

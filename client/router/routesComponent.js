@@ -62,5 +62,10 @@ let routesComponentConfig=[
                    },
     ]
 
+export const routesConfigs = [
+  ...pagesMarketingRouterRoutesconfig,
+  ...routerRoutesconfig,
+];     
+
 export default routesComponentConfig;
         

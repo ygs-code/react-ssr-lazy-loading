@@ -17,6 +17,14 @@ const getEv = () => {
                     COMPILER_ENV,
                     htmlWebpackPluginOptions,
                 } = process.env;
+
+                $GLOBAL_VARIABLE = {
+                    NODE_ENV, // 环境参数
+                    WEB_ENV, // 环境参数
+                    target, // 环境参数
+                    COMPILER_ENV,
+                    htmlWebpackPluginOptions,
+                };
             }
         } catch (error) {}
     }

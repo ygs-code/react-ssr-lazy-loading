@@ -1,4 +1,4 @@
-import {dispatch, getState} from '@rematch/core';
+import { dispatch, getState } from '@rematch/core';
 import axios from 'axios';
 
 // 路由配置
@@ -8,12 +8,29 @@ export default [
         exact: true,
         name: 'home',
         entry: `/pages/Home/index.js`,
-        initState: async () => {
+        initState: async (parameter = {}) => {
+            const { page = 1, size = 10 } = parameter;
+
+            // https://api.apiopen.top/api/getHaoKanVideo?page=2&size=10
+
             return await axios
-                .get('https://api.apiopen.top/api/getImages?page=0&size=10')
+                .get(
+                    ` https://api.apiopen.top/api/getHaoKanVideo?page=${page}&size=${size}`
+                )
                 .then((res) => {
-                    const {code, data: {result = {}} = {}} = res;
-                    return  result;
+                    const {
+                        code,
+                        data: { result: { list = [], total } = {} } = {},
+                    } = res;
+                    return {
+                        list: list.map((item) => {
+                            return {
+                                ...item,
+                                url: item.userPic,
+                            };
+                        }),
+                        total,
+                    };
                 })
                 .catch((err) => {
                     console.log('Error: ', err.message);

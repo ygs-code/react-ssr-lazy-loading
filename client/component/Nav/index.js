@@ -1,58 +1,60 @@
-import React, {Component, useMemo} from 'react';
-import {Nav, NavItem, NavLink} from 'reactstrap';
-import {Link} from 'react-router-dom';
+import React, { Component, useMemo } from 'react';
+import { Nav, NavItem, NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import './index.less';
+import { withRouter } from 'react-router-dom';
+import { mapRedux } from '@/redux';
+import './index.less';
 
-const Navigation = (props) => {
-
+const Index = (props) => {
     const {
-        history: {push} = {},
-        dispatch: {baseInitState: {setInitState, setMenuActive} = {}} = {},
-        state: {baseInitState: {menu = [], menuActive} = {}} = {},
+        history: { push } = {},
+        dispatch: { baseInitState: { setInitState, setMenuActive } = {} } = {},
+        state: { baseInitState: { menu = [], menuActive } = {} } = {},
+        location: { pathname } = {},
     } = props;
-    // const menu = useMemo(() => {}, []);
+   
     return (
         <div className="navigate-box center-box">
             <Nav fill pills className="navigate">
-                <NavItem>
-                    <NavLink
-                        active
-                        onClick={() => {
-                            setMenuActive('/');
-                            push('/');
-                        }}
-                    >
-                        首页 
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink
-                        onClick={() => {
-                            setMenuActive('/user');
-                            push('/user');
-                        }}
-                    >
-                        用户页面
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink
-                        onClick={() => {
-                            setMenuActive('/marketing/discount-coupon');
-                            push('/marketing/discount-coupon');
-                        }}
-                    >
-                        优惠券
-                    </NavLink>
-                </NavItem>
+                {[
+                    {
+                        title: '首页',
+                        path: '/',
+                    },
+                    {
+                        title: '用户页面',
+                        path: '/user',
+                    },
+                    {
+                        title: '优惠券',
+                        path: '/marketing/discount-coupon',
+                    },
+                ].map((item, key) => {
+                    const { path, title } = item;
+                    return (
+                        <NavItem key={key}>
+                            <NavLink
+                                active={pathname == path}
+                                onClick={() => {
+                                    setMenuActive({
+                                        menuActive: path,
+                                    });
+                                    push(path);
+                                }}
+                            >
+                                {title}
+                            </NavLink>
+                        </NavItem>
+                    );
+                })}
             </Nav>
         </div>
     );
 };
-Navigation.propTypes = {
+Index.propTypes = {
     history: PropTypes.object,
     dispatch: PropTypes.func,
     state: PropTypes.object,
 };
-export default Navigation;
+export default mapRedux()(withRouter(Index));

@@ -13,13 +13,18 @@ let {
     COMPILER_ENV,
 } = getEv(); // 环境参数
 
-console.log('getEv==========',getEv())
+
 
 const CreateApp = (props = {}) => {
     const { modules = [] } = props;
 
     return target === 'ssr' ? (
-        <Capture report={(moduleName) => modules.push(moduleName)}>
+        <Capture
+            report={(moduleName) => {
+                debugger;
+                return modules.push(moduleName);
+            }}
+        >
             <App {...props} />
         </Capture>
     ) : (

@@ -1,4 +1,4 @@
-require('../ignore.js')();
+require('../../ignore.js')();
 import React from 'react';
 import axios from 'axios';
 import { renderToString } from 'react-dom/server';
@@ -7,14 +7,14 @@ import {
     createBrowserHistory,
     createHashHistory,
 } from 'history';
-import { getBundles } from 'react-loadable/webpack';
+// import { getBundles } from 'react-loadable/webpack';
+import { getBundles } from 'react-loadable-ssr-addon';
 import Helmet from 'react-helmet';
 import { matchPath } from 'react-router-dom';
 import createStore from '@/redux';
-import routesComponent from '@/router/routesComponent';
-import routesConfig from '@/router/routesConfig';
-import { findTreeData, getEv } from '@/utils';
-import * as baseInitState from '../baseInitState/index';
+import routesComponent, { routesConfigs } from '@/router/routesComponent';
+import { findTreeData, getEv, getBaseInitState } from '@/utils';
+import otherModules from './otherModules';
 import path, { resolve } from 'path';
 import fs from 'fs';
 const absolutePath = resolve('./');
@@ -37,6 +37,8 @@ const CreateApp = require('@/App').default;
 // 创建 store
 const store = createStore({});
 
+const { dispatch, getState } = store;
+
 // 中间件
 class ClientRouter {
     constructor(ctx, next) {
@@ -51,7 +53,10 @@ class ClientRouter {
         const { ctx, next } = this.context;
         let html = fs.readFileSync(
             path.join(
-                path.join(absolutePath, isCompile ? '/client/public' : 'dist/web'),
+                path.join(
+                    absolutePath,
+                    isCompile ? '/client/public' : 'dist/web'
+                ),
                 'index.html'
             ),
             'utf-8'
@@ -61,23 +66,17 @@ class ClientRouter {
         if (isMatchRoute) {
             let data = null;
             let initState = this.findInitData(
-                routesConfig,
+                routesConfigs,
                 isMatchRoute.name,
                 'name'
             );
-            let baseInitStateData = {};
-            for (let key in baseInitState) {
-                baseInitStateData[key] = await baseInitState[key]();
-            }
 
-            if (Object.keys(baseInitState).length) {
-                store.dispatch['baseInitState'].setInitState(baseInitStateData);
-            }
+            await getBaseInitState(dispatch, getState());
 
             if (initState) {
                 // 拉去请求或者查询sql等操作
                 data = await initState();
-                store.dispatch[isMatchRoute.name].setInitState({
+                dispatch[isMatchRoute.name].setInitState({
                     initState: data,
                 });
             }
@@ -96,8 +95,8 @@ class ClientRouter {
         next();
     }
     // 查找初始化数据
-    findInitData(routesConfig, value, key) {
-        return (findTreeData(routesConfig, value, key) || {}).initState;
+    findInitData(routesConfigs, value, key) {
+        return (findTreeData(routesConfigs, value, key) || {}).initState;
     }
 
     // 创建标签
@@ -106,26 +105,28 @@ class ClientRouter {
             absolutePath,
             '/dist/web/react-loadable.json'
         ));
-        let bundles = getBundles(stats, modules);
-        // if (isCompile) {
-        //     bundles.push({
-        //         file: '/static/js/main.js',
-        //     });
-        // }
+        const assetsManifest = require(path.join(
+            absolutePath,
+            '/dist/web/assets-manifest.json'
+        ));
 
-        let scriptfiles = bundles.filter((bundle) =>
-            bundle.file.endsWith('.js')
-        );
-        let stylefiles = bundles.filter((bundle) =>
-            bundle.file.endsWith('.css')
-        );
-        let scripts = scriptfiles
+        const modulesToBeLoaded = [
+            ...assetsManifest.entrypoints,
+            ...otherModules,
+            ...Array.from(modules),
+        ];
+        let bundles = getBundles(assetsManifest, modulesToBeLoaded);
+        const { css = [], js = [] } = bundles;
+
+
+        let scripts = js
             .map((script) => `<script src="/${script.file}"></script>`)
             .join('\n');
 
-        let styles = stylefiles
+        let styles = css
             .map((style) => `<link href="/${style.file}" rel="stylesheet"/>`)
             .join('\n');
+
         return { scripts, styles };
     }
     // 解析html
