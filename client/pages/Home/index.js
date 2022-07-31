@@ -35,7 +35,7 @@ const Index = (props) => {
         dispatch: { home: { setInitState = () => {} } = {} } = {},
         state: { home: { count, initState: { list = [] } = {} } = {} } = {},
     } = props;
-    console.log('home===',props)
+
     useEffect(() => {
         console.log(
             'window.__INITIAL_STATE__=',

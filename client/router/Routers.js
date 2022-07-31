@@ -6,7 +6,7 @@ import {
     Route,
     withRouter,
 } from 'react-router-dom';
-import initState from './initState';
+import initComponentState from '@/redux/initComponentState';
 import addRouterApi from './addRouterApi';
 import routesConfig from './routesComponent';
 import PropTypes from 'prop-types';
@@ -22,7 +22,9 @@ const Routers = (props) => {
                             key={path}
                             exact={exact}
                             path={path}
-                            component={initState(addRouterApi(Component))}
+                            component={initComponentState(
+                                addRouterApi(Component)
+                            )}
                             // render={(props) => {
                             //     return (
                             //         <InitState {...props}>
