@@ -226,7 +226,7 @@ module.exports = {
             chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
         }),
 
-        new CleanWebpackPlugin(['./dist/server', './dist/web'], {
+        new CleanWebpackPlugin(['./dist/server', './dist/client'], {
             root: rootPath,
         }),
 
@@ -237,7 +237,7 @@ module.exports = {
         //             .join(process.cwd(), '/client/static/**/*')
         //             .replace(/\\/gi, '/'),
         //         to: path
-        //             .join(process.cwd(), '/dist/web/static')
+        //             .join(process.cwd(), '/dist/client/static')
         //             .replace(/\\/gi, '/')
         //     },
         // ]),
@@ -257,7 +257,7 @@ module.exports = {
         // new ReactLoadablePlugin({
         //     filename: path.join(
         //         process.cwd(),
-        //         '/dist/web/react-loadable.json'
+        //         '/dist/client/react-loadable.json'
         //     ),
         // }),
     ],

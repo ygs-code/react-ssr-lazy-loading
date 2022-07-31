@@ -30,7 +30,7 @@ export default class Middleware {
 
     addStaticCacheMiddleware() {
         this.app.use(
-            staticCache(resolve(resolve('./'), '/dist/web'), {
+            staticCache(path.join(resolve('./'), '/dist/client'), {
                 maxAge: 365 * 24 * 60 * 60,
                 gzip: true,
             })

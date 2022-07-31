@@ -60,7 +60,7 @@ module.exports = {
         chunkFilename: '[name][contenthash].js',
 
         // filename: 'static/[name].[hash:8].js',
-        // path: path.resolve(process.cwd(), './dist/web'),
+        // path: path.resolve(process.cwd(), './dist/client'),
         // publicPath: '/',
         // chunkFilename: 'static/[name]-[hash:8].js',
         // libraryTarget: isServer?'commonjs2':'umd',

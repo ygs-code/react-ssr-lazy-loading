@@ -55,7 +55,7 @@ class ClientRouter {
             path.join(
                 path.join(
                     absolutePath,
-                    isCompile ? '/client/public' : 'dist/web'
+                    isCompile ? '/client/public' : 'dist/client'
                 ),
                 'index.html'
             ),
@@ -103,11 +103,11 @@ class ClientRouter {
     createTags(modules) {
         const stats = require(path.join(
             absolutePath,
-            '/dist/web/react-loadable.json'
+            '/dist/client/react-loadable.json'
         ));
         const assetsManifest = require(path.join(
             absolutePath,
-            '/dist/web/assets-manifest.json'
+            '/dist/client/assets-manifest.json'
         ));
 
         const modulesToBeLoaded = [

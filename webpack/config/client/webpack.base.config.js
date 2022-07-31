@@ -85,7 +85,7 @@ module.exports = {
     },
     output: {
         filename: `static/js/[name].[hash:8].js`,
-        path: path.join(process.cwd(), './dist/web'),
+        path: path.join(process.cwd(), './dist/client'),
         publicPath: '/',
         chunkFilename: `static/js/[name]-[hash:8].js`,
         // libraryTarget: isServer?'commonjs2':'umd',
@@ -372,10 +372,10 @@ module.exports = {
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         }),
         new ReactLoadablePlugin({
-            filename: path.join(rootPath, './dist/web/react-loadable.json'),
+            filename: path.join(rootPath, './dist/client/react-loadable.json'),
         }),
         new ReactLoadableSSRAddon({
-            filename: path.join(rootPath, './dist/web/assets-manifest.json'),
+            filename: path.join(rootPath, './dist/client/assets-manifest.json'),
         }),
     ],
 };

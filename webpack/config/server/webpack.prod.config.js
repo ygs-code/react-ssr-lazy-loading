@@ -224,7 +224,7 @@ module.exports = {
         // new CopyWebpackPlugin([
         //     { from: 'favicon.ico', to: rootPath + './dist' },
         // ]),
-        // new CleanWebpackPlugin(['./dist/server', './dist/web'], {
+        // new CleanWebpackPlugin(['./dist/server', './dist/client'], {
         //     root: rootPath,
         // }),
         new webpack.DefinePlugin({
@@ -242,7 +242,7 @@ module.exports = {
         // new ReactLoadablePlugin({
         //     filename: path.join(
         //         process.cwd(),
-        //         './dist/web/react-loadable.json'
+        //         './dist/client/react-loadable.json'
         //     ),
         // }),
     ],
