@@ -20,12 +20,12 @@ import {
     CardSubtitle,
     CardText,
 } from 'reactstrap';
-import './index.less';
 import Nav from '@/component/Nav';
 import Head from '@/component/Head';
 import LazyLoadingImg from '@/component/LazyLoadingImg';
 import routesComponent, { routesConfigs } from '@/router/routesComponent';
 import { findTreeData } from '@/utils';
+import './index.less';
 // 权限跳转登录页面可以在这控制
 const Index = (props) => {
     let [page, setPage] = useState(1);
@@ -35,7 +35,7 @@ const Index = (props) => {
         dispatch: { home: { setInitState = () => {} } = {} } = {},
         state: { home: { count, initState: { list = [] } = {} } = {} } = {},
     } = props;
-
+    console.log('home===',props)
     useEffect(() => {
         console.log(
             'window.__INITIAL_STATE__=',

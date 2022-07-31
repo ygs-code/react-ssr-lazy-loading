@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, Children} from 'react';
+import React, { Suspense, lazy, Children } from 'react';
 import {
     Router,
     Router as BrowserRouter,
@@ -6,31 +6,34 @@ import {
     Route,
     withRouter,
 } from 'react-router-dom';
-import InitState from '@/component/InitState';
+import initState from './initState';
+import addRouterApi from './addRouterApi';
 import routesConfig from './routesComponent';
 import PropTypes from 'prop-types';
 const Routers = (props) => {
-    const {history, context} = props;
+    const { history, context } = props;
     return (
         <Router history={history} context={context}>
             <Routes>
                 {routesConfig.map((route) => {
-                    const {path, exact, Component} = route;
+                    const { path, exact, Component } = route;
                     return (
                         <Route
                             key={path}
                             exact={exact}
                             path={path}
-                            // component={Component}
-                            render={(props) => {
-                                return (
-                                    <InitState {...props}>
-                                        {(props) => {
-                                            return <Component {...props} />;
-                                        }}
-                                    </InitState>
-                                );
-                            }}
+                            component={initState(addRouterApi(Component))}
+                            // render={(props) => {
+                            //     return (
+                            //         <InitState {...props}>
+                            //             {(props) => {
+                            //                 // const AddRouterApi =
+                            //                 //     addRouterApi(Component);
+                            //                 return <Component {...props} />;
+                            //             }}
+                            //         </InitState>
+                            //     );
+                            // }}
                             // loader={async () => {
                             //     console.log('loader================loader');
                             // }}
@@ -40,7 +43,7 @@ const Routers = (props) => {
                 <Route
                     path="*"
                     element={
-                        <div style={{padding: '1rem'}}>
+                        <div style={{ padding: '1rem' }}>
                             <p>{'There s nothing here!'}</p>
                         </div>
                     }

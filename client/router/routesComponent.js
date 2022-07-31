@@ -2,7 +2,6 @@
 // 按需加载插件
 import loadable from 'react-loadable';
 import Loading from '@/component/Loading';
-import RouterAddApi from '@/router/RouterAddApi';
 import React, { useEffect } from 'react';
 import pagesMarketingRouterRoutesconfig from '@/pages/marketing/router/routesConfig.js';
 import routerRoutesconfig from '@/router/routesConfig.js';
@@ -34,7 +33,8 @@ let routesComponentConfig=[
                      name:'DiscountCoupon',
                      entry:'/pages/marketing/pages/DiscountCoupon/index.js',
                      Component:LoadableDiscountcoupon,
-                     level:2
+                     level:2,
+                     routesConfigPath:'K:/react-loading-ssr/client/pages/marketing/router/routesConfig.js'
                    },
                     {  
                      path: '/marketing',
@@ -42,7 +42,8 @@ let routesComponentConfig=[
                      name:'marketing',
                      entry:'/pages/marketing/index.js',
                      Component:LoadableMarketing,
-                     level:2
+                     level:2,
+                     routesConfigPath:'K:/react-loading-ssr/client/pages/marketing/router/routesConfig.js'
                    },
                     {  
                      path: '/',
@@ -50,7 +51,8 @@ let routesComponentConfig=[
                      name:'home',
                      entry:'/pages/Home/index.js',
                      Component:LoadableHome,
-                     level:1
+                     level:1,
+                     routesConfigPath:'K:/react-loading-ssr/client/router/routesConfig.js'
                    },
                     {  
                      path: '/user',
@@ -58,7 +60,8 @@ let routesComponentConfig=[
                      name:'user',
                      entry:'/pages/User/index.js',
                      Component:LoadableUser,
-                     level:1
+                     level:1,
+                     routesConfigPath:'K:/react-loading-ssr/client/router/routesConfig.js'
                    },
     ]
 

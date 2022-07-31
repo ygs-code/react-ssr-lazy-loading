@@ -21,7 +21,6 @@ const CreateApp = (props = {}) => {
     return target === 'ssr' ? (
         <Capture
             report={(moduleName) => {
-                debugger;
                 return modules.push(moduleName);
             }}
         >

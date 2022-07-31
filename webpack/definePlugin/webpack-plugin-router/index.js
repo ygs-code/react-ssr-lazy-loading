@@ -141,18 +141,12 @@ const Loadable${this.firstToUpper(name)} = loadable({
                      name:'${name}',
                      entry:'${entry}',
                      Component:Loadable${this.firstToUpper(name)},
-                     level:${level}
+                     level:${level},
+                     routesConfigPath:'${routesConfigPath}'
                    },`;
 
             code.routePaths = `${code.routePaths || ''}
-                   {  
-                    path:'${path}',
-                    exact:${exact ? true : false},
-                    name:'${name}',
-                    entry:'${entry}',
-                    routesConfigPath:'${routesConfigPath}',
-                    level:${level}
-                  },`;
+  ${name}:'${path}',`;
         }
         return code;
     }
@@ -213,7 +207,6 @@ const Loadable${this.firstToUpper(name)} = loadable({
 // 按需加载插件
 import loadable from 'react-loadable';
 import Loading from '@/component/Loading';
-import RouterAddApi from '@/router/RouterAddApi';
 import React, { useEffect } from 'react';
 `;
 
@@ -236,8 +229,9 @@ export const routesConfigs = [${exportRoutesConfigCode}
 export default routesComponentConfig;
         `;
 
-        let routePathsFile = `export default [${routePaths}
-    ]`;
+        let routePathsFile = `export default {${routePaths}
+ }
+    `;
         return {
             routesComponentFile,
             routePathsFile,

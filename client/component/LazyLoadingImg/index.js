@@ -61,7 +61,6 @@ const Index = (props) => {
             const Img = new Image();
             Img.src = url;
             Img.onerror = (error) => {
-                console.log('error======', error);
                 addData(item);
                 lazyLoadingList.shift();
                 setLazyLoadingList([...lazyLoadingList]);
@@ -109,15 +108,6 @@ const Index = (props) => {
                 windowHeight,
                 scrollHeight,
             });
-            //考虑到滚动的位置一般可能会大于一点可滚动的高度，所以这里不能用等于
-            // console.log(
-            //     '距顶部' +
-            //         scrollTop +
-            //         '可视区高度' +
-            //         windowHeight +
-            //         '滚动条总高度' +
-            //         scrollHeight
-            // );
         }
     });
 

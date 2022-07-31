@@ -1,34 +1,7 @@
-export default [
-                   {  
-                    path:'/marketing/discount-coupon',
-                    exact:false,
-                    name:'DiscountCoupon',
-                    entry:'/pages/marketing/pages/DiscountCoupon/index.js',
-                    routesConfigPath:'K:/react-loading-ssr/client/pages/marketing/router/routesConfig.js',
-                    level:2
-                  },
-                   {  
-                    path:'/marketing',
-                    exact:true,
-                    name:'marketing',
-                    entry:'/pages/marketing/index.js',
-                    routesConfigPath:'K:/react-loading-ssr/client/pages/marketing/router/routesConfig.js',
-                    level:2
-                  },
-                   {  
-                    path:'/',
-                    exact:true,
-                    name:'home',
-                    entry:'/pages/Home/index.js',
-                    routesConfigPath:'K:/react-loading-ssr/client/router/routesConfig.js',
-                    level:1
-                  },
-                   {  
-                    path:'/user',
-                    exact:false,
-                    name:'user',
-                    entry:'/pages/User/index.js',
-                    routesConfigPath:'K:/react-loading-ssr/client/router/routesConfig.js',
-                    level:1
-                  },
-    ]
+export default {
+  DiscountCoupon:'/marketing/discount-coupon',
+  marketing:'/marketing',
+  home:'/',
+  user:'/user',
+ }
+    
