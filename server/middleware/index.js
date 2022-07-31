@@ -1,7 +1,7 @@
 import staticCache from 'koa-static-cache';
 import cors from 'koa2-cors';
 // import { getEv } from '@/utils';
-import path from 'path';
+import path, { resolve } from 'path';
 
 let {
     NODE_ENV, // 环境参数
@@ -30,7 +30,7 @@ export default class Middleware {
 
     addStaticCacheMiddleware() {
         this.app.use(
-            staticCache(path.resolve(__dirname, '../../../web'), {
+            staticCache(resolve(resolve('./'), '/dist/web'), {
                 maxAge: 365 * 24 * 60 * 60,
                 gzip: true,
             })
