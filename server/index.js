@@ -1,50 +1,24 @@
-require('./ignore.js')();
-import Loadable from 'react-loadable';
-import Koa from 'koa';
-import Router from './router';
-import Middleware from './middleware';
-// import { getEv } from '@/utils';
+/*
+ * @Date: 2022-08-01 17:17:17
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-01 17:29:54
+ * @FilePath: /react-loading-ssr/server/index.js
+ * @Description:
+ */
+import cluster from 'cluster'
+import App from './app'
 
-let {
-    NODE_ENV, // 环境参数
-    WEB_ENV, // 环境参数
-    target, // 环境参数
-    htmlWebpackPluginOptions = '',
-} = process.env; // 环境参数
-
-//    是否是生产环境
-const isEnvProduction = NODE_ENV === 'production';
-//   是否是测试开发环境
-const isEnvDevelopment = NODE_ENV === 'development';
-
-const port = process.env.port || 3002;
-
-class App {
-    constructor() {
-        this.init();
-    }
-    init() {
-        this.app = new Koa();
-        this.addRouter();
-        this.addMiddleware();
-        this.listen();
-    }
-    addRouter() {
-        new Router(this.app);
-    }
-    addMiddleware() {
-        new Middleware(this.app);
-    }
-    listen() {
-        Loadable.preloadAll().then(() => {
-            const server = this.app.listen(port, function () {
-                var port = server.address().port;
-                console.log(
-                    `\n==> 🌎  node服务器启动成功，监听端口：${port}. 请打开浏览器 http://localhost:${port}/ \n`
-                );
-            });
-        });
-    }
+// 开启的子进程数
+const workerNum = 3
+// 如果是主进程
+if (cluster.isMaster) {
+  // 创建子进程
+  for (let i = 0; i < workerNum; i++) {
+    // 通过cluster.fork创建子进程
+    cluster.fork()
+  }
+  // 如果有子进程，就启动相关服务,这里会使用三个进程来执行http服务演示
+} else {
+  new App()
 }
-
-export default new App();
