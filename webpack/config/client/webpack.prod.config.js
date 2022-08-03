@@ -178,7 +178,7 @@ module.exports = {
                                   .join(process.cwd(), '/server/**/*')
                                   .replace(/\\/gi, '/'),
                               to: path
-                                  .join(process.cwd(), '/dist/server')
+                                  .join(process.cwd(), '/dist/server/server')
                                   .replace(/\\/gi, '/'),
                               transform(content, absoluteFrom) {
                                   // let reg = /.jsx|.js$/g;
@@ -194,7 +194,7 @@ module.exports = {
                                   .join(process.cwd(), '/client/**/*')
                                   .replace(/\\/gi, '/'),
                               to: path
-                                  .join(process.cwd(), '/dist/server')
+                                  .join(process.cwd(), '/dist/server/client')
                                   .replace(/\\/gi, '/'),
                               transform(content, absoluteFrom) {
                                   return content;

@@ -7,7 +7,7 @@
  * @Description:
  */
 const ora = require('ora');
-const { copyFile, watchFile } = require('../../utils/index');
+const { copyFile, watchFile, readWriteFiles } = require('../../utils/index');
 const ResolveAlias = require('../webpack-plugin-resolve-alias');
 
 class WebpackPluginCopyFile {
@@ -59,17 +59,34 @@ class WebpackPluginCopyFile {
             spinner.start();
             for (let item of this.paths) {
                 const { from, to, transform = (data) => data } = item;
-                copyFile(from, to, (content, absoluteFrom) => {
-                    if (this.ResolveAlias) {
-                        let reg = /.jsx|.js$/g;
-                        if (reg.test(absoluteFrom)) {
-                            content = this.ResolveAlias.alias(
-                                content.toString()
-                            );
+
+                readWriteFiles({
+                    from,
+                    to,
+                    transform: (content, path) => {
+                        if (this.ResolveAlias) {
+                            let reg = /.jsx|.js$/g;
+                            if (reg.test(path)) {
+                                content = this.ResolveAlias.alias(
+                                    content.toString()
+                                );
+                            }
                         }
-                    }
-                    return transform(content, absoluteFrom);
+                        return transform(content, path);
+                    },
                 });
+
+                // copyFile(from, to, (content, absoluteFrom) => {
+                //     if (this.ResolveAlias) {
+                //         let reg = /.jsx|.js$/g;
+                //         if (reg.test(absoluteFrom)) {
+                //             content = this.ResolveAlias.alias(
+                //                 content.toString()
+                //             );
+                //         }
+                //     }
+                //     return transform(content, absoluteFrom);
+                // });
             }
             spinner.stop();
         });

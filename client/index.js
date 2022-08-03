@@ -6,8 +6,7 @@ import Loadable from 'react-loadable';
 import { getHistory } from '@/router/history';
 import createStore from '@/redux';
 
-const store = createStore(window);
- 
+const store = createStore(window); 
 
 let renderComponent = module.hot ? render : hydrate;
 const renderApp = () => {
