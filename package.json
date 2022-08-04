@@ -18,7 +18,8 @@
     "webpack-plugin-copy-file": "node  ./webpack/definePlugin/webpack-plugin-copy-file/index.js",
     "//注释10": "eslint校验",
     "eslint": "eslint ./src&&eslint ./server",
-    "watchFile": "node  ./webpack/utils/watchFile.js"
+    "watchFile": "node  ./webpack/utils/watchFile.js",
+    "test": "webpack    --progress  --config   ./test/webpack.js"
   },
   "author": "",
   "license": "ISC",
