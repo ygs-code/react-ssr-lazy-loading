@@ -39,7 +39,7 @@ class App {
     Loadable.preloadAll().then(() => {
       const server = this.app.listen(port, function () {
         var port = server.address().port
-        console.log(
+        console.log( 
           `\n==> 🌎  node服务器启动成功，监听端口：${port}. 请打开浏览器 http://localhost:${port}/ \n`,
         )
       })

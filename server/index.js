@@ -2,7 +2,7 @@
  * @Date: 2022-08-01 17:17:17
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-01 17:29:54
+ * @LastEditTime: 2022-08-04 09:23:55
  * @FilePath: /react-loading-ssr/server/index.js
  * @Description:
  */
@@ -10,7 +10,7 @@ import cluster from 'cluster'
 import App from './app'
 
 // 开启的子进程数
-const workerNum = 3
+const workerNum = 3 
 // 如果是主进程
 if (cluster.isMaster) {
   // 创建子进程
