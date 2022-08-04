@@ -18,12 +18,12 @@ module.exports = {
   },
   entry: {
     // 妙啊
-   ['../../index']: path.join(__dirname, '/index.js'),
+   index: path.join(__dirname, '/index.js'),
   },
   output: {
     filename: 'static/js/[name].js',
     path: path.join(__dirname, '/dist'),
-    publicPath: '/',
+    publicPath: 'auto',
     chunkFilename: 'static/js/[name].js',
 
     // strictModuleExceptionHandling: !isEnvProduction,

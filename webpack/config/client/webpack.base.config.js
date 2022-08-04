@@ -68,11 +68,13 @@ const cacheLoader = (happypackId) => {
 };
 
 module.exports = {
+    mode:NODE_ENV,
     name: 'client',
     target: 'web',
     entry: {
         client: path.join(process.cwd(), '/client/index.js'),
         vendors: [
+            // '@babel/polyfill',
             'react',
             'react-dom',
             'react-loadable',
@@ -84,10 +86,10 @@ module.exports = {
         ],
     },
     output: {
-        filename: `static/js/[name].[hash:8].js`,
+        filename: `static/js/[name].js`,
         path: path.join(process.cwd(), './dist/client'),
         publicPath: '/',
-        chunkFilename: `static/js/[name]-[hash:8].js`,
+        chunkFilename: `static/js/[name].js`,
         // libraryTarget: isServer?'commonjs2':'umd',
         chunkLoadTimeout: 120000,
         // 「devtool 中模块」的文件名模板 调试webpack的配置问题
@@ -315,28 +317,29 @@ module.exports = {
                 routePaths: '/client/router/routePaths.js',
             },
         }),
-        // 注入全局常量
-        new ExtendedDefinePlugin({
-            GLOBAL_VARIABLE: {
-                // ...process.env,
-                NODE_ENV, // 环境参数
-                WEB_ENV, // 环境参数
-                target, // 环境参数
-                COMPILER_ENV,
+               // 注入全局常量
+               new ExtendedDefinePlugin({
+                GLOBAL_VARIABLE: {
+                    // ...process.env,
+                    NODE_ENV, // 环境参数
+                    WEB_ENV, // 环境参数
+                    target, // 环境参数
+                    COMPILER_ENV,
+                    htmlWebpackPluginOptions,
+                },
+                process: {
+                    // ...process,
+                    env: {
+                        // ...process.env,
+                        NODE_ENV, // 环境参数
+                        WEB_ENV, // 环境参数
+                        target, // 环境参数
+                        COMPILER_ENV,
+                        htmlWebpackPluginOptions,
+                    },
+                },
                 htmlWebpackPluginOptions,
-            },
-            // process: {
-            //     // ...process,
-            //     env: {
-            //         // ...process.env,
-            //         NODE_ENV, // 环境参数
-            //         WEB_ENV, // 环境参数
-            //         target, // 环境参数
-            //         COMPILER_ENV,
-            //     },
-            // },
-            // htmlWebpackPluginOptions,
-        }),
+            }),
 
         ...(isCompileMiddleware
             ? []

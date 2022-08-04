@@ -1,4 +1,4 @@
-require('../../ignore.js')();
+// require('../../ignore.js')();
 import React from 'react';
 import axios from 'axios';
 import { renderToString } from 'react-dom/server';
@@ -98,26 +98,46 @@ class ClientRouter {
     findInitData(routesConfigs, value, key) {
         return (findTreeData(routesConfigs, value, key) || {}).initState;
     }
-
+    // 转换路径
+    transformPath(path) {
+        let reg = /(\\\\)|(\\)/g;
+        return path.replace(reg, '/');
+    }
     // 创建标签
     createTags(modules) {
-        const stats = require(path.join(
-            absolutePath,
-            '/dist/client/react-loadable.json'
-        ));
-        const assetsManifest = require(path.join(
-            absolutePath,
-            '/dist/client/assets-manifest.json'
-        ));
+        // const stats = require(path.join(
+        //     absolutePath,
+        //     '/dist/client/react-loadable.json'
+        // ));
+
+        // console.log(
+        //     'path=',
+        //     this.transformPath(
+        //         path.join(absolutePath, '/dist/client/assets-manifest.json')
+        //     )
+        // );
+        // const assetsManifest = require(this.transformPath(
+        //     path.join(absolutePath, '/dist/client/assets-manifest.json')
+        // ));
 
         const modulesToBeLoaded = [
-            ...assetsManifest.entrypoints,
+            // ...assetsManifest.entrypoints,
             ...otherModules,
             ...Array.from(modules),
         ];
-        let bundles = getBundles(assetsManifest, modulesToBeLoaded);
-        const { css = [], js = [] } = bundles;
 
+        let bundles = {}; //getBundles(assetsManifest, modulesToBeLoaded);
+        const {
+            css = [],
+            js = [
+                {
+                    file: './static/js/client.js',
+                },
+                {
+                    file: './static/js/vendors.js',
+                },
+            ],
+        } = bundles;
 
         let scripts = js
             .map((script) => `<script src="/${script.file}"></script>`)
@@ -195,12 +215,19 @@ class ClientRouter {
             styles,
             initState,
         });
-
+        console.log('renderedHtml=====', renderedHtml);
         return renderedHtml;
     }
 }
 
-export const serverRenderer = ({ clientStats, serverStats, foo } = {}) => {
+export const serverRenderer = ({
+    clientStats,
+    serverStats,
+    foo,
+    compiler,
+} = {}) => {
+    // console.log('clientStats============',clientStats)
+    console.log('compiler============', compiler);
     return async (ctx, next) => {
         await new Promise((reslove, reject) => {
             new ClientRouter(ctx, reslove);

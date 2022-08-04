@@ -67,6 +67,7 @@ const cacheLoader = (happypackId) => {
 };
 
 module.exports = {
+    mode:NODE_ENV,
     name: 'server',
     target: 'node',
     node: {
@@ -74,7 +75,17 @@ module.exports = {
         __dirname: true,
         global: false,
     },
-    entry: path.join(process.cwd(), '/server/middleware/clientRouter.js'),
+    entry: {
+        main: [
+            // '@babel/polyfill',
+            // "core-js/stable",
+            // "regenerator-runtime/runtime",
+            path.join(
+                process.cwd(),
+                '/server/middleware/clientRouter/index.js'
+            ),
+        ],
+    },
     // entry: {
     //     serverRenderer: path.join(
     //         process.cwd(),
@@ -92,10 +103,10 @@ module.exports = {
     //     // ],
     // },
     output: {
-        filename: 'static/js/[name].js',
+        filename: '[name].js',
         path: path.join(process.cwd(), './dist/server'),
         publicPath: '/',
-        chunkFilename: 'static/js/[name].js',
+        chunkFilename: '[name].js',
         // libraryTarget: isServer?'commonjs2':'umd',
         chunkLoadTimeout: 120000,
         // 「devtool 中模块」的文件名模板 调试webpack的配置问题
@@ -346,19 +357,20 @@ module.exports = {
                 WEB_ENV, // 环境参数
                 target, // 环境参数
                 COMPILER_ENV,
-                htmlWebpackPluginOptions
+                htmlWebpackPluginOptions,
             },
-            // process: {
-            //     // ...process,
-            //     env: {
-            //         // ...process.env,
-            //         NODE_ENV, // 环境参数
-            //         WEB_ENV, // 环境参数
-            //         target, // 环境参数
-            //         COMPILER_ENV,
-            //     },
-            // },
-            // htmlWebpackPluginOptions,
+            process: {
+                // ...process,
+                env: {
+                    // ...process.env,
+                    NODE_ENV, // 环境参数
+                    WEB_ENV, // 环境参数
+                    target, // 环境参数
+                    COMPILER_ENV,
+                    htmlWebpackPluginOptions,
+                },
+            },
+            htmlWebpackPluginOptions,
         }),
         // // html静态页面
         // new HtmlWebpackPlugin({

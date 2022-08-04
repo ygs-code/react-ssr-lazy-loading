@@ -3,8 +3,8 @@ import Nav from '@/component/Nav';
 import Head from '@/component/Head';
 import Table from '@/component/Table';
 import { mapRedux } from '@/redux';
-import './index.less';
-const Index = (props) => {
+// import './index.less';
+const Index = (props={}) => {
     useEffect(() => {}, []);
 
     return (

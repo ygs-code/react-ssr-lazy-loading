@@ -50,15 +50,37 @@ class WebpackHot {
                 createHandler: webpackHotServerMiddleware.createKoaHandler,
                 serverRendererOptions: {
                     foo: 'Bar',
+                    compiler:_this.compiler
                 },
             })
         );
     }
+    // // 做兼容
+    hook(compiler, hookName, pluginName, fn) {
+        if (arguments.length === 3) {
+            fn = pluginName;
+            pluginName = hookName;
+        }
+        if (compiler.hooks) {
+            console.log('compiler.hooks===========', compiler.hooks);
+            compiler.hooks[hookName].tap(pluginName, fn);
+        } else {
+            compiler.plugin(pluginName, fn);
+        }
+    }
     koaDevware(dev, compiler) {
+        var _this = this;
         const waitMiddleware = () =>
             new Promise((resolve, reject) => {
-                dev.waitUntilValid(() => resolve(true));
-                compiler.plugin('failed', (error) => reject(error));
+                dev.waitUntilValid(() => {
+                    resolve(true);
+                });
+
+                _this.hook(compiler, 'failed', (error) => {
+                    reject(error);
+                });
+
+                // compiler.plugin('failed', (error) => reject(error));
             });
 
         return async (ctx, next) => {
@@ -67,6 +89,7 @@ class WebpackHot {
                 ctx.req,
                 {
                     end(content) {
+                        console.log('content======',content)
                         ctx.body = content;
                     },
                     setHeader: ctx.set.bind(ctx),

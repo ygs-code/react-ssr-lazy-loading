@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { mapRedux } from '@/redux';
 import addRouterApi from '@/router/addRouterApi';
-import './index.less';
+// import './index.less';
 
 const Index = (props) => {
     const {

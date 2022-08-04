@@ -14,7 +14,7 @@ import { mapRedux } from '@/redux';
 
 // 2234;
 // 权限跳转登录页面可以在这控制
-const Index = (props) => {
+const Index = (props={}) => {
     return (
         <div>
             <Head />

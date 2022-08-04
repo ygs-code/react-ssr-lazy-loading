@@ -3,7 +3,7 @@ import { Nav, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { mapRedux } from '@/redux';
-import './index.less';
+// import './index.less';
 
 const Index = (props) => {
     const {
