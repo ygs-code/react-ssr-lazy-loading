@@ -1,9 +1,17 @@
+/*
+ * @Date: 2022-08-05 09:22:30
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-05 12:04:37
+ * @FilePath: /react-loading-ssr/client/pages/User/index.js
+ * @Description: 
+ */
 import React, { useEffect } from 'react';
 import Nav from '@/component/Nav';
 import Head from '@/component/Head';
 import Table from '@/component/Table';
 import { mapRedux } from '@/redux';
-// import './index.less';
+import './index.less';
 const Index = (props={}) => {
     useEffect(() => {}, []);
 

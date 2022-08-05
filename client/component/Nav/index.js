@@ -1,3 +1,11 @@
+/*
+ * @Date: 2022-08-05 09:22:30
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-05 12:04:29
+ * @FilePath: /react-loading-ssr/client/component/Nav/index.js
+ * @Description: 
+ */
 import React, { Component, useMemo, useState } from 'react';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -5,7 +13,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { mapRedux } from '@/redux';
 import addRouterApi from '@/router/addRouterApi';
-// import './index.less';
+import './index.less';
 
 const Index = (props) => {
     const {

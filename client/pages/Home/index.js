@@ -1,3 +1,11 @@
+/*
+ * @Date: 2022-08-05 09:22:30
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-05 12:04:33
+ * @FilePath: /react-loading-ssr/client/pages/Home/index.js
+ * @Description: 
+ */
 import React, {
     Suspense,
     lazy,

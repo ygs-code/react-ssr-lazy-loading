@@ -3,7 +3,7 @@ import Loadable, { Capture } from 'react-loadable';
 import PropTypes from 'prop-types';
 import { getEv } from '@/utils';
 import App from './App.js';
-// import './App.less';
+import './App.less';
 
 let {
     NODE_ENV, // 环境参数

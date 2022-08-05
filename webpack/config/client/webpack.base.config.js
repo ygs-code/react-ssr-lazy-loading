@@ -77,19 +77,20 @@ module.exports = {
             // '@babel/polyfill',
             'react',
             'react-dom',
-            'react-loadable',
-            'react-redux',
-            'redux',
-            'react-router-dom',
+            // 'react-loadable',
+            // 'react-redux',
+            // 'redux',
+            // 'react-router-dom',
             // 'react-router-redux',
             // 'redux-thunk',
         ],
     },
+    
     output: {
-        filename: `static/js/[name].js`,
+        filename: `static/js/[name].[hash:8].js`,
+        chunkFilename: `static/js/[name].[hash:8].chunk.js`,
         path: path.join(process.cwd(), './dist/client'),
         publicPath: '/',
-        chunkFilename: `static/js/[name].js`,
         // libraryTarget: isServer?'commonjs2':'umd',
         chunkLoadTimeout: 120000,
         // 「devtool 中模块」的文件名模板 调试webpack的配置问题
@@ -378,6 +379,9 @@ module.exports = {
             filename: path.join(rootPath, './dist/client/react-loadable.json'),
         }),
         new ReactLoadableSSRAddon({
+            callback:(json)=>{
+            //    console.log('json=======',json)
+            },
             filename: path.join(rootPath, './dist/client/assets-manifest.json'),
         }),
     ],

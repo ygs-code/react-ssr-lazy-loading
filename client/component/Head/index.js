@@ -1,9 +1,17 @@
+/*
+ * @Date: 2022-08-05 09:22:30
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-05 12:04:20
+ * @FilePath: /react-loading-ssr/client/component/Head/index.js
+ * @Description: 
+ */
 import React, { Component, useMemo } from 'react';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { mapRedux } from '@/redux';
-// import './index.less';
+import './index.less';
 
 const Index = (props) => {
     const {

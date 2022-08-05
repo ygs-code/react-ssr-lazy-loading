@@ -106,7 +106,7 @@ module.exports = {
         filename: '[name].js',
         path: path.join(process.cwd(), './dist/server'),
         publicPath: '/',
-        chunkFilename: '[name].js',
+        chunkFilename: '[name].chunk.js',
         // libraryTarget: isServer?'commonjs2':'umd',
         chunkLoadTimeout: 120000,
         // 「devtool 中模块」的文件名模板 调试webpack的配置问题

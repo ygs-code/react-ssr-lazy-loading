@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-// import './index.less';
+import './index.less';
 const Index = (props) => {
     const { columns = [], dataSource = [], rowKey } = props;
 

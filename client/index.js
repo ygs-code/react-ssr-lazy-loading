@@ -1,3 +1,11 @@
+/*
+ * @Date: 2022-08-04 09:21:17
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-05 10:03:52
+ * @FilePath: /react-loading-ssr/client/index.js
+ * @Description: 
+ */
 //18
 import { hydrate, render } from 'react-dom';
 import React, { Suspense, lazy } from 'react';
@@ -10,7 +18,8 @@ const store = createStore(window);
 
 let renderComponent = module.hot ? render : hydrate;
 const renderApp = () => {
-    let modules = [];
+    // let modules = [];
+    const modules = new Set();
     let history = getHistory();
     let context = [];
     let location = '/';
