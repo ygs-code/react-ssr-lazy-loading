@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-09-29 11:46:06
- * @LastEditTime: 2022-08-05 18:54:07
+ * @LastEditTime: 2022-08-06 15:49:47
  * @LastEditors: Yao guan shou
  * @Description: In User Settings Edit
  * @FilePath: /react-loading-ssr/client/assets/js/request/token.js
@@ -13,6 +13,7 @@ class Token {
     //配置不需要token的请求
     this.doNotToken = [
       ...doNotToken,
+      '/v3/weather/weatherInfo',
       "/set/user/getVerifyCode",
       "/set/user/login",
       '/api/getHaoKanVideo'
@@ -38,6 +39,7 @@ class Token {
   }
   get(url) {
     const token =  '' // localStorage.getItem("token");
+
     if (!url) {
       return token;
     }

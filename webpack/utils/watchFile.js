@@ -2,8 +2,8 @@
  * @Date: 2022-05-24 15:49:12
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-05-24 16:05:44
- * @FilePath: /webpack-cli/watchFile.js
+ * @LastEditTime: 2022-08-06 16:31:33
+ * @FilePath: /react-loading-ssr/webpack/utils/watchFile.js
  * @Description:
  */
 const chokidar = require('chokidar');

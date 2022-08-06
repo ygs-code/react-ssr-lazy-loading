@@ -19,7 +19,7 @@
     "//注释10": "eslint校验",
     "eslint": "eslint ./src&&eslint ./server",
     "watchFile": "node  ./webpack/utils/watchFile.js",
-    "test": "webpack    --progress  --config   ./test/webpack.js"
+    "test": "node  -r @babel/register    ./client/assets/js/request/test.js"
   },
   "author": "",
   "license": "ISC",
@@ -104,6 +104,7 @@
     "less-loader": "^4.0.5",
     "map-stream": "^0.0.7",
     "mini-css-extract-plugin": "1.6.2",
+    "node-fetch": "2",
     "nodemon": "^1.12.5",
     "npm-run-all": "^4.1.2",
     "ora": "4.1.1",
@@ -121,6 +122,7 @@
     "redux": "^3.7.2",
     "stream": "^0.0.2",
     "style-loader": "^0.19.1",
+    "superagent": "^8.0.0",
     "thread-loader": "^3.0.4",
     "url-loader": "^0.6.2",
     "vinyl-fs": "^3.0.3",

@@ -64,7 +64,7 @@ class ClientRouter {
     )
 
     let isMatchRoute = this.getMatch(routesComponent, ctx.req.url)
-    console.log('isMatchRoute========',isMatchRoute)
+
     if (isMatchRoute) {
       let data = null
       let initState = this.findInitData(
@@ -72,14 +72,13 @@ class ClientRouter {
         isMatchRoute.name,
         'name',
       )
-      console.log('initState=====',initState)
 
       await getBaseInitState(dispatch, getState())
 
       if (initState) {
         // 拉去请求或者查询sql等操作
         data = await initState()
-        console.log('initState========',initState.toString())
+
         dispatch[isMatchRoute.name].setInitState({
           initState: data,
         })
@@ -116,6 +115,7 @@ class ClientRouter {
       : require(this.transformPath(
           path.join(absolutePath, '/dist/client/assets-manifest.json'),
         ))
+
     const modulesToBeLoaded = [
       ...assetsManifest.entrypoints,
       ...otherModules,
@@ -196,7 +196,6 @@ class ClientRouter {
       CreateApp({ store, context, history, modules, location }),
     )
 
-    console.log('initState=====',initState)
     let { scripts, styles } = this.createTags(modules)
 
     const helmet = Helmet.renderStatic()
@@ -211,8 +210,6 @@ class ClientRouter {
       styles,
       initState,
     })
-
-    // console.log('renderedHtml===',renderedHtml)
     return renderedHtml
   }
 }
