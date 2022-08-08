@@ -65,22 +65,31 @@ const Index = (props) => {
         page += 1;
         let initStateFn = findInitData(routesConfigs, 'home', 'name');
         setPage(page);
-        axios(
+        let {
+            data: { result: data },
+        } = await axios(
             `https://api.apiopen.top/api/getHaoKanVideo?page=${page}&size=10`
         );
-        let data = await initStateFn({
-            page,
-            size: 10,
-        });
+        console.log('data=====', data);
+        // let data = await initStateFn({
+        //     page,
+        //     size: 10,
+        // });
         const { total, list: resList = [] } = data;
         setInitState({
             initState: {
                 total,
-                list: list.concat(resList),
+                list: list.concat(
+                    resList.map((item) => {
+                        return {
+                            ...item,
+                            url: item.userPic,
+                        };
+                    })
+                ),
             },
         });
 
-    
         setLoading(false);
     }, [page, list, loading]);
 

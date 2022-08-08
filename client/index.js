@@ -10,7 +10,7 @@
 import { hydrate, render } from 'react-dom';
 import React, { Suspense, lazy } from 'react';
 import app from './App/index.js';
-import Loadable from 'react-loadable';
+import Loadable from '@/component/Loadable';
 import { getHistory } from '@/router/history';
 import createStore from '@/redux';
 

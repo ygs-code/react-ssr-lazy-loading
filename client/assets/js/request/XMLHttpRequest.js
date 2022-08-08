@@ -485,7 +485,7 @@ class NodeFetch {
             parameter: { operationName } = {},
         } = this.options;
         const XHRQueue = NodeFetch.XHRQueue || [];
-        console.log('response.status', response.status);
+     
         if (response.status === 200) {
             // 从队列中剔除
             for (let index = XHRQueue.length - 1; index >= 0; index--) {

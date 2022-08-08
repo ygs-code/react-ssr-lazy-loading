@@ -1,6 +1,6 @@
 
 // 按需加载插件
-import loadable from 'react-loadable';
+import loadable from '@/component/Loadable';
 import Loading from '@/component/Loading';
 import React, { useEffect } from 'react';
 import pagesMarketingRouterRoutesconfig from '@/pages/marketing/router/routesConfig.js';

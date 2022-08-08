@@ -10,7 +10,6 @@ import React, { Component, useMemo, useState } from 'react';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import { mapRedux } from '@/redux';
 import addRouterApi from '@/router/addRouterApi';
 import './index.less';

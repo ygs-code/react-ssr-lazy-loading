@@ -1,11 +1,10 @@
 import React, { Suspense, lazy, Children } from 'react';
 import {
     Router,
-    Router as BrowserRouter,
     Switch as Routes,
     Route,
-    withRouter,
-} from 'react-router-dom';
+} from './react-router-dom';
+
 import initComponentState from '@/redux/initComponentState';
 import addRouterApi from './addRouterApi';
 import routesConfig from './routesComponent';

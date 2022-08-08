@@ -1,16 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-    withRouter,
-    BrowserRouter as Router,
-    Switch,
-    Routes,
-    Route,
-    Navigate, // 重定向
-    useSearchParams,
-    useNavigate,
-    useLocation,
-    useParams,
-} from 'react-router-dom';
+import { withRouter } from '@/router/react-router-dom';
 import routePaths from './routePaths';
 import { historyPush } from './historyPush';
 

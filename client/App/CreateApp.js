@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Loadable, { Capture } from 'react-loadable';
+import Loadable, { Capture } from  '@/component/Loadable';
 import PropTypes from 'prop-types';
 import { getEv } from '@/utils';
 import App from './App.js';
