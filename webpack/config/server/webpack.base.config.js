@@ -25,7 +25,7 @@ let {
     WEB_ENV, // 环境参数
     target, // 环境参数
     htmlWebpackPluginOptions = '',
-    COMPILER_ENV,
+    
 } = process.env; // 环境参数
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === 'production';
@@ -349,28 +349,28 @@ module.exports = {
         //     },
         // }),
         // 注入全局常量
-        new ExtendedDefinePlugin({
-            GLOBAL_VARIABLE: {
-                // ...process.env,
-                NODE_ENV, // 环境参数
-                WEB_ENV, // 环境参数
-                target, // 环境参数
-                COMPILER_ENV,
-                htmlWebpackPluginOptions,
-            },
-            process: {
-                // ...process,
-                env: {
-                    // ...process.env,
-                    NODE_ENV, // 环境参数
-                    WEB_ENV, // 环境参数
-                    target, // 环境参数
-                    COMPILER_ENV,
-                    htmlWebpackPluginOptions,
-                },
-            },
-            htmlWebpackPluginOptions,
-        }),
+        // new ExtendedDefinePlugin({
+        //     GLOBAL_VARIABLE: {
+        //         // ...process.env,
+        //         NODE_ENV, // 环境参数
+        //         WEB_ENV, // 环境参数
+        //         target, // 环境参数
+        //         COMPILER_ENV,
+        //         htmlWebpackPluginOptions,
+        //     },
+        //     process: {
+        //         // ...process,
+        //         env: {
+        //             // ...process.env,
+        //             NODE_ENV, // 环境参数
+        //             WEB_ENV, // 环境参数
+        //             target, // 环境参数
+        //             COMPILER_ENV,
+        //             htmlWebpackPluginOptions,
+        //         },
+        //     },
+        //     htmlWebpackPluginOptions,
+        // }),
         // // html静态页面
         // new HtmlWebpackPlugin({
         //     ...htmlWebpackPluginOptions,

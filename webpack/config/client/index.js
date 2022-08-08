@@ -2,7 +2,8 @@ const baseConfig = require('./webpack.base.config.js');
 const devConfig = require('./webpack.dev.config.js');
 const prodConfig = require('./webpack.prod.config.js');
 const webpackMerge = require('webpack-merge');
-   
+require('dotenv').config({ path: '.env' });
+
 let {
     NODE_ENV, // 环境参数
     WEB_ENV, // 环境参数
@@ -16,5 +17,4 @@ if (target == 'web' && NODE_ENV == 'development') {
     config = webpackMerge(baseConfig, prodConfig);
 }
 
- 
 module.exports = config;

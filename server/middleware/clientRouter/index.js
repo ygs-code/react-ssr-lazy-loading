@@ -13,7 +13,7 @@ import Helmet from 'react-helmet'
 import { matchPath } from 'react-router-dom'
 import createStore from '@/redux'
 import routesComponent, { routesConfigs } from '@/router/routesComponent'
-import { findTreeData, getEv, getBaseInitState } from '@/utils'
+import { findTreeData,   getBaseInitState } from '@/utils'
 import otherModules from './otherModules'
 import path, { resolve } from 'path'
 import fs from 'fs'
@@ -23,11 +23,8 @@ let {
   WEB_ENV, // 环境参数
   target, // 环境参数
   htmlWebpackPluginOptions = '',
-  COMPILER_ENV,
-} = getEv() // 环境参数
+} = process.env; // 环境参数
 
-// 如果是中间件编译
-const isCompile = COMPILER_ENV === 'middleware'
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === 'production'
 //   是否是测试开发环境
@@ -57,7 +54,7 @@ class ClientRouter {
     const modules = new Set()
     let html = fs.readFileSync(
       path.join(
-        path.join(absolutePath, isCompile ? '/client/public' : 'dist/client'),
+        path.join(absolutePath, isEnvDevelopment ? '/client/public' : 'dist/client'),
         'index.html',
       ),
       'utf-8',

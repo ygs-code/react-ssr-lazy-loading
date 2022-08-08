@@ -22,15 +22,17 @@ let {
     WEB_ENV, // 环境参数
     target, // 环境参数
     htmlWebpackPluginOptions = '',
-    COMPILER_ENV,
 } = process.env; // 环境参数
+
+console.log('process.env.COMPILER_ENV=======', process.env.COMPILER_ENV);
+
 const isSsr = target == 'ssr';
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === 'production';
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === 'development';
 
-const isCompileMiddleware = COMPILER_ENV == 'middleware';
+// const isCompileMiddleware = COMPILER_ENV == 'middleware';
 
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length - 1 });
 const rootPath = process.cwd();
@@ -67,7 +69,7 @@ const cacheLoader = (happypackId) => {
 };
 
 module.exports = {
-    mode:NODE_ENV,
+    mode: NODE_ENV,
     name: 'client',
     target: 'web',
     entry: {
@@ -84,7 +86,7 @@ module.exports = {
             // 'redux-thunk',
         ],
     },
-    
+
     output: {
         filename: `static/js/[name].[hash:8].js`,
         chunkFilename: `static/js/[name].[hash:8].chunk.js`,
@@ -317,31 +319,24 @@ module.exports = {
         //         routePaths: '/client/router/routePaths.js',
         //     },
         // }),
-               // 注入全局常量
-               new ExtendedDefinePlugin({
-                GLOBAL_VARIABLE: {
-                    // ...process.env,
+        // 注入全局常量
+        new ExtendedDefinePlugin({
+            process: {
+                env: {
                     NODE_ENV, // 环境参数
                     WEB_ENV, // 环境参数
                     target, // 环境参数
-                    COMPILER_ENV,
                     htmlWebpackPluginOptions,
                 },
-                process: {
-                    // ...process,
-                    env: {
-                        // ...process.env,
-                        NODE_ENV, // 环境参数
-                        WEB_ENV, // 环境参数
-                        target, // 环境参数
-                        COMPILER_ENV,
-                        htmlWebpackPluginOptions,
-                    },
-                },
-                htmlWebpackPluginOptions,
-            }),
+            },
+        }),
 
-        ...(isCompileMiddleware
+        new webpack.EnvironmentPlugin({
+            NODE_ENV: 'development', // 除非有定义 process.env.NODE_ENV，否则就使用 'development'
+            DEBUG: false,
+        }),
+
+        ...(isSsr
             ? []
             : [
                   // // // html静态页面
@@ -378,8 +373,8 @@ module.exports = {
             filename: path.join(rootPath, './dist/client/react-loadable.json'),
         }),
         new ReactLoadableSSRAddon({
-            callback:(json)=>{
-            //    console.log('json=======',json)
+            callback: (json) => {
+                //    console.log('json=======',json)
             },
             filename: path.join(rootPath, './dist/client/assets-manifest.json'),
         }),

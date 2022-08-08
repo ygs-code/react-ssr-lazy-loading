@@ -13,7 +13,6 @@ let {
     WEB_ENV, // 环境参数
     target, // 环境参数
     htmlWebpackPluginOptions = '',
-    COMPILER_ENV,
 } = process.env; // 环境参数
 const isDevelopment = NODE_ENV == 'development';
 
@@ -155,7 +154,7 @@ module.exports = {
     plugins: [
         ...(isDevelopment ? [new webpack.HotModuleReplacementPlugin()] : []),
 
-        ...(target == 'ssr' && COMPILER_ENV != 'middleware'
+        ...(target == 'ssr'
             ? [
                   new webpackPluginCopyFile(
                       [

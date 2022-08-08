@@ -12,10 +12,12 @@ import {Provider} from 'react-redux';
 import Routers from '@/router';
 import './App.less';
 import '@/assets/css/base.less';
-import 'bootstrap/dist/css/bootstrap.css';  
+import 'bootstrap/dist/css/bootstrap.css';
+
+
+
 const App = (props) => {
     const {history, location, store} = props;
-
     return (
         <Provider store={store}>
             <Routers history={history} location={location} />

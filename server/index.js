@@ -12,7 +12,13 @@ import cluster from 'cluster';
 import App from './app';
 // import "core-js/stable";
 import os from 'os';
-const { Worker } = require('worker_threads');
+import * as dotenv from 'dotenv'; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import { Worker } from 'worker_threads';
+// 注入环境变量
+dotenv.config({ path: '.env' });
+console.log('process.env.S3_BUCKET==', process.env.S3_BUCKET); //
+console.log('process.env.VITE_PROJECT_TITLE==', process.env.VITE_PROJECT_TITLE); //
+
 // 开启的子进程数
 const workerNum = 1; //os.cpus().length - 1;
 // 如果是主进程

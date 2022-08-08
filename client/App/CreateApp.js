@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Loadable, { Capture } from  '@/component/Loadable';
 import PropTypes from 'prop-types';
-import { getEv } from '@/utils';
 import App from './App.js';
 import './App.less';
 
@@ -10,9 +9,7 @@ let {
     WEB_ENV, // 环境参数
     target, // 环境参数
     htmlWebpackPluginOptions = '',
-    COMPILER_ENV,
-} = getEv(); // 环境参数
-
+} = process.env; // 环境参数
 
 
 const CreateApp = (props = {}) => {

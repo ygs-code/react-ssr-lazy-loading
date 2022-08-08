@@ -7,6 +7,19 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import ReactLoadableSSRAddon from 'react-loadable-ssr-addon';
 import { compiler, config } from '../../../webpack';
 
+let {
+    NODE_ENV, // 环境参数
+    WEB_ENV, // 环境参数
+    target, // 环境参数
+    htmlWebpackPluginOptions = '',
+} = process.env; // 环境参数
+
+const isSsr = target == 'ssr';
+//    是否是生产环境
+const isEnvProduction = NODE_ENV === 'production';
+//   是否是测试开发环境
+const isEnvDevelopment = NODE_ENV === 'development';
+
 class WebpackHot {
     constructor(app) {
         this.app = app;
@@ -37,15 +50,16 @@ class WebpackHot {
                 break;
             }
         }
-
-        this.compiler = webpack(config); //compiler()
-
+        // 编译
+        this.compiler = webpack(isSsr ? config : config[0]);
         this.addMiddleware();
     }
     addMiddleware() {
         this.addWebpackDevMiddleware();
         // this.addWebpackHotMiddleware();
-        this.addWebpackHotServerMiddleware();
+        if (isSsr) {
+            this.addWebpackHotServerMiddleware();
+        }
     }
     addWebpackDevMiddleware() {
         const _this = this;
@@ -80,8 +94,9 @@ class WebpackHot {
                 createHandler: webpackHotServerMiddleware.createKoaHandler,
                 serverRendererOptions: {
                     foo: 'Bar',
-                    compiler: _this.compiler,
-                    options: _this.compilerOptions,
+                    options: {
+                        ..._this.compilerOptions,
+                    },
                 },
             })
         );

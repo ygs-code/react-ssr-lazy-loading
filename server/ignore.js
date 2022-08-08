@@ -1,14 +1,13 @@
-const { getEv } = require('../client/utils');
-
+ 
 let {
     NODE_ENV, // 环境参数
     WEB_ENV, // 环境参数
     target, // 环境参数
     htmlWebpackPluginOptions = '',
-    COMPILER_ENV,
-} = getEv(); // 环境参数
+   
+} = process.env; // 环境参数
 
-const isCompiler = COMPILER_ENV == 'middleware';
+
 
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === 'production';
@@ -16,13 +15,13 @@ const isEnvProduction = NODE_ENV === 'production';
 const isEnvDevelopment = NODE_ENV === 'development';
 
 const ignore = () => {
-    var extensions = isCompiler
-        ? []
-        : ['.css', '.scss', '.less', '.png', '.jpg', '.gif', '.svg']; //服务端渲染不加载的文件类型
-    for (let i = 0, len = extensions.length; i < len; i++) {
-        require.extensions[extensions[i]] = function () {
-            return false;
-        };
-    }
+    // var extensions = isCompiler
+    //     ? []
+    //     : ['.css', '.scss', '.less', '.png', '.jpg', '.gif', '.svg']; //服务端渲染不加载的文件类型
+    // for (let i = 0, len = extensions.length; i < len; i++) {
+    //     require.extensions[extensions[i]] = function () {
+    //         return false;
+    //     };
+    // }
 };
 module.exports = ignore;

@@ -14,7 +14,7 @@ const getEv = () => {
                     NODE_ENV, // 环境参数
                     WEB_ENV, // 环境参数
                     target, // 环境参数
-                    COMPILER_ENV,
+       
                     htmlWebpackPluginOptions,
                 } = process.env;
 
@@ -22,7 +22,7 @@ const getEv = () => {
                     NODE_ENV, // 环境参数
                     WEB_ENV, // 环境参数
                     target, // 环境参数
-                    COMPILER_ENV,
+               
                     htmlWebpackPluginOptions,
                 };
             }
