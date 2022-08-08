@@ -34,7 +34,7 @@ let routesComponentConfig=[
                      entry:'/pages/marketing/pages/DiscountCoupon/index.js',
                      Component:LoadableDiscountcoupon,
                      level:2,
-                     routesConfigPath:'/Users/admin/Documents/code/react-loading-ssr/client/pages/marketing/router/routesConfig.js'
+                     routesConfigPath:'K:/react-loading-ssr/client/pages/marketing/router/routesConfig.js'
                    },
                     {  
                      path: '/marketing',
@@ -43,7 +43,7 @@ let routesComponentConfig=[
                      entry:'/pages/marketing/index.js',
                      Component:LoadableMarketing,
                      level:2,
-                     routesConfigPath:'/Users/admin/Documents/code/react-loading-ssr/client/pages/marketing/router/routesConfig.js'
+                     routesConfigPath:'K:/react-loading-ssr/client/pages/marketing/router/routesConfig.js'
                    },
                     {  
                      path: '/',
@@ -52,7 +52,7 @@ let routesComponentConfig=[
                      entry:'/pages/Home/index.js',
                      Component:LoadableHome,
                      level:1,
-                     routesConfigPath:'/Users/admin/Documents/code/react-loading-ssr/client/router/routesConfig.js'
+                     routesConfigPath:'K:/react-loading-ssr/client/router/routesConfig.js'
                    },
                     {  
                      path: '/user',
@@ -61,7 +61,7 @@ let routesComponentConfig=[
                      entry:'/pages/User/index.js',
                      Component:LoadableUser,
                      level:1,
-                     routesConfigPath:'/Users/admin/Documents/code/react-loading-ssr/client/router/routesConfig.js'
+                     routesConfigPath:'K:/react-loading-ssr/client/router/routesConfig.js'
                    },
     ]
 

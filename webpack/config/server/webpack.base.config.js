@@ -10,7 +10,7 @@ const ExtendedDefinePlugin = require('extended-define-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const { ProgressPlugin } = require('webpack');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
-const OmitJSforCSSPlugin = require('webpack-omit-js-for-css-plugin');
+// const OmitJSforCSSPlugin = require('webpack-omit-js-for-css-plugin');
 const WebpackPluginRouter = require('../../definePlugin/webpack-plugin-router');
 const MyExampleWebpackPlugin = require('../../definePlugin/MyExampleWebpackPlugin');
 const HelloWorldCheckerPlugin = require('../../definePlugin/HelloWorldCheckerPlugin');
@@ -271,7 +271,7 @@ module.exports = {
         ],
     },
     plugins: [
-        new OmitJSforCSSPlugin(),
+        // new OmitJSforCSSPlugin(),
         // new HelloWorldCheckerPlugin(),
         // eslint 插件
         // new ESLintPlugin({
@@ -392,15 +392,9 @@ module.exports = {
         //     //     // "static/vendor.manifest",
         //     // ],
         // }),
-        new webpack.NoEmitOnErrorsPlugin(),
+        // new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-        }),
-        new ReactLoadablePlugin({
-            filename: path.join(
-                process.cwd(),
-                './dist/server/react-loadable.json'
-            ),
         }),
     ],
 };

@@ -4,7 +4,7 @@
  * @LastEditors: Yao guan shou
  * @LastEditTime: 2022-08-05 12:04:33
  * @FilePath: /react-loading-ssr/client/pages/Home/index.js
- * @Description: 
+ * @Description:
  */
 import React, {
     Suspense,
@@ -16,6 +16,7 @@ import React, {
     useEffect,
 } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { mapRedux } from '@/redux';
 import {
@@ -64,6 +65,9 @@ const Index = (props) => {
         page += 1;
         let initStateFn = findInitData(routesConfigs, 'home', 'name');
         setPage(page);
+        axios(
+            `https://api.apiopen.top/api/getHaoKanVideo?page=${page}&size=10`
+        );
         let data = await initStateFn({
             page,
             size: 10,
@@ -75,6 +79,8 @@ const Index = (props) => {
                 list: list.concat(resList),
             },
         });
+
+    
         setLoading(false);
     }, [page, list, loading]);
 
@@ -82,7 +88,7 @@ const Index = (props) => {
         <div className="home">
             <Head />
             <Nav />
-            
+
             <div className="center-box">
                 <LazyLoadingImg
                     list={list}
