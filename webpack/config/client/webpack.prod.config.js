@@ -154,65 +154,65 @@ module.exports = {
     plugins: [
         ...(isDevelopment ? [new webpack.HotModuleReplacementPlugin()] : []),
 
-        ...(target == 'ssr'
-            ? [
-                  new webpackPluginCopyFile(
-                      [
-                          // {
-                          //     from:  path.join(process.cwd(), 'webpack/definePlugin/*'),
-                          //     to:    path.join(process.cwd(), '/webpack/newDefinePlugin'),
-                          //     transform(content, absoluteFrom) {
-                          //         // let reg = /.jsx|.js$/g;
-                          //         // if (reg.test(absoluteFrom)) {
-                          //         //     return $ResolveAlias.alias(content.toString(), '');
-                          //         // }
+        // ...(target == 'ssr'
+        //     ? [
+        //           new webpackPluginCopyFile(
+        //               [
+        //                   // {
+        //                   //     from:  path.join(process.cwd(), 'webpack/definePlugin/*'),
+        //                   //     to:    path.join(process.cwd(), '/webpack/newDefinePlugin'),
+        //                   //     transform(content, absoluteFrom) {
+        //                   //         // let reg = /.jsx|.js$/g;
+        //                   //         // if (reg.test(absoluteFrom)) {
+        //                   //         //     return $ResolveAlias.alias(content.toString(), '');
+        //                   //         // }
 
-                          //         return content;
-                          //     },
-                          // },
+        //                   //         return content;
+        //                   //     },
+        //                   // },
 
-                          {
-                              from: path
-                                  .join(process.cwd(), '/server/**/*')
-                                  .replace(/\\/gi, '/'),
-                              to: path
-                                  .join(process.cwd(), '/dist/server/server')
-                                  .replace(/\\/gi, '/'),
-                              transform(content, absoluteFrom) {
-                                  // let reg = /.jsx|.js$/g;
-                                  // if (reg.test(absoluteFrom)) {
-                                  //     return $ResolveAlias.alias(content.toString(), '');
-                                  // }
+        //                   {
+        //                       from: path
+        //                           .join(process.cwd(), '/server/**/*')
+        //                           .replace(/\\/gi, '/'),
+        //                       to: path
+        //                           .join(process.cwd(), '/dist/server/server')
+        //                           .replace(/\\/gi, '/'),
+        //                       transform(content, absoluteFrom) {
+        //                           // let reg = /.jsx|.js$/g;
+        //                           // if (reg.test(absoluteFrom)) {
+        //                           //     return $ResolveAlias.alias(content.toString(), '');
+        //                           // }
 
-                                  return content;
-                              },
-                          },
-                          {
-                              from: path
-                                  .join(process.cwd(), '/client/**/*')
-                                  .replace(/\\/gi, '/'),
-                              to: path
-                                  .join(process.cwd(), '/dist/server/client')
-                                  .replace(/\\/gi, '/'),
-                              transform(content, absoluteFrom) {
-                                  return content;
-                              },
-                          },
-                      ],
-                      {
-                          resolve: {
-                              // 路径配置
-                              alias: {
-                                  '@/': path.join(
-                                      process.cwd(),
-                                      '/dist/server/client/'
-                                  ),
-                              },
-                          },
-                      }
-                  ),
-              ]
-            : []),
+        //                           return content;
+        //                       },
+        //                   },
+        //                   {
+        //                       from: path
+        //                           .join(process.cwd(), '/client/**/*')
+        //                           .replace(/\\/gi, '/'),
+        //                       to: path
+        //                           .join(process.cwd(), '/dist/server/client')
+        //                           .replace(/\\/gi, '/'),
+        //                       transform(content, absoluteFrom) {
+        //                           return content;
+        //                       },
+        //                   },
+        //               ],
+        //               {
+        //                   resolve: {
+        //                       // 路径配置
+        //                       alias: {
+        //                           '@/': path.join(
+        //                               process.cwd(),
+        //                               '/dist/server/client/'
+        //                           ),
+        //                       },
+        //                   },
+        //               }
+        //           ),
+        //       ]
+        //     : []),
 
         new ManifestPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
@@ -224,7 +224,7 @@ module.exports = {
             chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
         }),
 
-        new CleanWebpackPlugin(['./dist/server', './dist/client'], {
+        new CleanWebpackPlugin(['./dist/client'], {
             root: rootPath,
         }),
 

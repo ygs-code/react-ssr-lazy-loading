@@ -20,8 +20,8 @@ let {
   port,
 } = process.env // 环境参数
 
-const b = 1133123
-//    是否是生产环境
+const b = 11113211231231231231212312312311231231232311
+//    是否是生产环境11
 const isEnvProduction = NODE_ENV === 'production'
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === 'development'

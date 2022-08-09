@@ -35,10 +35,10 @@ import {
 import { setInitData } from './setInitData'
 import { getEv } from './getEv'
 import { getBaseInitState } from './getBaseInitState'
-import { getGlobal } from './getGlobal'
+// import { getGlobal } from './getGlobal'
 
 export {
-  getGlobal,
+  // getGlobal,
   getBaseInitState,
   // FloatingBall, // 浮动球 类
   throttle, // 节流函数

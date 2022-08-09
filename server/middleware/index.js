@@ -1,6 +1,5 @@
 import staticCache from 'koa-static-cache';
 import cors from 'koa2-cors';
-// import { getEv } from '@/utils';
 import path, { resolve } from 'path';
 
 let {

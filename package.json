@@ -6,7 +6,7 @@
   "scripts": {
     "web:dev": "cross-env target='web'  COMPILER_ENV='middleware'    npx babel-node  -r    dotenv/config   ./server/index.js  dotenv_config_path=.env.development",
     "web:prod:build": "cross-env NODE_ENV=production       COMPILER_ENV=webpack           target=web  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack            -r @babel/register   --progress --config  ./webpack/config/client/index.js",
-    "ssr:dev": "cross-env target='ssr'  COMPILER_ENV='middleware'    npx babel-node  -r    dotenv/config   ./server/index.js  dotenv_config_path=.env.development",
+    "ssr:dev": "cross-env target='ssr'  npx babel-node  -r @babel/register    ./server/index.js   -r    dotenv/config   dotenv_config_path=.env.development",
     "ssr:dev:build": "cross-env NODE_ENV=development  COMPILER_ENV=webpack   target=ssr  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack            -r @babel/register  --progress  --config  ./webpack/config/client/index.js",
     "ssr:prod:build": "cross-env NODE_ENV=production       COMPILER_ENV=webpack           target=ssr  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack            -r @babel/register   --progress --config   ./webpack/config/client/index.js",
     "start:server": "npm run start:server:prod",
@@ -21,7 +21,9 @@
     "watchFile": "node  ./webpack/utils/watchFile.js",
     "test": "node  -r @babel/register    ./client/assets/js/request/test.js",
     "bin": "cross-env NODE_ENV=development       target=ssr   node   -r @babel/register    ./bin/index.js",
-    "cmd": "cross-env NODE_ENV=development       target=ssr   node   -r @babel/register    ./bin/cmd.js"
+    "cmd": "cross-env NODE_ENV=development       target=ssr   node   -r @babel/register    ./bin/cmd.js",
+    "ssr:dev:bin": "cross-env     target='ssr'     npx babel-node    -r @babel/register    ./bin/index.js    -r  dotenv/config  dotenv_config_path=.env.development",
+    "client:dev:bin": "cross-env  target='client'  npx babel-node    -r @babel/register    ./bin/index.js   -r  dotenv/config  dotenv_config_path=.env.development"
   },
   "author": "",
   "license": "ISC",
