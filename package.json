@@ -6,7 +6,6 @@
   "scripts": {
     "web:dev": "cross-env target='web'  COMPILER_ENV='middleware'    npx babel-node  -r    dotenv/config   ./server/index.js  dotenv_config_path=.env.development",
     "web:prod:build": "cross-env NODE_ENV=production       COMPILER_ENV=webpack           target=web  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack            -r @babel/register   --progress --config  ./webpack/config/client/index.js",
-    
     "ssr:dev": "cross-env target='ssr'  COMPILER_ENV='middleware'    npx babel-node  -r    dotenv/config   ./server/index.js  dotenv_config_path=.env.development",
     "ssr:dev:build": "cross-env NODE_ENV=development  COMPILER_ENV=webpack   target=ssr  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack            -r @babel/register  --progress  --config  ./webpack/config/client/index.js",
     "ssr:prod:build": "cross-env NODE_ENV=production       COMPILER_ENV=webpack           target=ssr  htmlWebpackPluginOptions='{title:网页标题,webpackName:webpack-cli-util}'  webpack            -r @babel/register   --progress --config   ./webpack/config/client/index.js",
@@ -20,7 +19,9 @@
     "//注释10": "eslint校验",
     "eslint": "eslint ./src&&eslint ./server",
     "watchFile": "node  ./webpack/utils/watchFile.js",
-    "test": "node  -r @babel/register    ./client/assets/js/request/test.js"
+    "test": "node  -r @babel/register    ./client/assets/js/request/test.js",
+    "bin": "cross-env NODE_ENV=development       target=ssr   node   -r @babel/register    ./bin/index.js",
+    "cmd": "cross-env NODE_ENV=development       target=ssr   node   -r @babel/register    ./bin/cmd.js"
   },
   "author": "",
   "license": "ISC",
@@ -99,6 +100,7 @@
     "happypack": "^5.0.1",
     "history": "5.3.0",
     "html-webpack-plugin": "4.4.1",
+    "kill-port": "^2.0.1",
     "koa": "^2.4.1",
     "koa-router": "^12.0.0",
     "koa-static-cache": "^5.1.1",
@@ -107,6 +109,7 @@
     "less-loader": "^4.0.5",
     "map-stream": "^0.0.7",
     "mini-css-extract-plugin": "1.6.2",
+    "moment": "^2.29.4",
     "node-fetch": "2",
     "nodemon": "^1.12.5",
     "npm-run-all": "^4.1.2",

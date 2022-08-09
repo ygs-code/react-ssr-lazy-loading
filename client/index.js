@@ -2,7 +2,7 @@
  * @Date: 2022-08-04 09:21:17
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-05 10:03:52
+ * @LastEditTime: 2022-08-09 12:05:38
  * @FilePath: /react-loading-ssr/client/index.js
  * @Description: 
  */
@@ -13,7 +13,7 @@ import app from './App/index.js';
 import Loadable from '@/component/Loadable';
 import { getHistory } from '@/router/history';
 import createStore from '@/redux';
-
+ 
 const store = createStore(window); 
 
 let renderComponent = module.hot ? render : hydrate;

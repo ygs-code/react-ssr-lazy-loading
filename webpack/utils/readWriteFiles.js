@@ -2,7 +2,7 @@
  * @Date: 2022-08-04 09:21:17
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-04 09:30:53
+ * @LastEditTime: 2022-08-09 12:07:17
  * @FilePath: /react-loading-ssr/webpack/utils/readWriteFiles.js
  * @Description:
  */
@@ -56,11 +56,19 @@ const readWriteFile = ({ from, to, transform }) => {
     .pipe(fs.dest(to))
 }
 
-module.exports = ({ from, to, transform, isWatch = true }) => {
+module.exports = ({
+  from,
+  to,
+  transform,
+  isWatch = true,
+  callback = () => {},
+}) => {
   if (isWatch) {
-    watch(from, {}, function () {
+    watch(from, {}, function () { 
       readWriteFile({ from, to, transform, isWatch })
+      callback()
     })
   }
   readWriteFile({ from, to, transform, isWatch })
+  callback()
 }

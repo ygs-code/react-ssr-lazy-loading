@@ -23,7 +23,7 @@ export const stabilization = (() => {
   let timer = null;
   return (time, callback) => {
     return new Promise((resolve, reject) => {
-      window.clearTimeout(timer);
+      clearTimeout(timer);
       timer = setTimeout(() => {
         if (callback && callback instanceof Function) {
           callback();
