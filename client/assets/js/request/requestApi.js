@@ -6,7 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: /react-loading-ssr/client/assets/js/request/requestApi.js
  */
-import Request, {gql, GraphqlClient} from "./request";
+import Request, { gql, GraphqlClient } from "./request";
 import filterGraphqlData from "./filterGraphqlData";
 
 var userId = "559645cd1a38532d14349246";
@@ -19,7 +19,7 @@ export const getHaoKanVideo = (parameter) => {
 //
 export const getWeather = (parameter) => {
   return Request.get("/v3/weather/weatherInfo", parameter, {
-    baseUrl: "https://restapi.amap.com",
+    baseUrl: "https://restapi.amap.com"
   });
 };
 

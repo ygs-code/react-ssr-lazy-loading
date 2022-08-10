@@ -1,24 +1,24 @@
-import {setInitData} from "@/utils";
+import { setInitData } from "@/utils";
 export default ($window) => {
   return {
     state: {
       initState: setInitData($window, "home"),
-      count: 0,
+      count: 0
     },
     reducers: {
       setCount(state, newState) {
         return {
           ...state,
-          count: newState,
+          count: newState
         };
       },
 
       setInitState(state, newState) {
         return {
           ...state,
-          ...newState,
+          ...newState
         };
-      },
+      }
     },
     effects: {
       //   async incrementAsync(num1, rootState, num2) {
@@ -40,6 +40,6 @@ export default ($window) => {
       //       dispatch.count.increment(num1)
       //     },
       //   }),
-    },
+    }
   };
 };

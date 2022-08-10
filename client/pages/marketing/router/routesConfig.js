@@ -19,8 +19,8 @@ export default [
         name: "DiscountCoupon",
         entry: `/pages/marketing/pages/DiscountCoupon/index.js`,
         level: 2,
-        children: [],
-      },
-    ],
-  },
+        children: []
+      }
+    ]
+  }
 ];

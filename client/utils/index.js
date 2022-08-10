@@ -9,32 +9,32 @@
 import {
   throttle,
   stabilization,
-  statusThrottle,
+  statusThrottle
 } from "./throttlingStabilization";
 // import {
 //     deepCopy
 // } from './deepCopy'
 // import {SubscribePublished} from './SubscribePublished';
-import {CheckDataType} from "./CheckDataType";
+import { CheckDataType } from "./CheckDataType";
 import {
   filterTreeData,
   recursionTreeData,
   deepCopy,
   diffData,
-  findTreeData,
+  findTreeData
 } from "./ergodic";
 // import {FloatingBall} from './FloatingBall';
-import {getStyle} from "./getCssAttr";
+import { getStyle } from "./getCssAttr";
 import {
   checkPhone,
   checkUser,
   checkPassword,
   checkVerificationCode,
-  firstToUpper,
+  firstToUpper
 } from "./regular";
-import {setInitData} from "./setInitData";
-import {getEv} from "./getEv";
-import {getBaseInitState} from "./getBaseInitState";
+import { setInitData } from "./setInitData";
+import { getEv } from "./getEv";
+import { getBaseInitState } from "./getBaseInitState";
 // import { getGlobal } from './getGlobal'
 
 export {
@@ -58,7 +58,7 @@ export {
   checkVerificationCode,
   firstToUpper,
   setInitData,
-  getEv,
+  getEv
 };
 // 整体输出
 export * from "./regular.js";

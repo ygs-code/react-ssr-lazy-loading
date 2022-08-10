@@ -1,5 +1,5 @@
 import axios from "axios";
-import {getWeather} from "../../assets/js/request/requestApi";
+import { getWeather } from "../../assets/js/request/requestApi";
 
 const setInitData = ($window, name) => {
   let initState = {};
@@ -13,21 +13,21 @@ export default ($window) => {
   return {
     state: {
       ...setInitData($window, "baseInitState"),
-      menuActive: "/",
+      menuActive: "/"
     },
     reducers: {
       setInitState(state, newState) {
         return {
           ...state,
-          ...newState,
+          ...newState
         };
       },
       setMenuActive(state, newState) {
         return {
           ...state,
-          ...newState,
+          ...newState
         };
-      },
+      }
     },
     // effects: {
     //     async incrementAsync(num1, rootState, num2) {
@@ -46,11 +46,11 @@ export default ($window) => {
           return await getWeather({
             key: "2d935fc56c5f9ab2ef2165822cedff56",
             city: "440300",
-            extensions: "all",
+            extensions: "all"
           })
             .then((data) => {
               dispatch.baseInitState.setInitState({
-                weather: data.forecasts[0],
+                weather: data.forecasts[0]
               });
               return data;
             })
@@ -63,8 +63,8 @@ export default ($window) => {
           // this.increment(num1);
           // 方式二
           // dispatch.baseInitState.setInitState(num1);
-        },
+        }
       };
-    },
+    }
   };
 };

@@ -4,3 +4,10 @@ coverage
 
 # Ignore all HTML files:
 *.html
+**/*.min.js
+**/*.min.css
+
+.idea/
+node_modules/
+dist/
+build/

@@ -18,6 +18,13 @@ webpack/**/*
 **/webpack
 **/webpack/**/*
 **/webpack/**/*
+
+
+@babel
+@babel/*
+@babel/**/*
+
+ 
  
 
 

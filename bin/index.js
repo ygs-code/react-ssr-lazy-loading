@@ -11,6 +11,7 @@ import path from 'path'
 import os from 'os'
 import { Worker } from 'worker_threads'
 import { copyFile, watchFile, readWriteFiles } from '../webpack/utils'
+import { compiler } from '../webpack'
 import { spawn, SpawnOptions } from 'child_process'
 import kill from 'kill-port' // 杀死端口包
 import { execute, iSportTake } from './cmd' // 杀死端口包
@@ -52,14 +53,14 @@ if (isEnvDevelopment && isSsr) {
   readWriteFiles({
     from: path.join(process.cwd(), '/server/**/*').replace(/\\/gi, '/'),
     to: path.join(process.cwd(), '/dist/server').replace(/\\/gi, '/'),
-    transform(content, absoluteFrom) {
+    transform (content, absoluteFrom) {
       let reg = /.jsx|.js$/g
       if (reg.test(absoluteFrom)) {
         return $ResolveAlias.alias(content.toString(), '')
       }
       return content
     },
-    async callback() {
+    async callback () {
       if (child && child.kill) {
         child.kill()
       }
@@ -81,9 +82,13 @@ if (isEnvDevelopment && isSsr) {
   })
 }
 
-// if (isEnvDevelopment && !isSsr) {
-//     execute(process.platform === 'win32' ? 'npm.cmd' : 'npm', [
-//         'run',
-//         'ssr:dev',
-//     ]);
-// }
+if (isEnvDevelopment && !isSsr) {
+  execute("cross-env target='client'  npx babel-node  -r  @babel/register    ./server/index.js   -r    dotenv/config   dotenv_config_path=.env.development",);
+}
+
+
+if (isEnvProduction && !isSsr) {
+  compiler()
+
+
+}

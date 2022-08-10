@@ -6,7 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: /error-sytem/client/src/router/history.js
  */
-import {createBrowserHistory, createHashHistory} from "history";
+import { createBrowserHistory, createHashHistory } from "history";
 export const history = {};
 
 // createBrowserHistory({
@@ -24,7 +24,7 @@ export const getHistory = (props = {}) =>
     forceRefresh: false, // 是否强制刷新整个页面
     // keyLength: 10, // location.key的长度
     //  getUserConfirmation: (message,callback) => callback(window.confirm(message)) // 跳转拦截函数
-    ...props,
+    ...props
   });
 
 export const listen = (fn = () => {}) => {

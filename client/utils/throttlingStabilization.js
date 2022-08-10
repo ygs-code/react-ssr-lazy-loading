@@ -1,4 +1,5 @@
 import lodash from "lodash";
+
 // 节流函数
 export const throttle = (() => {
   let startTime = null;
@@ -39,7 +40,7 @@ export const stabilization = (() => {
 // 因为状态拦截需要传递的是地址，所以只能传对象参数
 export const statusThrottle = (() => {
   let objParameter = {
-    status: true,
+    status: true
   };
   return (callback) => {
     return new Promise((resolve, reject) => {

@@ -13,14 +13,14 @@ import moment from 'moment'
 export default class Cmd {
   text = ''
 
-  runNodeModule(moduleName, params, options) {
+  runNodeModule (moduleName, params, options) {
     if (os.type() == 'Windows_NT' && !moduleName.match(/\.cmd$/)) {
       moduleName += '.cmd'
     }
     return this.run(moduleName, params, options)
   }
 
-  run(command, params, options) {
+  run (command, params, options) {
     this.text = ''
     // options = Object.assign(options || {}, { cwd: this.cfg.cwd });
     return new Promise((resolve, reject) => {

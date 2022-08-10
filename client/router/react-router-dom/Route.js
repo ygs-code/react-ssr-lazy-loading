@@ -1,5 +1,5 @@
 import React from "react";
-import {Route as RawRoute} from "react-router-dom";
+import { Route as RawRoute } from "react-router-dom";
 
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -33,7 +33,9 @@ var warning = function () {};
       // This error was thrown as a convenience so that you can use this stack
       // to find the callsite that caused this warning to fire.
       throw new Error(message);
-    } catch (x) {}
+    } catch (x) {
+      console.log(x);
+    }
   };
 
   warning = function (condition, format, args) {
@@ -66,7 +68,7 @@ var commonjsGlobal =
     : {};
 
 function createCommonjsModule(fn, module) {
-  return (module = {exports: {}}), fn(module, module.exports), module.exports;
+  return (module = { exports: {} }), fn(module, module.exports), module.exports;
 }
 
 /**
@@ -196,7 +198,9 @@ var warning$1 = emptyFunction_1;
       // This error was thrown as a convenience so that you can use this stack
       // to find the callsite that caused this warning to fire.
       throw new Error(message);
-    } catch (x) {}
+    } catch (x) {
+      console.log(x);
+    }
   };
 
   warning$1 = function warning(condition, format) {
@@ -418,7 +422,6 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 var checkPropTypes_1 = checkPropTypes;
 
 var factoryWithTypeCheckers = function (isValidElement, throwOnDirectAccess) {
-  /* global Symbol */
   var ITERATOR_SYMBOL = typeof Symbol === "function" && Symbol.iterator;
   var FAUX_ITERATOR_SYMBOL = "@@iterator"; // Before Symbol spec.
 
@@ -515,7 +518,7 @@ var factoryWithTypeCheckers = function (isValidElement, throwOnDirectAccess) {
     oneOf: createEnumTypeChecker,
     oneOfType: createUnionTypeChecker,
     shape: createShapeTypeChecker,
-    exact: createStrictShapeTypeChecker,
+    exact: createStrictShapeTypeChecker
   };
 
   /**
@@ -1223,7 +1226,9 @@ var warning$3 = function () {};
         // This error was thrown as a convenience so that you can use this stack
         // to find the callsite that caused this warning to fire.
         throw new Error(message);
-      } catch (x) {}
+      } catch (x) {
+        console.log(x);
+      }
     }
   };
 }
@@ -1419,7 +1424,7 @@ var parsePath = function parsePath(path) {
   return {
     pathname: pathname,
     search: search === "?" ? "" : search,
-    hash: hash === "#" ? "" : hash,
+    hash: hash === "#" ? "" : hash
   };
 };
 
@@ -1616,7 +1621,7 @@ var createTransitionManager = function createTransitionManager() {
     setPrompt: setPrompt,
     confirmTransitionTo: confirmTransitionTo,
     appendListener: appendListener,
-    notifyListeners: notifyListeners,
+    notifyListeners: notifyListeners
   };
 };
 
@@ -1738,7 +1743,7 @@ var createMemoryHistory = function createMemoryHistory() {
           action: action,
           location: location,
           index: nextIndex,
-          entries: nextEntries,
+          entries: nextEntries
         });
       }
     );
@@ -1768,7 +1773,7 @@ var createMemoryHistory = function createMemoryHistory() {
 
         history.entries[history.index] = location;
 
-        setState({action: action, location: location});
+        setState({ action: action, location: location });
       }
     );
   };
@@ -1788,7 +1793,7 @@ var createMemoryHistory = function createMemoryHistory() {
           setState({
             action: action,
             location: location,
-            index: nextIndex,
+            index: nextIndex
           });
         } else {
           // Mimic the behavior of DOM histories by
@@ -1836,7 +1841,7 @@ var createMemoryHistory = function createMemoryHistory() {
     goForward: goForward,
     canGo: canGo,
     block: block,
-    listen: listen,
+    listen: listen
   };
 
   return history;
@@ -1877,8 +1882,8 @@ var inherits = function (subClass, superClass) {
       value: subClass,
       enumerable: false,
       writable: true,
-      configurable: true,
-    },
+      configurable: true
+    }
   });
   if (superClass)
     Object.setPrototypeOf
@@ -1941,7 +1946,7 @@ var PATH_REGEXP = new RegExp(
     // "/:test(\\d+)?" => ["/", "test", "\d+", undefined, "?", undefined]
     // "/route(\\d+)"  => [undefined, undefined, undefined, "\d+", undefined, undefined]
     // "/*"            => ["/", undefined, undefined, undefined, undefined, "*"]
-    "([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?|(\\*))",
+    "([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?|(\\*))"
   ].join("|"),
   "g"
 );
@@ -2006,7 +2011,7 @@ function parse(str, options) {
         ? escapeGroup(pattern)
         : asterisk
         ? ".*"
-        : "[^" + escapeString(delimiter) + "]+?",
+        : "[^" + escapeString(delimiter) + "]+?"
     });
   }
 
@@ -2229,7 +2234,7 @@ function regexpToRegexp(path, keys) {
         repeat: false,
         partial: false,
         asterisk: false,
-        pattern: null,
+        pattern: null
       });
     }
   }
@@ -2420,7 +2425,7 @@ var compilePath = function compilePath(pattern, options) {
 
   var keys = [];
   var re = pathToRegexp_1(pattern, keys, options);
-  var compiledPattern = {re: re, keys: keys};
+  var compiledPattern = { re: re, keys: keys };
 
   if (cacheCount$1 < cacheLimit$1) {
     cache[pattern] = compiledPattern;
@@ -2438,7 +2443,7 @@ var matchPath = function matchPath(pathname) {
     arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var parent = arguments[2];
 
-  if (typeof options === "string") options = {path: options};
+  if (typeof options === "string") options = { path: options };
 
   var _options = options,
     path = _options.path,
@@ -2454,7 +2459,7 @@ var matchPath = function matchPath(pathname) {
   var _compilePath = compilePath(path, {
       end: exact,
       strict: strict,
-      sensitive: sensitive,
+      sensitive: sensitive
     }),
     re = _compilePath.re,
     keys = _compilePath.keys;
@@ -2477,7 +2482,7 @@ var matchPath = function matchPath(pathname) {
     params: keys.reduce(function (memo, key, index) {
       memo[key.name] = values[index];
       return memo;
-    }, {}),
+    }, {})
   };
 };
 
@@ -2513,7 +2518,7 @@ var Route = (function (_React$Component) {
           )),
           _this)),
         (_this.state = {
-          match: _this.computeMatch(_this.props, _this.context.router),
+          match: _this.computeMatch(_this.props, _this.context.router)
         }),
         _temp)),
       possibleConstructorReturn(_this, _ret)
@@ -2525,9 +2530,9 @@ var Route = (function (_React$Component) {
       router: _extends$4({}, this.context.router, {
         route: {
           location: this.props.location || this.context.router.route.location,
-          match: this.state.match,
-        },
-      }),
+          match: this.state.match
+        }
+      })
     };
   };
 
@@ -2556,7 +2561,7 @@ var Route = (function (_React$Component) {
         path: path,
         strict: strict,
         exact: exact,
-        sensitive: sensitive,
+        sensitive: sensitive
       },
       route.match
     );
@@ -2626,7 +2631,7 @@ var Route = (function (_React$Component) {
       );
 
       this.setState({
-        match: this.computeMatch(nextProps, nextContext.router),
+        match: this.computeMatch(nextProps, nextContext.router)
       });
     };
 
@@ -2646,7 +2651,7 @@ var Route = (function (_React$Component) {
       match: match,
       location: location,
       history: history,
-      staticContext: staticContext,
+      staticContext: staticContext
     };
 
     if (component) return match ? React.createElement(component, props) : null;
@@ -2673,17 +2678,17 @@ Route.propTypes = {
   component: propTypes.func,
   render: propTypes.func,
   children: propTypes.oneOfType([propTypes.func, propTypes.node]),
-  location: propTypes.object,
+  location: propTypes.object
 };
 Route.contextTypes = {
   router: propTypes.shape({
     history: propTypes.object.isRequired,
     route: propTypes.object.isRequired,
-    staticContext: propTypes.object,
-  }),
+    staticContext: propTypes.object
+  })
 };
 Route.childContextTypes = {
-  router: propTypes.object.isRequired,
+  router: propTypes.object.isRequired
 };
 
 var addLeadingSlash$1 = function addLeadingSlash(path) {
@@ -2694,7 +2699,7 @@ var addBasename = function addBasename(basename, location) {
   if (!basename) return location;
 
   return _extends$4({}, location, {
-    pathname: addLeadingSlash$1(basename) + location.pathname,
+    pathname: addLeadingSlash$1(basename) + location.pathname
   });
 };
 
@@ -2706,7 +2711,7 @@ var stripBasename$1 = function stripBasename(basename, location) {
   if (location.pathname.indexOf(base) !== 0) return location;
 
   return _extends$4({}, location, {
-    pathname: location.pathname.substr(base.length),
+    pathname: location.pathname.substr(base.length)
   });
 };
 
@@ -2739,7 +2744,7 @@ var hoistNonReactStatics = createCommonjsModule(function (module, exports) {
       getDerivedStateFromProps: true,
       mixins: true,
       propTypes: true,
-      type: true,
+      type: true
     };
 
     var KNOWN_STATICS = {
@@ -2749,7 +2754,7 @@ var hoistNonReactStatics = createCommonjsModule(function (module, exports) {
       caller: true,
       callee: true,
       arguments: true,
-      arity: true,
+      arity: true
     };
 
     var defineProperty = Object.defineProperty;
@@ -2795,7 +2800,9 @@ var hoistNonReactStatics = createCommonjsModule(function (module, exports) {
             try {
               // Avoid failures from read-only properties
               defineProperty(targetComponent, key, descriptor);
-            } catch (e) {}
+            } catch (e) {
+              console.log(e);
+            }
           }
         }
 
@@ -2820,10 +2827,10 @@ var withRouter = function withRouter(Component) {
         return React.createElement(
           Component,
           _extends$4({}, remainingProps, routeComponentProps, {
-            ref: wrappedComponentRef,
+            ref: wrappedComponentRef
           })
         );
-      },
+      }
     });
   };
 
@@ -2831,10 +2838,10 @@ var withRouter = function withRouter(Component) {
     "withRouter(" + (Component.displayName || Component.name) + ")";
   C.WrappedComponent = Component;
   C.propTypes = {
-    wrappedComponentRef: propTypes.func,
+    wrappedComponentRef: propTypes.func
   };
 
   return hoistNonReactStatics(C, Component);
 };
 
-export {Route, withRouter};
+export { Route, withRouter };

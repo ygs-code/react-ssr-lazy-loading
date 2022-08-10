@@ -1,7 +1,7 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import "./index.less";
 const Index = (props) => {
-  const {columns = [], dataSource = [], rowKey} = props;
+  const { columns = [], dataSource = [], rowKey } = props;
 
   return (
     <div className="table">
@@ -9,18 +9,18 @@ const Index = (props) => {
         <dt>
           <ul>
             {columns.map((item, index) => {
-              const {title} = item;
+              const { title } = item;
               return <li key={`${index}_${rowKey || ""}`}>{title}</li>;
             })}
           </ul>
         </dt>
         <dd>
           {dataSource.map((item, index) => {
-            const {title} = item;
+            const { title } = item;
             return (
               <ul key={`${index}_${rowKey || ""}`}>
                 {columns.map(($item, $index) => {
-                  const {key, render} = $item;
+                  const { key, render } = $item;
                   return (
                     <li key={`${index}_${$index}_${rowKey || ""}`}>
                       {render ? render(item[key], item, index) : item[key]}

@@ -27,14 +27,22 @@ const isEnvDevelopment = NODE_ENV === 'development'
 
 module.exports = {
   compiler: () => {
-    if (isEnvProduction && isSsr) {
-      // 先编译前端，在编译后台
+    if (isEnvProduction) {
       let clientCompiler = webpack(client)
+      if (isSsr) {
+        // 先编译前端，在编译后台
 
-      return false
+      }
+
+
+    } else {
+
     }
 
-    return webpack(isSsr ? [client, server] : [client])
+
+
+
+    // return webpack(isSsr ? [client, server] : [client])
   },
   config: isSsr ? [client, server] : [client],
 }

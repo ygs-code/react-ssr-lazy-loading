@@ -14,5 +14,5 @@ export {
   checkUser,
   checkPassword,
   checkVerificationCode,
-  firstToUpper,
+  firstToUpper
 };

@@ -6,21 +6,21 @@
  * @FilePath: /react-loading-ssr/client/component/Nav/index.js
  * @Description:
  */
-import React, {Component, useMemo, useState} from "react";
-import {Nav, NavItem, NavLink} from "reactstrap";
-import {Link} from "react-router-dom";
+import React, { Component, useMemo, useState } from "react";
+import { Nav, NavItem, NavLink } from "reactstrap";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import {mapRedux} from "@/redux";
+import { mapRedux } from "@/redux";
 import addRouterApi from "@/router/addRouterApi";
 import "./index.less";
 
 const Index = (props) => {
   const {
-    history: {push} = {},
-    dispatch: {baseInitState: {setInitState, setMenuActive} = {}} = {},
-    state: {baseInitState: {menu = [], menuActive} = {}} = {},
-    location: {pathname} = {},
-    pushRoute,
+    history: { push } = {},
+    dispatch: { baseInitState: { setInitState, setMenuActive } = {} } = {},
+    state: { baseInitState: { menu = [], menuActive } = {} } = {},
+    location: { pathname } = {},
+    pushRoute
   } = props;
 
   return (
@@ -30,32 +30,32 @@ const Index = (props) => {
           {
             title: "首页",
             path: "/",
-            name: "home",
+            name: "home"
           },
           {
             title: "用户页面",
             path: "/user",
-            name: "user",
+            name: "user"
           },
           {
             title: "优惠券",
             path: "/marketing/discount-coupon",
-            name: "DiscountCoupon",
-          },
+            name: "DiscountCoupon"
+          }
         ].map((item, index) => {
-          const {path, title, name} = item;
+          const { path, title, name } = item;
           return (
             <NavItem key={index}>
               <NavLink
                 active={pathname == path}
                 onClick={() => {
                   setMenuActive({
-                    menuActive: path,
+                    menuActive: path
                   });
                   if (index == 1) {
-                    pushRoute({path});
+                    pushRoute({ path });
                   } else {
-                    pushRoute({name});
+                    pushRoute({ name });
                   }
                 }}
               >
@@ -71,6 +71,6 @@ const Index = (props) => {
 Index.propTypes = {
   history: PropTypes.object,
   dispatch: PropTypes.func,
-  state: PropTypes.object,
+  state: PropTypes.object
 };
 export default mapRedux()(addRouterApi(Index));

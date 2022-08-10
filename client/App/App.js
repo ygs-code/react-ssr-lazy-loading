@@ -6,9 +6,9 @@
  * @FilePath: /react-loading-ssr/client/App/App.js
  * @Description:
  */
-import React, {Component} from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {Provider} from "react-redux";
+import { Provider } from "react-redux";
 import Routers from "@/router";
 import "./App.less";
 import "@/assets/css/base.less";
@@ -25,7 +25,7 @@ const App = (props) => {
     d,
     e,
     f,
-    sadfasdfasdfsadfasdfasdfasdfasdfsdf,
+    sadfasdfasdfsadfasdfasdfasdfasdfsdf
   } = props;
   return (
     <Provider store={store}>

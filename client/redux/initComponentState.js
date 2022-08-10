@@ -1,8 +1,8 @@
-import React, {useEffect, useCallback} from "react";
-import routesComponent, {routesConfigs} from "@/router/routesComponent";
-import {matchPath} from "react-router-dom";
-import {mapRedux} from "@/redux";
-import {findTreeData, getBaseInitState} from "@/utils";
+import React, { useEffect, useCallback } from "react";
+import routesComponent, { routesConfigs } from "@/router/routesComponent";
+import { matchPath } from "react-router-dom";
+import { mapRedux } from "@/redux";
+import { findTreeData, getBaseInitState } from "@/utils";
 
 // 注入initState
 const initState = (Component) => {
@@ -13,9 +13,9 @@ const initState = (Component) => {
     componentDidMount() {
       const {
         children = () => {},
-        history: {location: {pathname} = {}} = {},
+        history: { location: { pathname } = {} } = {},
         state = {},
-        dispatch,
+        dispatch
       } = this.props;
 
       getBaseInitState(dispatch, state);
@@ -26,13 +26,13 @@ const initState = (Component) => {
       for (let router of routesArray) {
         let $router = matchPath(url, {
           path: router.path,
-          exact: router.exact,
+          exact: router.exact
         });
 
         if ($router) {
           return {
             ...router,
-            ...$router,
+            ...$router
           };
         }
       }
@@ -46,12 +46,12 @@ const initState = (Component) => {
     getInitState = async () => {
       const {
         children = () => {},
-        history: {location: {pathname} = {}} = {},
+        history: { location: { pathname } = {} } = {},
         state = {},
-        dispatch,
+        dispatch
       } = this.props;
 
-      let {name} = this.getMatch(routesComponent, pathname);
+      let { name } = this.getMatch(routesComponent, pathname);
       if (
         state[name]?.initState &&
         state[name]?.initState instanceof Object &&
@@ -63,7 +63,7 @@ const initState = (Component) => {
       if (initStateFn && initStateFn instanceof Function) {
         let data = await initStateFn();
         dispatch[name].setInitState({
-          initState: data,
+          initState: data
         });
       }
     };

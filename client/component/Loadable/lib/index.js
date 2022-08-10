@@ -43,8 +43,8 @@ function _inherits(subClass, superClass) {
       value: subClass,
       enumerable: false,
       writable: true,
-      configurable: true,
-    },
+      configurable: true
+    }
   });
   if (superClass)
     Object.setPrototypeOf
@@ -81,7 +81,7 @@ function load(loader) {
   var state = {
     loading: true,
     loaded: null,
-    error: null,
+    error: null
   };
 
   state.promise = promise
@@ -103,7 +103,7 @@ function loadMap(obj) {
   var state = {
     loading: false,
     loaded: {},
-    error: null,
+    error: null
   };
 
   var promises = [];
@@ -169,7 +169,7 @@ function createLoadableComponent(loadFn, options) {
       timeout: null,
       render: render,
       webpack: null,
-      modules: null,
+      modules: null
     },
     options
   );
@@ -210,7 +210,7 @@ function createLoadableComponent(loadFn, options) {
             _this.setState({
               error: null,
               loading: true,
-              timedOut: false,
+              timedOut: false
             });
             res = loadFn(opts.loader);
             _this._loadModule();
@@ -223,7 +223,7 @@ function createLoadableComponent(loadFn, options) {
             pastDelay: false,
             timedOut: false,
             loading: res.loading,
-            loaded: res.loaded,
+            loaded: res.loaded
           };
           this._mounted = true;
           this._loadModule();
@@ -258,17 +258,17 @@ function createLoadableComponent(loadFn, options) {
 
           if (typeof opts.delay === "number") {
             if (opts.delay === 0) {
-              this.setState({pastDelay: true});
+              this.setState({ pastDelay: true });
             } else {
               this._delay = setTimeout(function () {
-                _this2.setState({pastDelay: true});
+                _this2.setState({ pastDelay: true });
               }, opts.delay);
             }
           }
 
           if (typeof opts.timeout === "number") {
             this._timeout = setTimeout(function () {
-              _this2.setState({timedOut: true});
+              _this2.setState({ timedOut: true });
             }, opts.timeout);
           }
 
@@ -280,7 +280,7 @@ function createLoadableComponent(loadFn, options) {
             _this2.setState({
               error: res.error,
               loaded: res.loaded,
-              loading: res.loading,
+              loading: res.loading
             });
 
             _this2._clearTimeouts();
@@ -313,7 +313,7 @@ function createLoadableComponent(loadFn, options) {
               pastDelay: this.state.pastDelay,
               timedOut: this.state.timedOut,
               error: this.state.error,
-              retry: this.retry,
+              retry: this.retry
             });
           } else if (this.state.loaded) {
             return opts.render(this.state.loaded, this.props);
@@ -326,8 +326,8 @@ function createLoadableComponent(loadFn, options) {
       })(React.Component)),
     (_class.contextTypes = {
       loadable: PropTypes.shape({
-        report: PropTypes.func.isRequired,
-      }),
+        report: PropTypes.func.isRequired
+      })
     }),
     _temp
   );
@@ -362,8 +362,8 @@ var Capture = (function (_React$Component2) {
   Capture.prototype.getChildContext = function getChildContext() {
     return {
       loadable: {
-        report: this.props.report,
-      },
+        report: this.props.report
+      }
     };
   };
 
@@ -375,12 +375,12 @@ var Capture = (function (_React$Component2) {
 })(React.Component);
 
 Capture.propTypes = {
-  report: PropTypes.func.isRequired,
+  report: PropTypes.func.isRequired
 };
 Capture.childContextTypes = {
   loadable: PropTypes.shape({
-    report: PropTypes.func.isRequired,
-  }).isRequired,
+    report: PropTypes.func.isRequired
+  }).isRequired
 };
 
 Loadable.Capture = Capture;

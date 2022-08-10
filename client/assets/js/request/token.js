@@ -16,7 +16,7 @@ class Token {
       "/v3/weather/weatherInfo",
       "/set/user/getVerifyCode",
       "/set/user/login",
-      "/api/getHaoKanVideo",
+      "/api/getHaoKanVideo"
     ];
   }
 
@@ -25,14 +25,14 @@ class Token {
   }
   publishQueue(token) {
     this.queue.forEach((item) => {
-      const {resolve, reject} = item;
+      const { resolve, reject } = item;
       resolve(token);
     });
     this.queue = [];
   }
   clearQueue() {
     this.queue.forEach((item) => {
-      const {resolve, reject} = item;
+      const { resolve, reject } = item;
       reject(null);
     });
     this.queue = [];
@@ -50,10 +50,10 @@ class Token {
       if (this.doNotToken.includes(url)) {
         return resolve("");
       }
-      this.subscribeQueue({resolve, reject});
+      this.subscribeQueue({ resolve, reject });
     });
   }
 }
 
-export {Token};
+export { Token };
 export default new Token();

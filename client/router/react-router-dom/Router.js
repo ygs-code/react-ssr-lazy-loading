@@ -1,5 +1,5 @@
 import React from "react";
-import {Router as RawRouter} from "react-router-dom";
+import { Router as RawRouter } from "react-router-dom";
 
 class Router extends RawRouter {
   constructor(props) {
@@ -10,4 +10,4 @@ class Router extends RawRouter {
   }
 }
 
-export {Router};
+export { Router };

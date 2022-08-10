@@ -2,7 +2,7 @@
 // 获取url地址
 const getNewUrlArr = (parameter) => {
   let newUrlArr = [];
-  const {url, index, params, pathnameArr} = parameter;
+  const { url, index, params, pathnameArr } = parameter;
   let key = null;
   let optional = -1;
   if (url.indexOf(":") >= 0) {
@@ -52,8 +52,8 @@ const queryStringify = (data) => {
 
 // 序列化query参数
 const serialize = (data) => {
-  const {location} = window;
-  const {pathname, search} = location;
+  const { location } = window;
+  const { pathname, search } = location;
   let formStr = "";
   if (search.length == 0) {
     formStr = queryStringify(data);
@@ -61,7 +61,7 @@ const serialize = (data) => {
   } else {
     formStr = queryStringify({
       ...querystringParse(search),
-      ...data,
+      ...data
     });
     formStr = `${formStr ? "?" + formStr : ""}`;
   }
@@ -77,11 +77,11 @@ export const historyPush = (parameter) => {
     isOpenWin = false, // 是否重新打开新的窗口
     url = "/",
     replace,
-    baseUrl = "",
+    baseUrl = ""
   } = parameter;
 
-  const {location} = window;
-  const {pathname, search} = location;
+  const { location } = window;
+  const { pathname, search } = location;
   const pathnameArr = pathname.split("/");
   let urlArr = url.split("/");
   urlArr = urlArr.filter((item) => {
@@ -101,8 +101,8 @@ export const historyPush = (parameter) => {
           url: urlArr[index],
           index,
           params,
-          pathnameArr,
-        }),
+          pathnameArr
+        })
       ];
     } else if (elem && elem.trim() !== "") {
       newUrlArr = [
@@ -111,8 +111,8 @@ export const historyPush = (parameter) => {
           url: elem,
           index,
           params,
-          pathnameArr,
-        }),
+          pathnameArr
+        })
       ];
     }
   }
@@ -126,40 +126,40 @@ export const historyPush = (parameter) => {
 };
 
 export const navigateTo = (url, data, options = {}) => {
-  const {method = "params"} = options;
+  const { method = "params" } = options;
   delete options.method;
   data = {
-    [method]: data,
+    [method]: data
   };
   historyPush({
     url,
-    ...data,
+    ...data
   });
 };
 
 export const redirectTo = (url, data, options = {}) => {
-  const {method = "params", replace = true} = options;
+  const { method = "params", replace = true } = options;
   delete options.method;
   data = {
-    [method]: data,
+    [method]: data
   };
   historyPush({
     url,
     ...data,
-    replace,
+    replace
   });
 };
 
 export const openWindow = (url, data, options = {}) => {
-  const {method = "params", isOpenWin = true} = options;
+  const { method = "params", isOpenWin = true } = options;
   delete options.method;
   data = {
-    [method]: data,
+    [method]: data
   };
   historyPush({
     url,
     ...data,
-    isOpenWin,
+    isOpenWin
   });
 };
 

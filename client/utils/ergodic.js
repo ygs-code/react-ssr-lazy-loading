@@ -1,10 +1,10 @@
-import {CheckDataType} from "./CheckDataType";
+import { CheckDataType } from "./CheckDataType";
 // 递归treeData 会给 treeData 添加index 索引
 const recursionTreeData = (parameter, _index = null) => {
   let {
     treeData = [],
     childrenCallback = () => {},
-    itemCallback = () => {},
+    itemCallback = () => {}
   } = parameter;
   return treeData.map((item, index) => {
     if (item.children && item.children.length >= 1) {
@@ -14,17 +14,17 @@ const recursionTreeData = (parameter, _index = null) => {
           {
             treeData: item.children,
             childrenCallback,
-            itemCallback,
+            itemCallback
           },
           _index === null ? `${index}` : `${_index}-${index}`
         ),
-        index: _index === null ? `${index}` : `${_index}-${index}`,
+        index: _index === null ? `${index}` : `${_index}-${index}`
       };
       childrenCallback(item);
     }
     item = {
       ...item,
-      index: _index === null ? `${index}` : `${_index}-${index}`,
+      index: _index === null ? `${index}` : `${_index}-${index}`
     };
     itemCallback(item);
     return item;
@@ -138,4 +138,4 @@ const diffData = (oldData, newData) => {
   }
   return flag;
 };
-export {recursionTreeData, filterTreeData, deepCopy, diffData, findTreeData};
+export { recursionTreeData, filterTreeData, deepCopy, diffData, findTreeData };

@@ -6,12 +6,12 @@ require('dotenv').config({ path: '.env' });
 
 let {
     NODE_ENV, // 环境参数
-    WEB_ENV, // 环境参数
+                      WEB_ENV, // 环境参数
     target, // 环境参数
     htmlWebpackPluginOptions = '',
 } = process.env; // 环境参数
 let config = {};
-if (target == 'web' && NODE_ENV == 'development') {
+if (NODE_ENV == 'development') {
     config = webpackMerge(baseConfig, devConfig);
 } else {
     config = webpackMerge(baseConfig, prodConfig);

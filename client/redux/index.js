@@ -14,10 +14,10 @@
  * @FilePath: /react-loading-ssr/client/redux/index.js
  * @Description:
  */
-import {init} from "@rematch/core";
+import { init } from "@rematch/core";
 import * as models from "./models";
-import {connect} from "react-redux";
-import {CheckDataType, getGlobal} from "@/utils";
+import { connect } from "react-redux";
+import { CheckDataType, getGlobal } from "@/utils";
 const mapRedux = (modelsName) => {
   return (Component) => {
     const mapStateToProps = (state) => {
@@ -37,7 +37,7 @@ const mapRedux = (modelsName) => {
       }
 
       return {
-        state: newState,
+        state: newState
       };
     };
 
@@ -58,13 +58,13 @@ const mapRedux = (modelsName) => {
       }
 
       return {
-        dispatch: newDispatch,
+        dispatch: newDispatch
       };
     };
     return connect(mapStateToProps, mapDispatchToProps)(Component);
   };
 };
-export {mapRedux};
+export { mapRedux };
 
 // const global = getGlobal()
 
@@ -78,7 +78,7 @@ export const createStore = (global) => {
 
   //文档： https://www.icode9.com/content-4-1343821.html
   return init({
-    models: newModels,
+    models: newModels
   });
 };
 

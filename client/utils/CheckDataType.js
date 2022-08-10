@@ -22,7 +22,7 @@ export class CheckDataType {
       array: "array",
       regexp: "regexp",
       function: "function",
-      promise: "promise",
+      promise: "promise"
     };
     return (
       (type in this.dataType &&

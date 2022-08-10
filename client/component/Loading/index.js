@@ -9,7 +9,7 @@
 import React from "react";
 
 export default (props) => {
-  const {isLoading, timedOut, pastDelay, error} = props;
+  const { isLoading, timedOut, pastDelay, error } = props;
 
   if (isLoading) {
     if (timedOut) {
