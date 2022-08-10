@@ -1,7 +1,7 @@
 const getEv = () => {
-    let $GLOBAL_VARIABLE = {};
+  let $GLOBAL_VARIABLE = {};
 
-    /* eslint-disable*/
+  /* eslint-disable*/
     try {
         if (GLOBAL_VARIABLE) {
             $GLOBAL_VARIABLE = GLOBAL_VARIABLE;

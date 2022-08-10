@@ -6,14 +6,14 @@
  * @FilePath: /react-loading-ssr/client/router/routesConfig.js
  * @Description:
  */
-import {dispatch, getState} from '@rematch/core';
-import {getHaoKanVideo} from '../assets/js/request/requestApi';
+import {dispatch, getState} from "@rematch/core";
+import {getHaoKanVideo} from "../assets/js/request/requestApi";
 // 路由配置
 export default [
   {
-    path: '/',
+    path: "/",
     exact: true,
-    name: 'home',
+    name: "home",
     entry: `/pages/Home/index.js`,
     initState: async (parameter = {}) => {
       const {page = 1, size = 10} = parameter;
@@ -34,14 +34,14 @@ export default [
           };
         })
         .catch((err) => {
-          console.log('Error: ', err.message);
+          console.log("Error: ", err.message);
         });
     },
     level: 1,
   },
   {
-    path: '/user',
-    name: 'user',
+    path: "/user",
+    name: "user",
     entry: `/pages/User/index.js`,
     level: 1,
   },

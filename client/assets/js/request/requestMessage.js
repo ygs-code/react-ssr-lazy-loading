@@ -6,7 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: /react-loading-ssr/client/assets/js/request/requestMessage.js
  */
-// import { message, Button, Space } from "antd"; 
+// import { message, Button, Space } from "antd";
 
 export const error = (msg) => {
   console.error(msg);
@@ -18,4 +18,4 @@ export const warning = (msg) => {
 
 export const success = (msg) => {
   console.success(msg);
-}; 
+};

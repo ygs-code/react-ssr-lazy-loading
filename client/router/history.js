@@ -8,8 +8,6 @@
  */
 import {createBrowserHistory, createHashHistory} from "history";
 export const history = {};
-  
-
 
 // createBrowserHistory({
 //    basename: "/", // 基链接
@@ -20,7 +18,7 @@ export const history = {};
 //   //  } // 跳转拦截函数
 // });
 
-export const getHistory = (props={}) =>
+export const getHistory = (props = {}) =>
   createBrowserHistory({
     basename: "/", // 基链接
     forceRefresh: false, // 是否强制刷新整个页面
@@ -29,7 +27,7 @@ export const getHistory = (props={}) =>
     ...props,
   });
 
-export const listen = (fn=()=>{}) => {
+export const listen = (fn = () => {}) => {
   return history.listen((location, action) => {
     fn(location, action);
   });

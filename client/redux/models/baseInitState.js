@@ -1,5 +1,5 @@
-import axios from 'axios';
-import {getWeather} from '../../assets/js/request/requestApi';
+import axios from "axios";
+import {getWeather} from "../../assets/js/request/requestApi";
 
 const setInitData = ($window, name) => {
   let initState = {};
@@ -12,8 +12,8 @@ const setInitData = ($window, name) => {
 export default ($window) => {
   return {
     state: {
-      ...setInitData($window, 'baseInitState'),
-      menuActive: '/',
+      ...setInitData($window, "baseInitState"),
+      menuActive: "/",
     },
     reducers: {
       setInitState(state, newState) {
@@ -43,11 +43,10 @@ export default ($window) => {
     effects: (dispatch) => {
       return {
         async getWeatherAsync(num1, rootState, num2) {
-          
           return await getWeather({
-            key: '2d935fc56c5f9ab2ef2165822cedff56',
-            city: '440300',
-            extensions: 'all',
+            key: "2d935fc56c5f9ab2ef2165822cedff56",
+            city: "440300",
+            extensions: "all",
           })
             .then((data) => {
               dispatch.baseInitState.setInitState({
@@ -56,7 +55,7 @@ export default ($window) => {
               return data;
             })
             .catch((err) => {
-              console.log('Error: ', err.message);
+              console.log("Error: ", err.message);
             });
 
           // await new Promise((resolve) => setTimeout(resolve, 2000));

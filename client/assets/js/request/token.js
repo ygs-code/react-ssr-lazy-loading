@@ -13,10 +13,10 @@ class Token {
     //配置不需要token的请求
     this.doNotToken = [
       ...doNotToken,
-      '/v3/weather/weatherInfo',
+      "/v3/weather/weatherInfo",
       "/set/user/getVerifyCode",
       "/set/user/login",
-      '/api/getHaoKanVideo'
+      "/api/getHaoKanVideo",
     ];
   }
 
@@ -38,7 +38,7 @@ class Token {
     this.queue = [];
   }
   get(url) {
-    const token =  ''; // localStorage.getItem("token");
+    const token = ""; // localStorage.getItem("token");
 
     if (!url) {
       return token;

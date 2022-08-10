@@ -4,42 +4,42 @@
  * @LastEditors: Yao guan shou
  * @LastEditTime: 2022-08-09 12:05:38
  * @FilePath: /react-loading-ssr/client/index.js
- * @Description: 
+ * @Description:
  */
 //18
-import {hydrate, render} from 'react-dom';
-import React, {Suspense, lazy} from 'react';
-import app from './App/index.js';
-import Loadable from '@/component/Loadable';
-import {getHistory} from '@/router/history';
-import createStore from '@/redux';
- 
-const store = createStore(window); 
+import {hydrate, render} from "react-dom";
+import React, {Suspense, lazy} from "react";
+import app from "./App/index.js";
+import Loadable from "@/component/Loadable";
+import {getHistory} from "@/router/history";
+import createStore from "@/redux";
+
+const store = createStore(window);
 
 let renderComponent = module.hot ? render : hydrate;
 const renderApp = () => {
-    // let modules = [];
-    const modules = new Set();
-    let history = getHistory();
-    let context = [];
-    let location = '/';
-    renderComponent(
-        app({
-            modules,
-            history,
-            context,
-            location,
-            store,
-        }),
-        document.getElementById('root')
-    );
+  // let modules = [];
+  const modules = new Set();
+  let history = getHistory();
+  let context = [];
+  let location = "/";
+  renderComponent(
+    app({
+      modules,
+      history,
+      context,
+      location,
+      store,
+    }),
+    document.getElementById("root")
+  );
 };
 
 // node 服务器中只能在这个页面使用window
 window.main = () => {
-    Loadable.preloadReady().then(() => {
-        renderApp();
-    });
+  Loadable.preloadReady().then(() => {
+    renderApp();
+  });
 };
 
 // // // 只有当开启了模块热替换时 module.hot 才存在

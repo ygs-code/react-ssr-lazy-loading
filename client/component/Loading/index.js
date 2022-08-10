@@ -6,7 +6,7 @@
  * @FilePath: /react-loading-ssr/client/component/Loading/index.js
  * @Description:
  */
-import React from 'react';
+import React from "react";
 
 export default (props) => {
   const {isLoading, timedOut, pastDelay, error} = props;

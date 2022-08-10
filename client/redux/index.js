@@ -14,10 +14,10 @@
  * @FilePath: /react-loading-ssr/client/redux/index.js
  * @Description:
  */
-import {init} from '@rematch/core';
-import * as models from './models';
-import {connect} from 'react-redux';
-import {CheckDataType, getGlobal} from '@/utils';
+import {init} from "@rematch/core";
+import * as models from "./models";
+import {connect} from "react-redux";
+import {CheckDataType, getGlobal} from "@/utils";
 const mapRedux = (modelsName) => {
   return (Component) => {
     const mapStateToProps = (state) => {
@@ -82,4 +82,4 @@ export const createStore = (global) => {
   });
 };
 
-export default createStore;    //(global || {})
+export default createStore; //(global || {})

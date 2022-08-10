@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-08-20 10:51:16
- * @LastEditTime: 2021-08-20 11:47:58
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-08-10 18:45:31
+ * @LastEditors: Yao guan shou
  * @Description: In User Settings Edit
- * @FilePath: /error-sytem/client/src/common/js/request/filterGraphqlData.js
+ * @FilePath: /react-loading-ssr/client/assets/js/request/filterGraphqlData.js
  */
 export default (data) => {
   for (let key in data) {
