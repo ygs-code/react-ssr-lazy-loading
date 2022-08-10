@@ -1,14 +1,14 @@
-import axios from 'axios'
-import { getWeather } from '../../assets/js/request/requestApi'
+import axios from 'axios';
+import {getWeather} from '../../assets/js/request/requestApi';
 
 const setInitData = ($window, name) => {
-  let initState = {}
+  let initState = {};
   if ($window && $window.__INITIAL_STATE__ && $window.__INITIAL_STATE__[name]) {
-    initState = $window.__INITIAL_STATE__[name]
+    initState = $window.__INITIAL_STATE__[name];
   }
 
-  return initState
-}
+  return initState;
+};
 export default ($window) => {
   return {
     state: {
@@ -20,13 +20,13 @@ export default ($window) => {
         return {
           ...state,
           ...newState,
-        }
+        };
       },
       setMenuActive(state, newState) {
         return {
           ...state,
           ...newState,
-        }
+        };
       },
     },
     // effects: {
@@ -52,12 +52,12 @@ export default ($window) => {
             .then((data) => {
               dispatch.baseInitState.setInitState({
                 weather: data.forecasts[0],
-              })
-              return data
+              });
+              return data;
             })
             .catch((err) => {
-              console.log('Error: ', err.message)
-            })
+              console.log('Error: ', err.message);
+            });
 
           // await new Promise((resolve) => setTimeout(resolve, 2000));
           // 方式一
@@ -65,7 +65,7 @@ export default ($window) => {
           // 方式二
           // dispatch.baseInitState.setInitState(num1);
         },
-      }
+      };
     },
-  }
-}
+  };
+};

@@ -9,8 +9,8 @@ import React, {
 } from 'react';
 import Nav from '@/component/Nav';
 import Head from '@/component/Head';
-import { Link } from 'react-router-dom';
-import { mapRedux } from '@/redux';
+import {Link} from 'react-router-dom';
+import {mapRedux} from '@/redux';
 
 // 2234;
 // 权限跳转登录页面可以在这控制

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Loadable, { Capture } from  '@/component/Loadable';
+import React, {Component} from 'react';
+import Loadable, {Capture} from  '@/component/Loadable';
 import PropTypes from 'prop-types';
 import App from './App.js';
 import './App.less';
@@ -13,7 +13,7 @@ let {
 
 
 const CreateApp = (props = {}) => {
-    const { modules = [] } = props;
+    const {modules = []} = props;
 
     return target === 'ssr' ? (
         <Capture

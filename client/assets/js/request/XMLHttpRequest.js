@@ -1,4 +1,4 @@
-import { CheckDataType } from '../../../utils/CheckDataType';
+import {CheckDataType} from '../../../utils/CheckDataType';
 import FormData from 'form-data';
 import fetch from 'node-fetch';
 class BrowserXHR {
@@ -65,7 +65,7 @@ class BrowserXHR {
                     this.send();
                 })
                 .catch((errorInfo) => {
-                    const { error = () => {}, complete = () => {} } = errorInfo;
+                    const {error = () => {}, complete = () => {}} = errorInfo;
                     console.error('http 请求异常,未发送http请求。', errorInfo);
                     error(options);
                 });
@@ -84,7 +84,7 @@ class BrowserXHR {
     }
     uploadFile() {
         this.ininData(options);
-        const { parameter = {} } = this.options;
+        const {parameter = {}} = this.options;
         let formData = new FormData();
         const keys = Object.keys(parameter);
         keys.forEach((key) => {
@@ -113,7 +113,7 @@ class BrowserXHR {
         return this;
     }
     updateProgress(event) {
-        const { updateProgress = () => {} } = this.options;
+        const {updateProgress = () => {}} = this.options;
         if (event.lengthComputable) {
             let percentComplete = event.loaded / event.total;
             updateProgress(percentComplete, event);
@@ -122,9 +122,9 @@ class BrowserXHR {
     // 创建XHR
     createXHR() {
         const {
-            parameter: { operationName } = {},
+            parameter: {operationName} = {},
             urlSuffix,
-            headers: { token },
+            headers: {token},
         } = this.options;
 
         let xmlHttp = null;
@@ -173,7 +173,7 @@ class BrowserXHR {
     }
     // 设置 xhr属性
     setXhrAttr() {
-        const { xhrAttr = {} } = this.options;
+        const {xhrAttr = {}} = this.options;
         const keys = Object.keys(xhrAttr);
         keys.forEach((key) => {
             this.xmlHttp[key] = xhrAttr[key];
@@ -197,7 +197,7 @@ class BrowserXHR {
     }
     // 设置请求头
     setRequestHeader(defaultHeaders = {}) {
-        let { headers = {} } = this.options;
+        let {headers = {}} = this.options;
         headers = {
             ...defaultHeaders,
             ...headers,
@@ -210,14 +210,14 @@ class BrowserXHR {
     }
     // 设置跨域复杂请求cookie
     setWithCredentials() {
-        const { withCredentials = true } = this.options;
+        const {withCredentials = true} = this.options;
 
         this.xmlHttp.withCredentials = withCredentials;
         // this.xmlHttp.crossDomain = withCredentials;
     }
     // 设置请求过期时间
     setTimeout() {
-        const { timeout = null } = this.options;
+        const {timeout = null} = this.options;
         if (timeout) {
             this.xmlHttp.timeout = timeout;
 
@@ -226,7 +226,7 @@ class BrowserXHR {
     }
     // 过期时间相应
     onTimeout() {
-        const { error = () => {}, complete = () => {} } = this.options;
+        const {error = () => {}, complete = () => {}} = this.options;
         this.xmlHttp.ontimeout = function (event) {
             console.error('http请求超时！');
             complete(event);
@@ -245,7 +245,7 @@ class BrowserXHR {
             dataType = 'json',
             complete = () => {},
             urlSuffix,
-            parameter: { operationName } = {},
+            parameter: {operationName} = {},
         } = this.options;
         const XHRQueue = BrowserXHR.XHRQueue || [];
         if (this.xmlHttp.readyState === 4) {
@@ -304,7 +304,7 @@ class BrowserXHR {
     }
     // 发送数据
     send() {
-        let { parameter = {}, method, dataType = 'json' } = this.options;
+        let {parameter = {}, method, dataType = 'json'} = this.options;
         if (!(parameter instanceof FormData)) {
             parameter =
                 dataType == 'json'
@@ -344,7 +344,7 @@ class NodeFetch {
     }
     // 设置请求头
     setRequestHeader(defaultHeaders = {}) {
-        let { headers = {} } = this.options;
+        let {headers = {}} = this.options;
         this.options.headers = {
             ...defaultHeaders,
             ...headers,
@@ -362,7 +362,7 @@ class NodeFetch {
                     this.send();
                 })
                 .catch((errorInfo) => {
-                    const { error = () => {}, complete = () => {} } = errorInfo;
+                    const {error = () => {}, complete = () => {}} = errorInfo;
                     console.error('http 请求异常,未发送http请求。', errorInfo);
                     error(options);
                 });
@@ -397,9 +397,9 @@ class NodeFetch {
     // 创建XHR
     createXHR() {
         const {
-            parameter: { operationName } = {},
+            parameter: {operationName} = {},
             urlSuffix,
-            headers: { token },
+            headers: {token},
         } = this.options;
 
         let xmlHttp = null;
@@ -427,7 +427,7 @@ class NodeFetch {
 
     uploadFile(options) {
         this.ininData(options);
-        const { parameter = {} } = this.options;
+        const {parameter = {}} = this.options;
         let formData = new FormData();
         const keys = Object.keys(parameter);
         keys.forEach((key) => {
@@ -482,7 +482,7 @@ class NodeFetch {
             dataType = 'json',
             complete = () => {},
             urlSuffix,
-            parameter: { operationName } = {},
+            parameter: {operationName} = {},
         } = this.options;
         const XHRQueue = NodeFetch.XHRQueue || [];
      

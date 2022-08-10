@@ -6,20 +6,20 @@
  * @FilePath: /react-loading-ssr/client/component/Loading/index.js
  * @Description:
  */
-import React from 'react'
+import React from 'react';
 
 export default (props) => {
-  const { isLoading, timedOut, pastDelay, error } = props
+  const {isLoading, timedOut, pastDelay, error} = props;
 
   if (isLoading) {
     if (timedOut) {
-      return <div>Loader timed out!</div>
+      return <div>Loader timed out!</div>;
     } else if (pastDelay) {
-      return <div>Loading...</div>
+      return <div>Loading...</div>;
     }
-    return null
+    return null;
   } else if (error) {
-    return <div>Error! Component failed to load</div>
+    return <div>Error! Component failed to load</div>;
   }
-  return null
-}
+  return null;
+};

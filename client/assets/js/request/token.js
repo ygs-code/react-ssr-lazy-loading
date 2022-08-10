@@ -25,20 +25,20 @@ class Token {
   }
   publishQueue(token) {
     this.queue.forEach((item) => {
-      const { resolve, reject } = item;
+      const {resolve, reject} = item;
       resolve(token);
     });
     this.queue = [];
   }
   clearQueue() {
     this.queue.forEach((item) => {
-      const { resolve, reject } = item;
+      const {resolve, reject} = item;
       reject(null);
     });
     this.queue = [];
   }
   get(url) {
-    const token =  '' // localStorage.getItem("token");
+    const token =  ''; // localStorage.getItem("token");
 
     if (!url) {
       return token;
@@ -50,10 +50,10 @@ class Token {
       if (this.doNotToken.includes(url)) {
         return resolve("");
       }
-      this.subscribeQueue({ resolve, reject });
+      this.subscribeQueue({resolve, reject});
     });
   }
 }
 
-export { Token };
+export {Token};
 export default new Token();

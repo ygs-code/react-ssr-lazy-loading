@@ -3,5 +3,5 @@ export default {
   marketing:'/marketing',
   home:'/',
   user:'/user',
- }
+ };
     

@@ -2,7 +2,7 @@
  * @Date: 2022-08-09 09:35:05
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-09 13:29:30
+ * @LastEditTime: 2022-08-10 14:20:28
  * @FilePath: /react-loading-ssr/server/ignore.js
  * @Description:
  */
@@ -14,7 +14,7 @@ let {
   htmlWebpackPluginOptions = '',
 } = process.env // 环境参数
  
-const a = 111111
+const a = 11124
     
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === 'production' 

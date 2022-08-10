@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route as RawRoute } from 'react-router-dom';
+import {Route as RawRoute} from 'react-router-dom';
 
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -67,7 +67,7 @@ var commonjsGlobal =
 
 function createCommonjsModule(fn, module) {
     return (
-        (module = { exports: {} }), fn(module, module.exports), module.exports
+        (module = {exports: {}}), fn(module, module.exports), module.exports
     );
 }
 
@@ -1862,7 +1862,7 @@ var createMemoryHistory = function createMemoryHistory() {
 
                 history.entries[history.index] = location;
 
-                setState({ action: action, location: location });
+                setState({action: action, location: location});
             }
         );
     };
@@ -2521,7 +2521,7 @@ var compilePath = function compilePath(pattern, options) {
 
     var keys = [];
     var re = pathToRegexp_1(pattern, keys, options);
-    var compiledPattern = { re: re, keys: keys };
+    var compiledPattern = {re: re, keys: keys};
 
     if (cacheCount$1 < cacheLimit$1) {
         cache[pattern] = compiledPattern;
@@ -2539,7 +2539,7 @@ var matchPath = function matchPath(pathname) {
         arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var parent = arguments[2];
 
-    if (typeof options === 'string') options = { path: options };
+    if (typeof options === 'string') options = {path: options};
 
     var _options = options,
         path = _options.path,
@@ -2956,4 +2956,4 @@ var withRouter = function withRouter(Component) {
     return hoistNonReactStatics(C, Component);
 };
 
-export { Route, withRouter };
+export {Route, withRouter};

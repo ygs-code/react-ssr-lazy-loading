@@ -1,6 +1,6 @@
 import XMLHttpRequest from './XMLHttpRequest';
 import baseUrl from './baseUrl';
-import { codeMap } from './redirect';
+import {codeMap} from './redirect';
 import token from './token';
 import filterGraphqlData from './filterGraphqlData';
 import {
@@ -50,7 +50,7 @@ export default class Request {
         );
     }
     static setLoad(options) {
-        const { isLoad = true, url, requestId = '', parameter } = options;
+        const {isLoad = true, url, requestId = '', parameter} = options;
         if (isLoad) {
             this.requestQueue.push(options);
             // 开始加载数据
@@ -207,7 +207,7 @@ export default class Request {
               );
     }
     static uploadFile(url, parameter, options) {
-        const { baseUrl } = options;
+        const {baseUrl} = options;
         const urls = this.transformUrl(baseUrl || this.baseUrl, url);
         const data = {
             ...urls,
@@ -306,7 +306,7 @@ Request.defaultHeaders = {
 };
 // 错误拦截提示
 Request.error = (errorInfo) => {
-    const { code, message } = errorInfo[0] || {};
+    const {code, message} = errorInfo[0] || {};
     if (!code) {
         errorMessage('系统错误');
     } else {
@@ -319,7 +319,7 @@ Request.error = (errorInfo) => {
 Request.interceptors = {
     // 请求拦截
     request: async (config) => {
-        const { urlSuffix } = config;
+        const {urlSuffix} = config;
         config = {
             ...config,
             headers: {
@@ -335,7 +335,7 @@ Request.interceptors = {
     },
     //响应拦截
     response: (response) => {
-        const { code } = response[0] || {};
+        const {code} = response[0] || {};
         // if (code != 200) {
         //   Request.error(response)
         //   return Promise.reject(response)
@@ -348,7 +348,7 @@ Request.interceptors = {
 export class Graphql {
     constructor(options) {
         this.options = options;
-        const { url } = options;
+        const {url} = options;
         this.url = url;
     }
     // 查询
@@ -357,7 +357,7 @@ export class Graphql {
             ...this.options,
             ...options,
         };
-        const { error = () => {} } = this.options;
+        const {error = () => {}} = this.options;
         // return Request.get(this.url, parameter, this.options);
         return Request.post(this.url, parameter, this.options);
     }
@@ -367,7 +367,7 @@ export class Graphql {
             ...this.options,
             ...options,
         };
-        const { error = () => {} } = this.options;
+        const {error = () => {}} = this.options;
         return Request.post(this.url, parameter, this.options);
     }
     static gql(/* arguments */) {
@@ -414,7 +414,7 @@ export const gql = Graphql.gql;
 // Graphql 配置项 start
 //Graphql 错误请求
 Graphql.error = (errorInfo) => {
-    const { code, message } = errorInfo[0] || {};
+    const {code, message} = errorInfo[0] || {};
     if (!code) {
         errorMessage('系统错误');
     } else {
@@ -430,19 +430,19 @@ Graphql.error = (errorInfo) => {
 Graphql.interceptors.response = (response) => {
     const data = response[0] || {};
     const options = response[2] || {};
-    const { code, message } = data;
+    const {code, message} = data;
     if (code && code !== 200) {
         Graphql.error(response);
         return Promise.reject(response);
     }
     for (let key in data) {
-        const { code, data: newData } = data[key];
+        const {code, data: newData} = data[key];
         if (code != 200) {
             Graphql.error([data[key]]);
             return Promise.reject(response);
         }
     }
-    const { filterData } = options;
+    const {filterData} = options;
     return filterData ? filterGraphqlData(data) : response;
 };
 // Graphql 配置项 end

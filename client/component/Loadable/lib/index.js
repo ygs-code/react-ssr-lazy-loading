@@ -259,17 +259,17 @@ function createLoadableComponent(loadFn, options) {
 
                         if (typeof opts.delay === 'number') {
                             if (opts.delay === 0) {
-                                this.setState({ pastDelay: true });
+                                this.setState({pastDelay: true});
                             } else {
                                 this._delay = setTimeout(function () {
-                                    _this2.setState({ pastDelay: true });
+                                    _this2.setState({pastDelay: true});
                                 }, opts.delay);
                             }
                         }
 
                         if (typeof opts.timeout === 'number') {
                             this._timeout = setTimeout(function () {
-                                _this2.setState({ timedOut: true });
+                                _this2.setState({timedOut: true});
                             }, opts.timeout);
                         }
 

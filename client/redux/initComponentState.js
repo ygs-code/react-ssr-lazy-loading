@@ -1,8 +1,8 @@
-import React, { useEffect, useCallback } from 'react';
-import routesComponent, { routesConfigs } from '@/router/routesComponent';
-import { matchPath } from 'react-router-dom';
-import { mapRedux } from '@/redux';
-import { findTreeData, getBaseInitState } from '@/utils';
+import React, {useEffect, useCallback} from 'react';
+import routesComponent, {routesConfigs} from '@/router/routesComponent';
+import {matchPath} from 'react-router-dom';
+import {mapRedux} from '@/redux';
+import {findTreeData, getBaseInitState} from '@/utils';
 
 // 注入initState
 const initState = (Component) => {
@@ -13,7 +13,7 @@ const initState = (Component) => {
         componentDidMount() {
             const {
                 children = () => {},
-                history: { location: { pathname } = {} } = {},
+                history: {location: {pathname} = {}} = {},
                 state = {},
                 dispatch,
             } = this.props;
@@ -46,12 +46,12 @@ const initState = (Component) => {
         getInitState = async () => {
             const {
                 children = () => {},
-                history: { location: { pathname } = {} } = {},
+                history: {location: {pathname} = {}} = {},
                 state = {},
                 dispatch,
             } = this.props;
 
-            let { name } = this.getMatch(routesComponent, pathname);
+            let {name} = this.getMatch(routesComponent, pathname);
             if (
                 state[name]?.initState &&
                 state[name]?.initState instanceof Object &&

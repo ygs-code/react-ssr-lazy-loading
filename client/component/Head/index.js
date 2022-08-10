@@ -6,21 +6,21 @@
  * @FilePath: /react-loading-ssr/client/component/Head/index.js
  * @Description: 
  */
-import React, { Component, useMemo } from 'react';
-import { Nav, NavItem, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import React, {Component, useMemo} from 'react';
+import {Nav, NavItem, NavLink} from 'reactstrap';
+import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { mapRedux } from '@/redux';
+import {mapRedux} from '@/redux';
 import './index.less';
 
 const Index = (props) => {
     const {
-        history: { push } = {},
-        dispatch: { baseInitState: { setInitState, setMenuActive } = {} } = {},
-        state: { baseInitState: { weather = {}, menuActive } = {} } = {},
+        history: {push} = {},
+        dispatch: {baseInitState: {setInitState, setMenuActive} = {}} = {},
+        state: {baseInitState: {weather = {}, menuActive} = {}} = {},
     } = props;
 
-    const { city, province, casts = [] } = weather;
+    const {city, province, casts = []} = weather;
 
 
     // const menu = useMemo(() => {}, []);

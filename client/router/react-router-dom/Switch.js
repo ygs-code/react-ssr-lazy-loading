@@ -1,5 +1,5 @@
-import React, { Suspense, lazy, Children } from 'react';
-import { Switch as RawSwitch } from 'react-router-dom';
+import React, {Suspense, lazy, Children} from 'react';
+import {Switch as RawSwitch} from 'react-router-dom';
 
 class Switch extends RawSwitch {
     constructor(props) {
@@ -12,4 +12,4 @@ class Switch extends RawSwitch {
     };
 }
 
-export { Switch };
+export {Switch};

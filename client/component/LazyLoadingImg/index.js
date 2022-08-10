@@ -9,9 +9,9 @@ import React, {
     useRef,
     useLayoutEffect,
 } from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { mapRedux } from '@/redux';
+import {mapRedux} from '@/redux';
 import {
     Button,
     CardGroup,
@@ -23,7 +23,7 @@ import {
     CardText,
 } from 'reactstrap';
 import _ from 'lodash';
-import { getStyle } from '@/utils';
+import {getStyle} from '@/utils';
 import './index.less';
 
 // 权限跳转登录页面可以在这控制
@@ -32,11 +32,11 @@ const Index = (props) => {
     let [data, setData] = useState([[], [], []]);
     const refs = [useRef(null), useRef(null), useRef(null)];
 
-    const { list = [], callback = () => {} } = props;
+    const {list = [], callback = () => {}} = props;
 
     const addData = useCallback(
         (item) => {
-            const { id } = item;
+            const {id} = item;
             let flag = data
                 .map((item) => {
                     return item.some(($item) => {
@@ -57,7 +57,7 @@ const Index = (props) => {
     useEffect(() => {
         if (lazyLoadingList.length) {
             let item = lazyLoadingList[0];
-            const { url } = item;
+            const {url} = item;
             const Img = new Image();
             Img.src = url;
             Img.onerror = (error) => {
@@ -125,7 +125,7 @@ const Index = (props) => {
                     return (
                         <li ref={refs[index]} key={index}>
                             {item.map(($item, $index) => {
-                                const { id, title, type, url, scenery } = $item;
+                                const {id, title, type, url, scenery} = $item;
                                 return (
                                     <Card key={id} className="card-box">
                                         <CardImg

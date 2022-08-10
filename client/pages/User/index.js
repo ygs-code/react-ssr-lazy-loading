@@ -6,11 +6,11 @@
  * @FilePath: /react-loading-ssr/client/pages/User/index.js
  * @Description: 
  */
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import Nav from '@/component/Nav';
 import Head from '@/component/Head';
 import Table from '@/component/Table';
-import { mapRedux } from '@/redux';
+import {mapRedux} from '@/redux';
 import './index.less';
 const Index = (props={}) => {
     useEffect(() => {}, []);
@@ -54,7 +54,7 @@ const Index = (props={}) => {
                             dataIndex: 'integral',
                             key: 'integral',
                             render(txt, row) {
-                                const { integral } = row;
+                                const {integral} = row;
                                 return integral;
                             },
                         },

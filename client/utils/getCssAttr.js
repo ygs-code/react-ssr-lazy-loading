@@ -12,4 +12,4 @@ const getStyle = (ele, attr) => {
     }
 };
 
-export { getStyle };
+export {getStyle};

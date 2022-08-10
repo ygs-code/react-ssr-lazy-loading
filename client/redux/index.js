@@ -14,72 +14,72 @@
  * @FilePath: /react-loading-ssr/client/redux/index.js
  * @Description:
  */
-import { init } from '@rematch/core'
-import * as models from './models'
-import { connect } from 'react-redux'
-import { CheckDataType, getGlobal } from '@/utils'
+import {init} from '@rematch/core';
+import * as models from './models';
+import {connect} from 'react-redux';
+import {CheckDataType, getGlobal} from '@/utils';
 const mapRedux = (modelsName) => {
   return (Component) => {
     const mapStateToProps = (state) => {
-      let newState = {}
+      let newState = {};
       if (CheckDataType.isUndefined(modelsName)) {
-        newState = state
+        newState = state;
       } else if (CheckDataType.isArray(modelsName)) {
         for (let key of modelsName) {
           if (state[key]) {
-            newState[key] = state[key]
+            newState[key] = state[key];
           }
         }
       } else if (CheckDataType.isString(modelsName)) {
         if (state[modelsName]) {
-          newState[modelsName] = state[modelsName]
+          newState[modelsName] = state[modelsName];
         }
       }
 
       return {
         state: newState,
-      }
-    }
+      };
+    };
 
     const mapDispatchToProps = (dispatch) => {
-      let newDispatch = {}
+      let newDispatch = {};
       if (CheckDataType.isUndefined(modelsName)) {
-        newDispatch = dispatch
+        newDispatch = dispatch;
       } else if (CheckDataType.isArray(modelsName)) {
         for (let key of modelsName) {
           if (dispatch[key]) {
-            newDispatch[key] = dispatch[key]
+            newDispatch[key] = dispatch[key];
           }
         }
       } else if (CheckDataType.isString(modelsName)) {
         if (dispatch[modelsName]) {
-          newDispatch[modelsName] = dispatch[modelsName]
+          newDispatch[modelsName] = dispatch[modelsName];
         }
       }
 
       return {
         dispatch: newDispatch,
-      }
-    }
-    return connect(mapStateToProps, mapDispatchToProps)(Component)
-  }
-}
-export { mapRedux }
+      };
+    };
+    return connect(mapStateToProps, mapDispatchToProps)(Component);
+  };
+};
+export {mapRedux};
 
 // const global = getGlobal()
 
 // console.log('global=======',global)
 
 export const createStore = (global) => {
-  let newModels = {}
+  let newModels = {};
   for (let key in models) {
-    newModels[key] = models[key](global)
+    newModels[key] = models[key](global);
   }
 
   //文档： https://www.icode9.com/content-4-1343821.html
   return init({
     models: newModels,
-  })
-}
+  });
+};
 
-export default createStore    //(global || {})
+export default createStore;    //(global || {})

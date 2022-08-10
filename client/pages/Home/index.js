@@ -15,10 +15,10 @@ import React, {
     memo,
     useEffect,
 } from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { mapRedux } from '@/redux';
+import {mapRedux} from '@/redux';
 import {
     Button,
     CardGroup,
@@ -32,8 +32,8 @@ import {
 import Nav from '@/component/Nav';
 import Head from '@/component/Head';
 import LazyLoadingImg from '@/component/LazyLoadingImg';
-import routesComponent, { routesConfigs } from '@/router/routesComponent';
-import { findTreeData } from '@/utils';
+import routesComponent, {routesConfigs} from '@/router/routesComponent';
+import {findTreeData} from '@/utils';
 import './index.less';
 // 权限跳转登录页面可以在这控制
 const Index = (props) => {
@@ -41,8 +41,8 @@ const Index = (props) => {
     let [loading, setLoading] = useState(false);
 
     const {
-        dispatch: { home: { setInitState = () => {} } = {} } = {},
-        state: { home: { count, initState: { list = [] } = {} } = {} } = {},
+        dispatch: {home: {setInitState = () => {}} = {}} = {},
+        state: {home: {count, initState: {list = []} = {}} = {}} = {},
     } = props;
 
     useEffect(() => {
@@ -66,7 +66,7 @@ const Index = (props) => {
         let initStateFn = findInitData(routesConfigs, 'home', 'name');
         setPage(page);
         let {
-            data: { result: data },
+            data: {result: data},
         } = await axios(
             `https://api.apiopen.top/api/getHaoKanVideo?page=${page}&size=10`
         );
@@ -75,7 +75,7 @@ const Index = (props) => {
         //     page,
         //     size: 10,
         // });
-        const { total, list: resList = [] } = data;
+        const {total, list: resList = []} = data;
         setInitState({
             initState: {
                 total,

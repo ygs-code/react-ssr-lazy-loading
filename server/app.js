@@ -2,7 +2,7 @@
  * @Date: 2022-08-09 09:35:05
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-09 13:51:20
+ * @LastEditTime: 2022-08-10 16:22:28
  * @FilePath: /react-loading-ssr/server/app.js
  * @Description:
  */
@@ -20,7 +20,7 @@ let {
   port,
 } = process.env // 环境参数
 
-const b = 11113211231231231231212312312311231231232311
+const b = 11132
 //    是否是生产环境11
 const isEnvProduction = NODE_ENV === 'production'
 //   是否是测试开发环境

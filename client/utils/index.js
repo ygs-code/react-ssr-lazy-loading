@@ -10,31 +10,31 @@ import {
   throttle,
   stabilization,
   statusThrottle,
-} from './throttlingStabilization'
+} from './throttlingStabilization';
 // import {
 //     deepCopy
 // } from './deepCopy'
 // import {SubscribePublished} from './SubscribePublished';
-import { CheckDataType } from './CheckDataType'
+import {CheckDataType} from './CheckDataType';
 import {
   filterTreeData,
   recursionTreeData,
   deepCopy,
   diffData,
   findTreeData,
-} from './ergodic'
+} from './ergodic';
 // import {FloatingBall} from './FloatingBall';
-import { getStyle } from './getCssAttr'
+import {getStyle} from './getCssAttr';
 import {
   checkPhone,
   checkUser,
   checkPassword,
   checkVerificationCode,
   firstToUpper,
-} from './regular'
-import { setInitData } from './setInitData'
-import { getEv } from './getEv'
-import { getBaseInitState } from './getBaseInitState'
+} from './regular';
+import {setInitData} from './setInitData';
+import {getEv} from './getEv';
+import {getBaseInitState} from './getBaseInitState';
 // import { getGlobal } from './getGlobal'
 
 export {
@@ -59,6 +59,6 @@ export {
   firstToUpper,
   setInitData,
   getEv,
-}
+};
 // 整体输出
-export * from './regular.js'
+export * from './regular.js';

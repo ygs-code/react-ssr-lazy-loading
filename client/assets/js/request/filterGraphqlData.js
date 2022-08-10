@@ -9,7 +9,7 @@
 export default (data) => {
   for (let key in data) {
     if (data.hasOwnProperty(key)) {
-      const { code } = data[key];
+      const {code} = data[key];
       if (code === 200) {
         return data[key];
       }

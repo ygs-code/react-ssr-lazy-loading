@@ -2,7 +2,7 @@
 // 按需加载插件
 import loadable from '@/component/Loadable';
 import Loading from '@/component/Loading';
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import pagesMarketingRouterRoutesconfig from '@/pages/marketing/router/routesConfig.js';
 import routerRoutesconfig from '@/router/routesConfig.js';
 
@@ -63,7 +63,7 @@ let routesComponentConfig=[
                      level:1,
                      routesConfigPath:'K:/react-loading-ssr/client/router/routesConfig.js'
                    },
-    ]
+    ];
 
 export const routesConfigs = [
   ...pagesMarketingRouterRoutesconfig,

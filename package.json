@@ -113,7 +113,7 @@
     "mini-css-extract-plugin": "1.6.2",
     "moment": "^2.29.4",
     "node-fetch": "2",
-    "nodemon": "^1.12.5",
+    "nodemon": "^2.0.19",
     "npm-run-all": "^4.1.2",
     "ora": "4.1.1",
     "postcss-loader": "^2.0.9",

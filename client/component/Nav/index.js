@@ -6,20 +6,20 @@
  * @FilePath: /react-loading-ssr/client/component/Nav/index.js
  * @Description: 
  */
-import React, { Component, useMemo, useState } from 'react';
-import { Nav, NavItem, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import React, {Component, useMemo, useState} from 'react';
+import {Nav, NavItem, NavLink} from 'reactstrap';
+import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { mapRedux } from '@/redux';
+import {mapRedux} from '@/redux';
 import addRouterApi from '@/router/addRouterApi';
 import './index.less';
 
 const Index = (props) => {
     const {
-        history: { push } = {},
-        dispatch: { baseInitState: { setInitState, setMenuActive } = {} } = {},
-        state: { baseInitState: { menu = [], menuActive } = {} } = {},
-        location: { pathname } = {},
+        history: {push} = {},
+        dispatch: {baseInitState: {setInitState, setMenuActive} = {}} = {},
+        state: {baseInitState: {menu = [], menuActive} = {}} = {},
+        location: {pathname} = {},
         pushRoute,
     } = props;
 
@@ -43,7 +43,7 @@ const Index = (props) => {
                         name: 'DiscountCoupon',
                     },
                 ].map((item, index) => {
-                    const { path, title, name } = item;
+                    const {path, title, name} = item;
                     return (
                         <NavItem key={index}>
                             <NavLink
@@ -53,9 +53,9 @@ const Index = (props) => {
                                         menuActive: path,
                                     });
                                     if (index == 1) {
-                                        pushRoute({ path });
+                                        pushRoute({path});
                                     } else {
-                                        pushRoute({ name });
+                                        pushRoute({name});
                                     }
                                 }}
                             >

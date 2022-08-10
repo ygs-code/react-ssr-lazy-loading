@@ -1,4 +1,4 @@
-import { setInitData } from '@/utils';
+import {setInitData} from '@/utils';
 export default ($window) => {
     return {
         state: {

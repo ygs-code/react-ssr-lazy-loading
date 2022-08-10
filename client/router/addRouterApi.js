@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { withRouter } from '@/router/react-router-dom';
+import React, {useEffect} from 'react';
+import {withRouter} from '@/router/react-router-dom';
 import routePaths from './routePaths';
-import { historyPush } from './historyPush';
+import {historyPush} from './historyPush';
 
 const addRouterApi = (Component) => {
     class AddRouter extends React.Component {
@@ -9,8 +9,8 @@ const addRouterApi = (Component) => {
             super(props);
         }
         pushRoute = (parameter) => {
-            const { name, url, path } = parameter;
-            const { history } = this.props;
+            const {name, url, path} = parameter;
+            const {history} = this.props;
 
             historyPush({
                 history,
