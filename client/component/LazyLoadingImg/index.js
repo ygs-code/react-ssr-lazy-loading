@@ -133,8 +133,7 @@ const Index = (props) => {
                       <CardTitle tag="h5">{scenery}</CardTitle>
                       <CardSubtitle
                         className="mb-2 text-muted"
-                        tag="h6"
-                      ></CardSubtitle>
+                        tag="h6"></CardSubtitle>
                       <CardText>{title}</CardText>
                     </CardBody>
                   </Card>

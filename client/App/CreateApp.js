@@ -2,7 +2,7 @@
  * @Date: 2022-08-09 09:35:04
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-10 18:28:02
+ * @LastEditTime: 2022-08-11 10:40:46
  * @FilePath: /react-loading-ssr/client/App/CreateApp.js
  * @Description:
  */
@@ -26,8 +26,7 @@ const CreateApp = (props = {}) => {
     <Capture
       report={(moduleName) => {
         return modules.push(moduleName);
-      }}
-    >
+      }}>
       <App {...props} />
     </Capture>
   ) : (

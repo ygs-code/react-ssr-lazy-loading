@@ -57,8 +57,7 @@ const Index = (props) => {
                   } else {
                     pushRoute({ name });
                   }
-                }}
-              >
+                }}>
                 {title}
               </NavLink>
             </NavItem>

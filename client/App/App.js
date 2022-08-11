@@ -2,7 +2,7 @@
  * @Date: 2022-08-05 09:22:30
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-10 19:29:52
+ * @LastEditTime: 2022-08-11 11:06:24
  * @FilePath: /react-loading-ssr/client/App/App.js
  * @Description:
  */
@@ -28,9 +28,11 @@ const App = (props) => {
     sadfasdfasdfsadfasdfasdfasdfasdfsdf
   } = props;
   return (
-    <Provider store={store}>
-      <Routers history={history} location={location} />
-    </Provider>
+    <>
+      <Provider store={store}>
+        <Routers history={history} location={location} />
+      </Provider>
+    </>
   );
 };
 // App.propTypes = {
