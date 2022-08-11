@@ -1,5 +1,5 @@
 const getStyle = (ele, attr) => {
-  var style = null;
+  let style = null;
   try {
     if (window.getComputedStyle) {
       style = window.getComputedStyle(ele, null);

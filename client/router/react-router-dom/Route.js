@@ -532,10 +532,9 @@ var factoryWithTypeCheckers = function (isValidElement, throwOnDirectAccess) {
       // Steps 1-5, 7-10
       // Steps 6.b-6.e: +0 != -0
       return x !== 0 || 1 / x === 1 / y;
-    } else {
-      // Step 6.a: NaN == NaN
-      return x !== x && y !== y;
     }
+    // Step 6.a: NaN == NaN
+    return x !== x && y !== y;
   }
   /*eslint-enable no-self-compare*/
 
@@ -625,9 +624,8 @@ var factoryWithTypeCheckers = function (isValidElement, throwOnDirectAccess) {
           );
         }
         return null;
-      } else {
-        return validate(props, propName, componentName, location, propFullName);
       }
+      return validate(props, propName, componentName, location, propFullName);
     }
 
     var chainedCheckType = checkType.bind(null, false);
@@ -1308,7 +1306,9 @@ function resolvePathname(to) {
     fromParts = fromParts.concat(toParts);
   }
 
-  if (!fromParts.length) return "/";
+  if (!fromParts.length) {
+    return "/";
+  }
 
   var hasTrailingSlash = void 0;
   if (fromParts.length) {
@@ -1333,20 +1333,24 @@ function resolvePathname(to) {
     }
   }
 
-  if (!mustEndAbs)
+  if (!mustEndAbs) {
     for (; up--; up) {
       fromParts.unshift("..");
     }
+  }
   if (
     mustEndAbs &&
     fromParts[0] !== "" &&
     (!fromParts[0] || !isAbsolute(fromParts[0]))
-  )
+  ) {
     fromParts.unshift("");
+  }
 
   var result = fromParts.join("/");
 
-  if (hasTrailingSlash && result.substr(-1) !== "/") result += "/";
+  if (hasTrailingSlash && result.substr(-1) !== "/") {
+    result += "/";
+  }
 
   return result;
 }
@@ -1366,9 +1370,13 @@ var _typeof =
       };
 
 function valueEqual(a, b) {
-  if (a === b) return true;
+  if (a === b) {
+    return true;
+  }
 
-  if (a == null || b == null) return false;
+  if (a == null || b == null) {
+    return false;
+  }
 
   if (Array.isArray(a)) {
     return (
@@ -1383,18 +1391,24 @@ function valueEqual(a, b) {
   var aType = typeof a === "undefined" ? "undefined" : _typeof(a);
   var bType = typeof b === "undefined" ? "undefined" : _typeof(b);
 
-  if (aType !== bType) return false;
+  if (aType !== bType) {
+    return false;
+  }
 
   if (aType === "object") {
     var aValue = a.valueOf();
     var bValue = b.valueOf();
 
-    if (aValue !== a || bValue !== b) return valueEqual(aValue, bValue);
+    if (aValue !== a || bValue !== b) {
+      return valueEqual(aValue, bValue);
+    }
 
     var aKeys = Object.keys(a);
     var bKeys = Object.keys(b);
 
-    if (aKeys.length !== bKeys.length) return false;
+    if (aKeys.length !== bKeys.length) {
+      return false;
+    }
 
     return aKeys.every(function (key) {
       return valueEqual(a[key], b[key]);
@@ -1435,10 +1449,13 @@ var createPath = function createPath(location) {
 
   var path = pathname || "/";
 
-  if (search && search !== "?")
+  if (search && search !== "?") {
     path += search.charAt(0) === "?" ? search : "?" + search;
+  }
 
-  if (hash && hash !== "#") path += hash.charAt(0) === "#" ? hash : "#" + hash;
+  if (hash && hash !== "#") {
+    path += hash.charAt(0) === "#" ? hash : "#" + hash;
+  }
 
   return path;
 };
@@ -1472,23 +1489,29 @@ var createLocation = function createLocation(
     // One-arg form: push(location)
     location = _extends({}, path);
 
-    if (location.pathname === undefined) location.pathname = "";
+    if (location.pathname === undefined) {
+      location.pathname = "";
+    }
 
     if (location.search) {
-      if (location.search.charAt(0) !== "?")
+      if (location.search.charAt(0) !== "?") {
         location.search = "?" + location.search;
+      }
     } else {
       location.search = "";
     }
 
     if (location.hash) {
-      if (location.hash.charAt(0) !== "#") location.hash = "#" + location.hash;
+      if (location.hash.charAt(0) !== "#") {
+        location.hash = "#" + location.hash;
+      }
     } else {
       location.hash = "";
     }
 
-    if (state !== undefined && location.state === undefined)
+    if (state !== undefined && location.state === undefined) {
       location.state = state;
+    }
   }
 
   try {
@@ -1506,7 +1529,9 @@ var createLocation = function createLocation(
     }
   }
 
-  if (key) location.key = key;
+  if (key) {
+    location.key = key;
+  }
 
   if (currentLocation) {
     // Resolve incomplete/relative pathname relative to current location.
@@ -1547,7 +1572,9 @@ var createTransitionManager = function createTransitionManager() {
     prompt = nextPrompt;
 
     return function () {
-      if (prompt === nextPrompt) prompt = null;
+      if (prompt === nextPrompt) {
+        prompt = null;
+      }
     };
   };
 
@@ -1590,7 +1617,9 @@ var createTransitionManager = function createTransitionManager() {
     var isActive = true;
 
     var listener = function listener() {
-      if (isActive) fn.apply(undefined, arguments);
+      if (isActive) {
+        fn.apply(undefined, arguments);
+      }
     };
 
     listeners.push(listener);
@@ -1723,7 +1752,9 @@ var createMemoryHistory = function createMemoryHistory() {
       action,
       getUserConfirmation,
       function (ok) {
-        if (!ok) return;
+        if (!ok) {
+          return;
+        }
 
         var prevIndex = history.index;
         var nextIndex = prevIndex + 1;
@@ -1769,7 +1800,9 @@ var createMemoryHistory = function createMemoryHistory() {
       action,
       getUserConfirmation,
       function (ok) {
-        if (!ok) return;
+        if (!ok) {
+          return;
+        }
 
         history.entries[history.index] = location;
 
@@ -1885,18 +1918,23 @@ var inherits = function (subClass, superClass) {
       configurable: true
     }
   });
-  if (superClass)
+  if (superClass) {
     Object.setPrototypeOf
       ? Object.setPrototypeOf(subClass, superClass)
       : (subClass.__proto__ = superClass);
+  }
 };
 
 var objectWithoutProperties = function (obj, keys) {
   var target = {};
 
   for (var i in obj) {
-    if (keys.indexOf(i) >= 0) continue;
-    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
+    if (keys.indexOf(i) >= 0) {
+      continue;
+    }
+    if (!Object.prototype.hasOwnProperty.call(obj, i)) {
+      continue;
+    }
     target[i] = obj[i];
   }
 
@@ -2401,7 +2439,9 @@ var compileGenerator = function compileGenerator(pattern) {
   var cacheKey = pattern;
   var cache = patternCache[cacheKey] || (patternCache[cacheKey] = {});
 
-  if (cache[pattern]) return cache[pattern];
+  if (cache[pattern]) {
+    return cache[pattern];
+  }
 
   var compiledGenerator = pathToRegexp_1.compile(pattern);
 
@@ -2421,7 +2461,9 @@ var compilePath = function compilePath(pattern, options) {
   var cacheKey = "" + options.end + options.strict + options.sensitive;
   var cache = patternCache$1[cacheKey] || (patternCache$1[cacheKey] = {});
 
-  if (cache[pattern]) return cache[pattern];
+  if (cache[pattern]) {
+    return cache[pattern];
+  }
 
   var keys = [];
   var re = pathToRegexp_1(pattern, keys, options);
@@ -2443,7 +2485,9 @@ var matchPath = function matchPath(pathname) {
     arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var parent = arguments[2];
 
-  if (typeof options === "string") options = { path: options };
+  if (typeof options === "string") {
+    options = { path: options };
+  }
 
   var _options = options,
     path = _options.path,
@@ -2454,7 +2498,9 @@ var matchPath = function matchPath(pathname) {
     _options$sensitive = _options.sensitive,
     sensitive = _options$sensitive === undefined ? false : _options$sensitive;
 
-  if (path == null) return parent;
+  if (path == null) {
+    return parent;
+  }
 
   var _compilePath = compilePath(path, {
       end: exact,
@@ -2466,14 +2512,18 @@ var matchPath = function matchPath(pathname) {
 
   var match = re.exec(pathname);
 
-  if (!match) return null;
+  if (!match) {
+    return null;
+  }
 
   var url = match[0],
     values = match.slice(1);
 
   var isExact = pathname === url;
 
-  if (exact && !isExact) return null;
+  if (exact && !isExact) {
+    return null;
+  }
 
   return {
     path: path, // the path pattern used to match
@@ -2544,7 +2594,9 @@ var Route = (function (_React$Component) {
       exact = _ref.exact,
       sensitive = _ref.sensitive;
 
-    if (computedMatch) return computedMatch; // <Switch> already computed the match for us
+    if (computedMatch) {
+      return computedMatch;
+    } // <Switch> already computed the match for us
 
     invariant_1$1(
       router,
@@ -2654,14 +2706,21 @@ var Route = (function (_React$Component) {
       staticContext: staticContext
     };
 
-    if (component) return match ? React.createElement(component, props) : null;
+    if (component) {
+      return match ? React.createElement(component, props) : null;
+    }
 
-    if (render) return match ? render(props) : null;
+    if (render) {
+      return match ? render(props) : null;
+    }
 
-    if (typeof children === "function") return children(props);
+    if (typeof children === "function") {
+      return children(props);
+    }
 
-    if (children && !isEmptyChildren(children))
+    if (children && !isEmptyChildren(children)) {
       return React.Children.only(children);
+    }
 
     return null;
   };
@@ -2696,7 +2755,9 @@ var addLeadingSlash$1 = function addLeadingSlash(path) {
 };
 
 var addBasename = function addBasename(basename, location) {
-  if (!basename) return location;
+  if (!basename) {
+    return location;
+  }
 
   return _extends$4({}, location, {
     pathname: addLeadingSlash$1(basename) + location.pathname
@@ -2704,11 +2765,15 @@ var addBasename = function addBasename(basename, location) {
 };
 
 var stripBasename$1 = function stripBasename(basename, location) {
-  if (!basename) return location;
+  if (!basename) {
+    return location;
+  }
 
   var base = addLeadingSlash$1(basename);
 
-  if (location.pathname.indexOf(base) !== 0) return location;
+  if (location.pathname.indexOf(base) !== 0) {
+    return location;
+  }
 
   return _extends$4({}, location, {
     pathname: location.pathname.substr(base.length)

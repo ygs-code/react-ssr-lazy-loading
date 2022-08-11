@@ -7,6 +7,7 @@
  * @FilePath: /error-sytem/client/src/router/history.js
  */
 import { createBrowserHistory, createHashHistory } from "history";
+
 export const history = {};
 
 // createBrowserHistory({
@@ -27,8 +28,7 @@ export const getHistory = (props = {}) =>
     ...props
   });
 
-export const listen = (fn = () => {}) => {
-  return history.listen((location, action) => {
+export const listen = (fn = () => {}) =>
+  history.listen((location, action) => {
     fn(location, action);
   });
-};

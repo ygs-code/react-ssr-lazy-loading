@@ -12,7 +12,7 @@ import token from "./token";
 export const codeMap = {
   // 没有权限跳转到登录页面
   401: (errorInfo) => {
-    let XHRQueue = (errorInfo && errorInfo[2] && errorInfo[2].XHRQueue) || [];
+    const XHRQueue = (errorInfo && errorInfo[2] && errorInfo[2].XHRQueue) || [];
     //  localStorage.removeItem("token");
     token.clearQueue();
     //  停止剩余的请求
@@ -20,7 +20,7 @@ export const codeMap = {
       XHRQueue[index].xmlHttp && XHRQueue[index].xmlHttp.abort();
       XHRQueue.splice(index, 1);
     }
-    //重定向到登录页面
+    // 重定向到登录页面
     // historyPush({
     //   url: routePaths.logLn,
     // });

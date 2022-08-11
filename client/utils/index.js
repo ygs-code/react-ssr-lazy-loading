@@ -50,7 +50,7 @@ export {
   filterTreeData, // 过滤树数据结构
   recursionTreeData, // 递归循环树数据
   diffData, // 比较新旧两个数据
-  findTreeData, //搜索到树数据的某一条数据单条 不包括父层数据的
+  findTreeData, // 搜索到树数据的某一条数据单条 不包括父层数据的
   getStyle, // 获取样式
   checkPhone,
   checkUser,

@@ -7,7 +7,7 @@
  * @FilePath: /react-loading-ssr/client/assets/js/request/filterGraphqlData.js
  */
 export default (data) => {
-  for (let key in data) {
+  for (const key in data) {
     if (data.hasOwnProperty(key)) {
       const { code } = data[key];
       if (code === 200) {

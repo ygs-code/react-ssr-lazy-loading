@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from "react";
-import routesComponent, { routesConfigs } from "@/router/routesComponent";
 import { matchPath } from "react-router-dom";
+import routesComponent, { routesConfigs } from "@/router/routesComponent";
 import { mapRedux } from "@/redux";
 import { findTreeData, getBaseInitState } from "@/utils";
 
@@ -10,6 +10,7 @@ const initState = (Component) => {
     constructor(props) {
       super(props);
     }
+
     componentDidMount() {
       const {
         children = () => {},
@@ -23,8 +24,8 @@ const initState = (Component) => {
     }
 
     getMatch = (routesArray, url) => {
-      for (let router of routesArray) {
-        let $router = matchPath(url, {
+      for (const router of routesArray) {
+        const $router = matchPath(url, {
           path: router.path,
           exact: router.exact
         });
@@ -39,9 +40,8 @@ const initState = (Component) => {
     };
 
     // 获取组件初始化数据
-    findInitData = (routesConfigs, value, key) => {
-      return (findTreeData(routesConfigs, value, key) || {}).initState;
-    };
+    findInitData = (routesConfigs, value, key) =>
+      (findTreeData(routesConfigs, value, key) || {}).initState;
 
     getInitState = async () => {
       const {
@@ -51,7 +51,7 @@ const initState = (Component) => {
         dispatch
       } = this.props;
 
-      let { name } = this.getMatch(routesComponent, pathname);
+      const { name } = this.getMatch(routesComponent, pathname);
       if (
         state[name]?.initState &&
         state[name]?.initState instanceof Object &&
@@ -59,9 +59,9 @@ const initState = (Component) => {
       ) {
         return false;
       }
-      let initStateFn = this.findInitData(routesConfigs, name, "name");
+      const initStateFn = this.findInitData(routesConfigs, name, "name");
       if (initStateFn && initStateFn instanceof Function) {
-        let data = await initStateFn();
+        const data = await initStateFn();
         dispatch[name].setInitState({
           initState: data
         });

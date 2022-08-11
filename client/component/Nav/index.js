@@ -14,7 +14,7 @@ import { mapRedux } from "@/redux";
 import addRouterApi from "@/router/addRouterApi";
 import "./index.less";
 
-const Index = (props) => {
+function Index(props) {
   const {
     history: { push } = {},
     dispatch: { baseInitState: { setInitState, setMenuActive } = {} } = {},
@@ -66,7 +66,7 @@ const Index = (props) => {
       </Nav>
     </div>
   );
-};
+}
 Index.propTypes = {
   history: PropTypes.object,
   dispatch: PropTypes.func,

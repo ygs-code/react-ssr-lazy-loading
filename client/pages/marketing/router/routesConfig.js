@@ -11,13 +11,13 @@ export default [
     path: "/marketing",
     exact: true,
     name: "marketing",
-    entry: `/pages/marketing/index.js`,
+    entry: "/pages/marketing/index.js",
     level: 2,
     children: [
       {
         path: "/discount-coupon",
         name: "DiscountCoupon",
-        entry: `/pages/marketing/pages/DiscountCoupon/index.js`,
+        entry: "/pages/marketing/pages/DiscountCoupon/index.js",
         level: 2,
         children: []
       }

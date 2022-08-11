@@ -11,23 +11,25 @@ import {
 
 // 导出普通请求
 export default class Request {
-  static platform = "web"; //smallProgram 小程序 , web 网页
+  static platform = "web"; // smallProgram 小程序 , web 网页
+
   static baseUrl = "";
+
   // 请求队列
   static requestQueue = [];
+
   // 默认请求头设置
   static defaultHeaders = {};
-  //错误拦截
+
+  // 错误拦截
   static error(errorInfo) {}
-  //请求拦截器
+
+  // 请求拦截器
   static interceptors = {
-    request: (config) => {
-      return config;
-    },
-    response: (response) => {
-      return response;
-    }
+    request: (config) => config,
+    response: (response) => response
   }; //
+
   // 去除 // 地址
   static transformUrl(baseUrl, url) {
     const urlHpptReg = /^(http\:\/\/)|^(https\:\/\/)/gi;
@@ -39,16 +41,15 @@ export default class Request {
         (baseUrl + url).replace(urlHpptReg, "").replace(urlReg, "/")
     };
   }
+
   static guid() {
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-      /[xy]/g,
-      function (c) {
-        var r = (Math.random() * 16) | 0,
-          v = c == "x" ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-      }
-    );
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0;
+      const v = c == "x" ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
   }
+
   static setLoad(options) {
     const { isLoad = true, url, requestId = "", parameter } = options;
     if (isLoad) {
@@ -59,6 +60,7 @@ export default class Request {
       // });
     }
   }
+
   static post(url, parameter, options = {}) {
     options = {
       method: "POST",
@@ -66,6 +68,7 @@ export default class Request {
     };
     return this.request(url, parameter, options);
   }
+
   static get(url, parameter, options = {}) {
     options = {
       method: "GET",
@@ -73,6 +76,7 @@ export default class Request {
     };
     return this.request(url, parameter, options);
   }
+
   static put(url, parameter, options = {}) {
     options = {
       method: "PUT",
@@ -81,6 +85,7 @@ export default class Request {
 
     return this.request(url, parameter, options);
   }
+
   static delete(url, parameter, options = {}) {
     options = {
       method: "DELETE",
@@ -89,6 +94,7 @@ export default class Request {
 
     return this.request(url, parameter, options);
   }
+
   static trace(url, parameter, options = {}) {
     options = {
       method: "TRACE",
@@ -97,6 +103,7 @@ export default class Request {
 
     return this.request(url, parameter, options);
   }
+
   static connect(url, parameter, options = {}) {
     options = {
       method: "CONNECT",
@@ -104,6 +111,7 @@ export default class Request {
     };
     return this.request(url, parameter, options);
   }
+
   static options(url, parameter, options = {}) {
     const data = {
       method: "OPTIONS",
@@ -112,6 +120,7 @@ export default class Request {
 
     return this.request(url, parameter, options);
   }
+
   static head(url, parameter, options = {}) {
     options = {
       method: "HEAD",
@@ -120,8 +129,9 @@ export default class Request {
 
     return this.request(url, parameter, options);
   }
+
   static request(url, parameter, options) {
-    let {
+    const {
       method,
       headers = {},
       requestId = this.guid(),
@@ -130,17 +140,13 @@ export default class Request {
       baseUrl
     } = options;
 
-    let error = options.error || Request.error || (() => {});
+    const error = options.error || Request.error || (() => {});
 
     const urls = this.transformUrl(baseUrl || this.baseUrl, url);
-    let requestInterceptors =
-      options?.interceptors?.request ||
-      Request?.interceptors?.request ||
-      ((config) => config);
-    let responseInterceptors =
-      options?.interceptors?.response ||
-      Request?.interceptors?.response ||
-      ((response) => response);
+    const requestInterceptors = options?.interceptors?.request;
+    Request?.interceptors?.request || ((config) => config);
+    const responseInterceptors = options?.interceptors?.response;
+    Request?.interceptors?.response || ((response) => response);
 
     // this.setLoad({
     //   url,
@@ -206,6 +212,7 @@ export default class Request {
           })
         );
   }
+
   static uploadFile(url, parameter, options) {
     const { baseUrl } = options;
     const urls = this.transformUrl(baseUrl || this.baseUrl, url);
@@ -216,7 +223,7 @@ export default class Request {
       // ...options,
     };
 
-    let {
+    const {
       headers = {},
       requestId = this.guid(),
       isPromise = true,
@@ -225,16 +232,12 @@ export default class Request {
       method
       // url,
     } = options;
-    let error = Request.error || options.error || (() => {});
+    const error = Request.error || options.error || (() => {});
 
-    let requestInterceptors =
-      options?.interceptors?.request ||
-      Request?.interceptors?.request ||
-      ((config) => config);
-    let responseInterceptors =
-      options?.interceptors?.response ||
-      Request?.interceptors?.response ||
-      ((response) => response);
+    const requestInterceptors = options?.interceptors?.request;
+    Request?.interceptors?.request || ((config) => config);
+    const responseInterceptors = options?.interceptors?.response;
+    Request?.interceptors?.response || ((response) => response);
 
     const keys = Object.keys(parameter);
     const formData = new FormData();
@@ -291,8 +294,8 @@ export default class Request {
   }
 }
 
-//配置项
-//配置默认前缀
+// 配置项
+// 配置默认前缀
 Request.baseUrl = baseUrl;
 // 设置默认请求头
 Request.defaultHeaders = {
@@ -333,7 +336,7 @@ Request.interceptors = {
     // });
     return config;
   },
-  //响应拦截
+  // 响应拦截
   response: (response) => {
     const { code } = response[0] || {};
     // if (code != 200) {
@@ -344,13 +347,14 @@ Request.interceptors = {
   }
 }; //
 
-//导出Graphql请求
+// 导出Graphql请求
 export class Graphql {
   constructor(options) {
     this.options = options;
     const { url } = options;
     this.url = url;
   }
+
   // 查询
   query(parameter, options = {}) {
     this.options = {
@@ -361,6 +365,7 @@ export class Graphql {
     // return Request.get(this.url, parameter, this.options);
     return Request.post(this.url, parameter, this.options);
   }
+
   // 突变
   mutate(parameter, options) {
     this.options = {
@@ -370,12 +375,13 @@ export class Graphql {
     const { error = () => {} } = this.options;
     return Request.post(this.url, parameter, this.options);
   }
-  static gql(/* arguments */) {
-    var args = Array.prototype.slice.call(arguments);
-    var literals = args[0];
-    var result = typeof literals === "string" ? literals : literals[0];
 
-    for (var i = 1; i < args.length; i++) {
+  static gql(/* arguments */) {
+    const args = Array.prototype.slice.call(arguments);
+    const literals = args[0];
+    let result = typeof literals === "string" ? literals : literals[0];
+
+    for (let i = 1; i < args.length; i++) {
       if (args[i] && args[i].kind && args[i].kind === "Document") {
         result += args[i].loc.source.body;
       } else {
@@ -386,6 +392,7 @@ export class Graphql {
     }
     return result;
   }
+
   // static gql(chunks) {
   //   var variables = [];
   //   for (var _i = 1; _i < arguments.length; _i++) {
@@ -393,26 +400,23 @@ export class Graphql {
   //   }
   //   return chunks.reduce(  (accumulator, chunk, index)=> { return "" + accumulator + chunk + (index in variables ? variables[index] : ''); }, '');
   // }
-  //Graphql 错误请求
+  // Graphql 错误请求
   static error(errorInfo) {
     return errorInfo;
   }
+
   static interceptors = {
     // 请求拦截
-    request: (config) => {
-      return config;
-    },
-    //响应拦截
-    response: (response) => {
-      return response;
-    }
+    request: (config) => config,
+    // 响应拦截
+    response: (response) => response
   };
 }
 
-export const gql = Graphql.gql;
+export const { gql } = Graphql;
 
 // Graphql 配置项 start
-//Graphql 错误请求
+// Graphql 错误请求
 Graphql.error = (errorInfo) => {
   const { code, message } = errorInfo[0] || {};
   if (!code) {
@@ -435,7 +439,7 @@ Graphql.interceptors.response = (response) => {
     Graphql.error(response);
     return Promise.reject(response);
   }
-  for (let key in data) {
+  for (const key in data) {
     const { code, data: newData } = data[key];
     if (code != 200) {
       Graphql.error([data[key]]);
@@ -458,10 +462,8 @@ export const GraphqlClient = new Graphql({
     // request: (config) => {
     //   return Graphql.interceptors.request(config);
     // },
-    //响应拦截
-    response: (response) => {
-      return Graphql.interceptors.response(response);
-    }
+    // 响应拦截
+    response: (response) => Graphql.interceptors.response(response)
   },
   // 错误请求
   error: (errorInfo) => {

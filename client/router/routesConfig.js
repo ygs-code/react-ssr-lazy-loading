@@ -14,7 +14,7 @@ export default [
     path: "/",
     exact: true,
     name: "home",
-    entry: `/pages/Home/index.js`,
+    entry: "/pages/Home/index.js",
     initState: async (parameter = {}) => {
       const { page = 1, size = 10 } = parameter;
       return await getHaoKanVideo({
@@ -24,12 +24,10 @@ export default [
         .then((res) => {
           const { code, result: { list = [], total } = {} } = res;
           return {
-            list: list.map((item) => {
-              return {
-                ...item,
-                url: item.userPic
-              };
-            }),
+            list: list.map((item) => ({
+              ...item,
+              url: item.userPic
+            })),
             total
           };
         })
@@ -42,7 +40,7 @@ export default [
   {
     path: "/user",
     name: "user",
-    entry: `/pages/User/index.js`,
+    entry: "/pages/User/index.js",
     level: 1
   }
 ];

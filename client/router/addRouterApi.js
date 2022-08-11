@@ -8,6 +8,7 @@ const addRouterApi = (Component) => {
     constructor(props) {
       super(props);
     }
+
     pushRoute = (parameter) => {
       const { name, url, path } = parameter;
       const { history } = this.props;
@@ -18,6 +19,7 @@ const addRouterApi = (Component) => {
         url: routePaths[name] || url || path
       });
     };
+
     render() {
       return (
         <Component

@@ -7,6 +7,7 @@ class Switch extends RawSwitch {
     this.$componentWillMount = super.componentWillMount;
     super.componentWillMount = undefined;
   }
+
   componentDidMount = () => {
     this.$componentWillMount();
   };

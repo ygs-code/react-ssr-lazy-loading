@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 import { mapRedux } from "@/redux";
 import "./index.less";
 
-const Index = (props) => {
+function Index(props) {
   const {
     history: { push } = {},
     dispatch: { baseInitState: { setInitState, setMenuActive } = {} } = {},
@@ -42,9 +42,13 @@ const Index = (props) => {
             } = item;
             return (
               <dd key={index}>
-                <div>日期：{date}</div>
                 <div>
-                  气温：{nighttemp}~{daytemp}
+                  日期：
+                  {date}
+                </div>
+                <div>
+                  气温：
+                  {nighttemp}~{daytemp}
                 </div>
                 <div>无持续风向：{nightpower}级</div>
                 <div>{nightweather}</div>
@@ -58,7 +62,7 @@ const Index = (props) => {
       </div>
     </div>
   );
-};
+}
 Index.propTypes = {
   history: PropTypes.object,
   dispatch: PropTypes.func,

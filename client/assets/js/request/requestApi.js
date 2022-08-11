@@ -9,21 +9,17 @@
 import Request, { gql, GraphqlClient } from "./request";
 import filterGraphqlData from "./filterGraphqlData";
 
-var userId = "559645cd1a38532d14349246";
+const userId = "559645cd1a38532d14349246";
 
 // 获取验证码
-export const getHaoKanVideo = (parameter) => {
-  return Request.get("/api/getHaoKanVideo", parameter);
-};
+export const getHaoKanVideo = (parameter) =>
+  Request.get("/api/getHaoKanVideo", parameter);
 
 //
-export const getWeather = (parameter) => {
-  return Request.get("/v3/weather/weatherInfo", parameter, {
+export const getWeather = (parameter) =>
+  Request.get("/v3/weather/weatherInfo", parameter, {
     baseUrl: "https://restapi.amap.com"
   });
-};
 
 // 登录
-export const login = (parameter) => {
-  return Request.post("/set/user/login", parameter);
-};
+export const login = (parameter) => Request.post("/set/user/login", parameter);

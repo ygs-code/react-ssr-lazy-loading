@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "./index.less";
-const Index = (props) => {
+
+function Index(props) {
   const { columns = [], dataSource = [], rowKey } = props;
 
   return (
@@ -34,6 +35,6 @@ const Index = (props) => {
       </dl>
     </div>
   );
-};
+}
 
 export default Index;

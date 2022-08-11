@@ -10,7 +10,7 @@
 class Token {
   constructor(doNotToken = []) {
     this.queue = [];
-    //配置不需要token的请求
+    // 配置不需要token的请求
     this.doNotToken = [
       ...doNotToken,
       "/v3/weather/weatherInfo",
@@ -23,6 +23,7 @@ class Token {
   subscribeQueue(resolve) {
     this.queue.push(resolve);
   }
+
   publishQueue(token) {
     this.queue.forEach((item) => {
       const { resolve, reject } = item;
@@ -30,6 +31,7 @@ class Token {
     });
     this.queue = [];
   }
+
   clearQueue() {
     this.queue.forEach((item) => {
       const { resolve, reject } = item;
@@ -37,6 +39,7 @@ class Token {
     });
     this.queue = [];
   }
+
   get(url) {
     const token = ""; // localStorage.getItem("token");
 

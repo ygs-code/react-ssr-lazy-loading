@@ -6,7 +6,7 @@
  * @FilePath: /react-loading-ssr/client/index.js
  * @Description:
  */
-//18
+// 18
 import { hydrate, render } from "react-dom";
 import React, { Suspense, lazy } from "react";
 import app from "./App/index.js";
@@ -16,13 +16,13 @@ import createStore from "@/redux";
 
 const store = createStore(window);
 
-let renderComponent = module.hot ? render : hydrate;
+const renderComponent = module.hot ? render : hydrate;
 const renderApp = () => {
   // let modules = [];
   const modules = new Set();
-  let history = getHistory();
-  let context = [];
-  let location = "/";
+  const history = getHistory();
+  const context = [];
+  const location = "/";
   renderComponent(
     app({
       modules,

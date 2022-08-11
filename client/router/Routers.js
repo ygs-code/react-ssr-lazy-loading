@@ -1,11 +1,12 @@
 import React, { Suspense, lazy, Children } from "react";
+import PropTypes from "prop-types";
 import { Router, Switch as Routes, Route } from "./react-router-dom";
 
 import initComponentState from "@/redux/initComponentState";
 import addRouterApi from "./addRouterApi";
 import routesConfig from "./routesComponent";
-import PropTypes from "prop-types";
-const Routers = (props) => {
+
+function Routers(props) {
   const { history, context } = props;
   return (
     <Router history={history} context={context}>
@@ -39,14 +40,14 @@ const Routers = (props) => {
           path="*"
           element={
             <div style={{ padding: "1rem" }}>
-              <p>{"There s nothing here!"}</p>
+              <p>There s nothing here!</p>
             </div>
           }
         />
       </Routes>
     </Router>
   );
-};
+}
 
 Routers.propTypes = {
   history: PropTypes.object,

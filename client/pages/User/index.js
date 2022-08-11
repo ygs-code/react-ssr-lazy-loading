@@ -12,7 +12,8 @@ import Head from "@/component/Head";
 import Table from "@/component/Table";
 import { mapRedux } from "@/redux";
 import "./index.less";
-const Index = (props = {}) => {
+
+function Index(props = {}) {
   useEffect(() => {}, []);
 
   return (
@@ -89,6 +90,6 @@ const Index = (props = {}) => {
       </div>
     </div>
   );
-};
+}
 
 export default mapRedux()(Index);

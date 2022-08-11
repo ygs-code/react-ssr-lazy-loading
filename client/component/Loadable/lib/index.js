@@ -1,3 +1,5 @@
+/* eslint-disable   */
+
 "use strict";
 
 var _typeof =
@@ -46,10 +48,11 @@ function _inherits(subClass, superClass) {
       configurable: true
     }
   });
-  if (superClass)
+  if (superClass) {
     Object.setPrototypeOf
       ? Object.setPrototypeOf(subClass, superClass)
       : (subClass.__proto__ = superClass);
+  }
 }
 
 var React = require("react");
@@ -317,9 +320,8 @@ function createLoadableComponent(loadFn, options) {
             });
           } else if (this.state.loaded) {
             return opts.render(this.state.loaded, this.props);
-          } else {
-            return null;
           }
+          return null;
         };
 
         return LoadableComponent;
@@ -414,3 +416,4 @@ Loadable.preloadReady = function () {
 };
 
 module.exports = Loadable;
+/* eslint-enable   */

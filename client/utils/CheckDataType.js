@@ -31,63 +31,71 @@ export class CheckDataType {
       false
     );
   }
+
   static isString(data) {
-    return this.init("string") && this.init("string") === this.checkType(data)
-      ? true
-      : false;
+    return !!(
+      this.init("string") && this.init("string") === this.checkType(data)
+    );
   }
+
   static isNumber(data) {
-    return this.init("number") && this.init("number") === this.checkType(data)
-      ? true
-      : false;
+    return !!(
+      this.init("number") && this.init("number") === this.checkType(data)
+    );
   }
+
   static isBoolean(data) {
-    return this.init("boolean") && this.init("boolean") === this.checkType(data)
-      ? true
-      : false;
+    return !!(
+      this.init("boolean") && this.init("boolean") === this.checkType(data)
+    );
   }
+
   static isNull(data) {
-    return this.init("null") && this.init("null") === this.checkType(data)
-      ? true
-      : false;
+    return !!(this.init("null") && this.init("null") === this.checkType(data));
   }
+
   static isUndefined(data) {
-    return this.init("undefined") &&
-      this.init("undefined") === this.checkType(data)
-      ? true
-      : false;
+    return !!(
+      this.init("undefined") && this.init("undefined") === this.checkType(data)
+    );
   }
+
   static isSymbol(data) {
-    return this.init("symbol") && this.init("symbol") === this.checkType(data)
-      ? true
-      : false;
+    return !!(
+      this.init("symbol") && this.init("symbol") === this.checkType(data)
+    );
   }
+
   static isObject(data) {
-    return this.init("object") && this.init("object") === this.checkType(data)
-      ? true
-      : false;
+    return !!(
+      this.init("object") && this.init("object") === this.checkType(data)
+    );
   }
+
   static isArray(data) {
-    return this.init("array") && this.init("array") === this.checkType(data)
-      ? true
-      : false;
+    return !!(
+      this.init("array") && this.init("array") === this.checkType(data)
+    );
   }
+
   static isRegexp(data) {
-    return this.init("regexp") && this.init("regexp") === this.checkType(data)
-      ? true
-      : false;
+    return !!(
+      this.init("regexp") && this.init("regexp") === this.checkType(data)
+    );
   }
+
   static isFunction(data) {
-    return this.init("function") &&
-      this.init("function") === this.checkType(data)
-      ? true
-      : false;
+    return !!(
+      this.init("function") && this.init("function") === this.checkType(data)
+    );
   }
+
   static isPromise(data) {
-    return this.init("promise") && this.init("promise") === this.checkType(data)
-      ? true
-      : false;
+    return !!(
+      this.init("promise") && this.init("promise") === this.checkType(data)
+    );
   }
+
   static checkType(data) {
     return Object.prototype.toString.call(data).toLowerCase().slice(8, -1);
   }

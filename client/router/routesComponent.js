@@ -1,7 +1,15 @@
+/*
+ * @Date: 2022-08-11 09:41:40
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-11 13:41:02
+ * @FilePath: /react-loading-ssr/client/router/routesComponent.js
+ * @Description:
+ */
 // 按需加载插件
+import React from "react";
 import loadable from "@/component/Loadable";
 import Loading from "@/component/Loading";
-import React, { useEffect } from "react";
 import pagesMarketingRouterRoutesconfig from "@/pages/marketing/router/routesConfig.js";
 import routerRoutesconfig from "@/router/routesConfig.js";
 
@@ -25,7 +33,7 @@ const LoadableUser = loadable({
   loader: () => import("@/pages/User/index.js"),
   loading: Loading
 });
-let routesComponentConfig = [
+const routesComponentConfig = [
   {
     path: "/marketing/discount-coupon",
     exact: false,

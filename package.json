@@ -82,7 +82,7 @@
     "chalk": "3.0.0",
     "clean-webpack-plugin": "^0.1.17",
     "copy-webpack-plugin": "5.0.0",
-    "core-js": "3",
+    "core-js": "^3.24.1",
     "cross-env": "^5.1.1",
     "css-loader": "^0.28.7",
     "directory-named-webpack-plugin": "^4.0.1",

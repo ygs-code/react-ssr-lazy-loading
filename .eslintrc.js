@@ -2,11 +2,11 @@
  * @Date: 2022-05-09 11:13:39
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 10:54:21
+ * @LastEditTime: 2022-08-11 13:54:15
  * @FilePath: /react-loading-ssr/.eslintrc.js
  * @Description:
  */
-//配置： https://eslint.bootcss.com/
+// 配置： https://eslint.bootcss.com/
 module.exports = {
   root: true, // 当前项目使用这个配置文件, 不会往父级目录找.eslintrc.js文件
 
@@ -39,6 +39,8 @@ module.exports = {
     "plugin:react/recommended",
     // 'prettier',
     "plugin:prettier/recommended"
+    // "airbnb"
+    // "airbnb/hooks"
   ],
 
   settings: { react: { pragma: "React", version: "15.6.1" } },
@@ -55,7 +57,10 @@ module.exports = {
     "no-debugger": 0,
     "react/prop-types": 0,
     "no-prototype-builtins": 0,
-    "react/jsx-uses-vars": 1,
+    // "react/jsx-uses-vars": 2,
+    // "react/jsx-uses-react": 2, // 屏蔽"React" is defined but never used错误
+    "react/jsx-uses-vars": "error",
+    "react/jsx-uses-react": "error",
     "react/display-name": 1,
     "no-unused-vars": "warn",
     "no-console": "warn",
@@ -64,8 +69,8 @@ module.exports = {
     // 'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off', // 上线环境用打印就报警告, 开发环境关闭此规则
     // 'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off', // debugger可以终止代码执行
     // 'no-multiple-empty-lines': 'off', // 不允许有连续多行空行(关闭规则)
-    "no-undef": 1, //不能有未定义的变量
-    eqeqeq: ["error", "always"],
+    "no-undef": 1, // 不能有未定义的变量
+    eqeqeq: ["warn", "always"],
     // 'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     // 'no-void': 2, //禁用void操作符
     "@babel/new-cap": "warn",
@@ -74,8 +79,7 @@ module.exports = {
     "@babel/semi": "warn",
     // 禁止不必要的转义字符
     "no-useless-escape": 1,
-    "react/jsx-uses-react": 2, // 屏蔽"React" is defined but never used错误
-    "comma-dangle": ["off"], // 不允许最后多余的逗号
+    // "comma-dangle": ["off"], // 不允许最后多余的逗号
     "react-hooks/rules-of-hooks": "warn", // 检查Hook的规则
     "max-params": ["warn", 8], // 方法最多8个参数
     "react-hooks/exhaustive-deps": "warn", // 检查effect的依赖
@@ -84,10 +88,7 @@ module.exports = {
     "react/no-string-refs": "warn", // string类型的refs报warn
     "no-unreachable-loop": "off",
     "eol-last": ["error", "always"], // 文件末尾需要多空一行
-    // 先off掉
-    "react-hooks/exhaustive-deps": "warn", // 检查effect的依赖
     "react/no-children-prop": 1,
-    eqeqeq: 1,
     // 数组和对象键值对最后一个逗号， never参数：不能带末尾的逗号, always参数：必须带末尾的逗号，
     // always-multiline：多行模式必须带逗号，单行模式不能带逗号
     "comma-dangle": [1, "never"],
@@ -95,7 +96,15 @@ module.exports = {
     "comma-spacing": [1, { before: false, after: true }],
     // 控制逗号在行尾出现还是在行首出现
     // http://eslint.org/docs/rules/comma-style
-    "comma-style": [1, "last"]
+    "comma-style": [1, "last"],
+    "no-else-return": 2, // 禁止 if 语句中 return 语句之后有 else 块。如果 if 块中包含了一个 return 语句，else 块就成了多余的了。可以将其内容移至块外。例：// incorrect function foo() {     if (x) {         return y;     } else {         return z;     } } // correct function foo() {     if (x) {         return y;     }     return z; } 复制代码
+    // "wrap-iife": 1, // 要求 IIFE 使用括号括起来。你可以立即调用函数表达式，而不是函数声明。创建一个立即执行函数 (IIFE) 的一个通用技术是用括号包裹一个函数声明。括号内的函数被解析为一个表达式，而不是一个声明。
+    curly: [2, "all"], // 必须使用 if(){} 中的{}
+    "no-trailing-spaces": 1, // 一行结束后面不要有空格
+    "no-unreachable": 2, // 不能有无法执行的代码
+    "no-native-reassign": 2, // 不能重写native对象
+    "no-const-assign": 2, // 禁止修改const声明的变量
+    "no-dupe-keys": 2 // 在创建对象字面量时不允许键重复 {a:1,a:1}
     // 数组和对象键值对最后一个逗号， never参数：不能带末尾的逗号, always参数：必须带末尾的逗号，
     // always-multiline：多行模式必须带逗号，单行模式不能带逗号
   }

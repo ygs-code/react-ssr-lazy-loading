@@ -1,7 +1,7 @@
 // import { history as getHistory } from './history';
 // 获取url地址
 const getNewUrlArr = (parameter) => {
-  let newUrlArr = [];
+  const newUrlArr = [];
   const { url, index, params, pathnameArr } = parameter;
   let key = null;
   let optional = -1;
@@ -10,7 +10,7 @@ const getNewUrlArr = (parameter) => {
     key = url.substr(1);
     key = optional >= 0 ? key.slice(0, -1) : key;
     if (params && key in params && params.hasOwnProperty(key)) {
-      //如果参数等于undefined 则会丢弃
+      // 如果参数等于undefined 则会丢弃
       params[key] !== undefined && newUrlArr.push(`/${params[key]}`);
     } else {
       (optional == -1 || pathnameArr[index]) &&
@@ -25,10 +25,10 @@ const getNewUrlArr = (parameter) => {
 // 把url 字符串转换成对象
 const querystringParse = (search) => {
   search = search.substr(1);
-  let searchArr = search.split("&");
-  let objParameter = {};
+  const searchArr = search.split("&");
+  const objParameter = {};
   searchArr.forEach((target) => {
-    let parameter = target.split("=");
+    const parameter = target.split("=");
     objParameter[parameter[0]] = parameter[1];
   });
   return objParameter;
@@ -57,13 +57,13 @@ const serialize = (data) => {
   let formStr = "";
   if (search.length == 0) {
     formStr = queryStringify(data);
-    formStr = `${formStr ? "?" + formStr : ""}`;
+    formStr = `${formStr ? `?${formStr}` : ""}`;
   } else {
     formStr = queryStringify({
       ...querystringParse(search),
       ...data
     });
-    formStr = `${formStr ? "?" + formStr : ""}`;
+    formStr = `${formStr ? `?${formStr}` : ""}`;
   }
   // return  encodeURIComponent(formStr)
   return formStr;
@@ -72,8 +72,8 @@ const serialize = (data) => {
 export const historyPush = (parameter) => {
   const {
     history = null, // 组件的props
-    params = {}, //地址传参
-    query = {}, //get 传参
+    params = {}, // 地址传参
+    query = {}, // get 传参
     isOpenWin = false, // 是否重新打开新的窗口
     url = "/",
     replace,
@@ -84,11 +84,9 @@ export const historyPush = (parameter) => {
   const { pathname, search } = location;
   const pathnameArr = pathname.split("/");
   let urlArr = url.split("/");
-  urlArr = urlArr.filter((item) => {
-    return item !== "";
-  });
+  urlArr = urlArr.filter((item) => item !== "");
   let newUrlArr = [];
-  for (let [index, elem] of urlArr.entries()) {
+  for (const [index, elem] of urlArr.entries()) {
     if (
       pathnameArr[index] &&
       pathnameArr[index].trim() !== "" &&

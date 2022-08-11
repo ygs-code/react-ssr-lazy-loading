@@ -2,43 +2,24 @@
  * @Date: 2022-08-05 09:22:30
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-10 18:46:07
+ * @LastEditTime: 2022-08-11 13:40:23
  * @FilePath: /react-loading-ssr/client/pages/Home/index.js
  * @Description:
  */
-import React, {
-  Suspense,
-  lazy,
-  useState,
-  useCallback,
-  Children,
-  memo,
-  useEffect
-} from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { mapRedux } from "@/redux";
-import {
-  Button,
-  CardGroup,
-  Card,
-  CardImg,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  CardText
-} from "reactstrap";
 import Nav from "@/component/Nav";
 import Head from "@/component/Head";
 import LazyLoadingImg from "@/component/LazyLoadingImg";
-import routesComponent, { routesConfigs } from "@/router/routesComponent";
+import { routesConfigs } from "@/router/routesComponent";
 import { findTreeData } from "@/utils";
 import "./index.less";
 // 权限跳转登录页面可以在这控制
-const Index = (props) => {
+function Index(props) {
   let [page, setPage] = useState(1);
-  let [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     dispatch: { home: { setInitState = () => {} } = {} } = {},
@@ -53,9 +34,11 @@ const Index = (props) => {
   }, []);
 
   // 获取组件初始化数据
-  const findInitData = useCallback((routesConfigs, value, key) => {
-    return (findTreeData(routesConfigs, value, key) || {}).initState;
-  }, []);
+  const findInitData = useCallback(
+    (routesConfigs, value, key) =>
+      (findTreeData(routesConfigs, value, key) || {}).initState,
+    []
+  );
 
   const getImages = useCallback(async () => {
     if (loading) {
@@ -63,9 +46,9 @@ const Index = (props) => {
     }
     setLoading(true);
     page += 1;
-    let initStateFn = findInitData(routesConfigs, "home", "name");
+    const initStateFn = findInitData(routesConfigs, "home", "name");
     setPage(page);
-    let {
+    const {
       data: { result: data }
     } = await axios(
       `https://api.apiopen.top/api/getHaoKanVideo?page=${page}&size=10`
@@ -80,12 +63,10 @@ const Index = (props) => {
       initState: {
         total,
         list: list.concat(
-          resList.map((item) => {
-            return {
-              ...item,
-              url: item.userPic
-            };
-          })
+          resList.map((item) => ({
+            ...item,
+            url: item.userPic
+          }))
         )
       }
     });
@@ -108,7 +89,7 @@ const Index = (props) => {
       </div>
     </div>
   );
-};
+}
 
 Index.propTypes = {
   location: PropTypes.object,
