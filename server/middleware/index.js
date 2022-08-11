@@ -14,7 +14,6 @@ const isSsr = target == "ssr";
 const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === "development";
-console.log('isEnvDevelopment===========',isEnvDevelopment)
 export default class Middleware {
   constructor(app) {
     this.app = app;
