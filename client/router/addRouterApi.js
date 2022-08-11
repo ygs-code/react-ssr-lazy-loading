@@ -1,4 +1,12 @@
-import React, { useEffect } from "react";
+/*
+ * @Date: 2022-08-11 09:41:40
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-11 19:11:14
+ * @FilePath: /react-loading-ssr/client/router/addRouterApi.js
+ * @Description:
+ */
+import React from "react";
 import { withRouter } from "@/router/react-router-dom";
 import routePaths from "./routePaths";
 import { historyPush } from "./historyPush";

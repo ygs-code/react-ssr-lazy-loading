@@ -2,7 +2,7 @@
  * @Date: 2022-08-05 09:22:30
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 13:55:53
+ * @LastEditTime: 2022-08-11 19:53:40
  * @FilePath: /react-loading-ssr/client/App/App.js
  * @Description:
  */
@@ -14,27 +14,7 @@ import "@/assets/css/base.less";
 import "bootstrap/dist/css/bootstrap.css";
 
 function App(props) {
-  const obj = {
-    c: "1"
-    // c: "3"
-  };
-  const {
-    history,
-    location,
-    store,
-    a,
-    b,
-    c,
-    d,
-    e,
-    f,
-    sadfasdfasdfsadfasdfasdfasdfasdfsdf
-  } = props;
-  if (a) {
-    console.log(a);
-  } else {
-    console(b);
-  }
+  const { history, location, store } = props;
 
   return (
     <Provider store={store}>

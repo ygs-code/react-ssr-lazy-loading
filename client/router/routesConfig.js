@@ -2,11 +2,10 @@
  * @Date: 2022-08-01 17:29:00
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-06 16:29:47
+ * @LastEditTime: 2022-08-11 15:55:18
  * @FilePath: /react-loading-ssr/client/router/routesConfig.js
  * @Description:
  */
-import { dispatch, getState } from "@rematch/core";
 import { getHaoKanVideo } from "../assets/js/request/requestApi";
 // 路由配置
 export default [
@@ -22,7 +21,7 @@ export default [
         size
       })
         .then((res) => {
-          const { code, result: { list = [], total } = {} } = res;
+          const { result: { list = [], total } = {} } = res;
           return {
             list: list.map((item) => ({
               ...item,
@@ -31,8 +30,8 @@ export default [
             total
           };
         })
-        .catch((err) => {
-          console.log("Error: ", err.message);
+        .catch(() => {
+          // console.log("Error: ", err.message);
         });
     },
     level: 1

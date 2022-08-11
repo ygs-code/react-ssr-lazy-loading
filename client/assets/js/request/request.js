@@ -4,9 +4,9 @@ import { codeMap } from "./redirect";
 import token from "./token";
 import filterGraphqlData from "./filterGraphqlData";
 import {
-  error as errorMessage,
-  warning as warningMessage,
-  success as successMessage
+  error as errorMessage
+  // warning as warningMessage,
+  // success as successMessage
 } from "./requestMessage";
 
 // 导出普通请求
@@ -22,7 +22,7 @@ export default class Request {
   static defaultHeaders = {};
 
   // 错误拦截
-  static error(errorInfo) {}
+  static error() {}
 
   // 请求拦截器
   static interceptors = {
@@ -32,7 +32,9 @@ export default class Request {
 
   // 去除 // 地址
   static transformUrl(baseUrl, url) {
+    /* eslint-disable   */
     const urlHpptReg = /^(http\:\/\/)|^(https\:\/\/)/gi;
+    /* eslint-enable   */
     const urlReg = /(\/\/)+/gi;
     return {
       urlSuffix: url,
@@ -45,13 +47,13 @@ export default class Request {
   static guid() {
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
       const r = (Math.random() * 16) | 0;
-      const v = c == "x" ? r : (r & 0x3) | 0x8;
+      const v = c === "x" ? r : (r & 0x3) | 0x8;
       return v.toString(16);
     });
   }
 
   static setLoad(options) {
-    const { isLoad = true, url, requestId = "", parameter } = options;
+    const { isLoad = true } = options;
     if (isLoad) {
       this.requestQueue.push(options);
       // 开始加载数据
@@ -113,7 +115,7 @@ export default class Request {
   }
 
   static options(url, parameter, options = {}) {
-    const data = {
+    options = {
       method: "OPTIONS",
       ...options
     };
@@ -216,12 +218,12 @@ export default class Request {
   static uploadFile(url, parameter, options) {
     const { baseUrl } = options;
     const urls = this.transformUrl(baseUrl || this.baseUrl, url);
-    const data = {
-      ...urls,
-      parameter,
-      method: "POST"
-      // ...options,
-    };
+    // const data = {
+    //   ...urls,
+    //   parameter,
+    //   method: "POST"
+    //   // ...options,
+    // };
 
     const {
       headers = {},
@@ -338,7 +340,7 @@ Request.interceptors = {
   },
   // 响应拦截
   response: (response) => {
-    const { code } = response[0] || {};
+    // const { code } = response[0] || {};
     // if (code != 200) {
     //   Request.error(response)
     //   return Promise.reject(response)
@@ -361,7 +363,7 @@ export class Graphql {
       ...this.options,
       ...options
     };
-    const { error = () => {} } = this.options;
+    // const { error = () => {} } = this.options;
     // return Request.get(this.url, parameter, this.options);
     return Request.post(this.url, parameter, this.options);
   }
@@ -372,7 +374,7 @@ export class Graphql {
       ...this.options,
       ...options
     };
-    const { error = () => {} } = this.options;
+    // const { error = () => {} } = this.options;
     return Request.post(this.url, parameter, this.options);
   }
 
@@ -434,16 +436,18 @@ Graphql.error = (errorInfo) => {
 Graphql.interceptors.response = (response) => {
   const data = response[0] || {};
   const options = response[2] || {};
-  const { code, message } = data;
+  const { code } = data;
   if (code && code !== 200) {
     Graphql.error(response);
     return Promise.reject(response);
   }
   for (const key in data) {
-    const { code, data: newData } = data[key];
-    if (code != 200) {
-      Graphql.error([data[key]]);
-      return Promise.reject(response);
+    if (Object.prototype.hasOwnProperty.call(data, key)) {
+      const { code } = data[key];
+      if (code !== 200) {
+        Graphql.error([data[key]]);
+        return Promise.reject(response);
+      }
     }
   }
   const { filterData } = options;

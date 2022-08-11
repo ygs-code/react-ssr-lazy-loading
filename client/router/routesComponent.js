@@ -2,12 +2,12 @@
  * @Date: 2022-08-11 09:41:40
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 13:41:02
+ * @LastEditTime: 2022-08-11 19:50:57
  * @FilePath: /react-loading-ssr/client/router/routesComponent.js
  * @Description:
  */
 // 按需加载插件
-import React from "react";
+// import React from "react";
 import loadable from "@/component/Loadable";
 import Loading from "@/component/Loading";
 import pagesMarketingRouterRoutesconfig from "@/pages/marketing/router/routesConfig.js";

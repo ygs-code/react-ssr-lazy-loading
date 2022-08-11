@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, Children } from "react";
+// import React from "react";
 import { Switch as RawSwitch } from "react-router-dom";
 
 class Switch extends RawSwitch {

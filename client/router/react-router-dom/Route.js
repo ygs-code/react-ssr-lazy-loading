@@ -1,5 +1,7 @@
 import React from "react";
-import { Route as RawRoute } from "react-router-dom";
+
+/* eslint-disable   */
+ 
 
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -2908,5 +2910,5 @@ var withRouter = function withRouter(Component) {
 
   return hoistNonReactStatics(C, Component);
 };
-
+/* eslint-disable   */
 export { Route, withRouter };

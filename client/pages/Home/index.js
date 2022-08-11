@@ -2,7 +2,7 @@
  * @Date: 2022-08-05 09:22:30
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 13:40:23
+ * @LastEditTime: 2022-08-11 19:50:05
  * @FilePath: /react-loading-ssr/client/pages/Home/index.js
  * @Description:
  */
@@ -23,7 +23,7 @@ function Index(props) {
 
   const {
     dispatch: { home: { setInitState = () => {} } = {} } = {},
-    state: { home: { count, initState: { list = [] } = {} } = {} } = {}
+    state: { home: { initState: { list = [] } = {} } = {} } = {}
   } = props;
 
   useEffect(() => {
@@ -45,15 +45,17 @@ function Index(props) {
       return false;
     }
     setLoading(true);
+    /* eslint-disable   */
     page += 1;
-    const initStateFn = findInitData(routesConfigs, "home", "name");
+    /* eslint-enable   */
+    findInitData(routesConfigs, "home", "name");
     setPage(page);
     const {
       data: { result: data }
     } = await axios(
       `https://api.apiopen.top/api/getHaoKanVideo?page=${page}&size=10`
     );
-    console.log("data=====", data);
+
     // let data = await initStateFn({
     //     page,
     //     size: 10,
@@ -82,7 +84,7 @@ function Index(props) {
       <div className="center-box">
         <LazyLoadingImg
           list={list}
-          callback={(data) => {
+          callback={() => {
             getImages();
           }}
         />

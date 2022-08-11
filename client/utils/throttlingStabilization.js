@@ -2,7 +2,7 @@
  * @Date: 2022-08-11 09:41:40
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 13:56:11
+ * @LastEditTime: 2022-08-11 15:54:43
  * @FilePath: /react-loading-ssr/client/utils/throttlingStabilization.js
  * @Description:
  */

@@ -2,13 +2,12 @@
  * @Date: 2022-08-04 09:21:17
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-09 12:05:38
+ * @LastEditTime: 2022-08-11 19:13:31
  * @FilePath: /react-loading-ssr/client/index.js
  * @Description:
  */
 // 18
 import { hydrate, render } from "react-dom";
-import React, { Suspense, lazy } from "react";
 import app from "./App/index.js";
 import Loadable from "@/component/Loadable";
 import { getHistory } from "@/router/history";

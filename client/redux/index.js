@@ -1,23 +1,7 @@
-/*
- * @Date: 2022-08-01 09:57:50
- * @Author: Yao guan shou
- * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-06 14:55:18
- * @FilePath: /react-loading-ssr/client/redux/index.js
- * @Description:
- */
-/*
- * @Date: 2022-08-01 09:57:50
- * @Author: Yao guan shou
- * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-06 12:52:36
- * @FilePath: /react-loading-ssr/client/redux/index.js
- * @Description:
- */
 import { init } from "@rematch/core";
 import { connect } from "react-redux";
 import * as models from "./models";
-import { CheckDataType, getGlobal } from "@/utils";
+import { CheckDataType } from "@/utils";
 
 const mapRedux = (modelsName) => (Component) => {
   const mapStateToProps = (state) => {
@@ -72,7 +56,9 @@ export { mapRedux };
 export const createStore = (global) => {
   const newModels = {};
   for (const key in models) {
-    newModels[key] = models[key](global);
+    if (models.hasOwnProperty(key)) {
+      newModels[key] = models[key](global);
+    }
   }
 
   // 文档： https://www.icode9.com/content-4-1343821.html

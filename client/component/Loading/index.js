@@ -2,26 +2,26 @@
  * @Date: 2022-08-01 09:57:50
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 13:39:59
+ * @LastEditTime: 2022-08-11 19:16:17
  * @FilePath: /react-loading-ssr/client/component/Loading/index.js
  * @Description:
  */
 import React from "react";
 
-export default function (props) {
+export default (props) => {
   const { isLoading, timedOut, pastDelay, error } = props;
-
+  let Component = null;
   if (isLoading) {
     if (timedOut) {
-      return <div>Loader timed out!</div>;
+      Component = <div>Loader timed out!</div>;
     }
     if (pastDelay) {
-      return <div>Loading...</div>;
+      Component = <div>Loading...</div>;
     }
-    return null;
+    Component = null;
   }
   if (error) {
-    return <div>Error! Component failed to load</div>;
+    Component = <div>Error! Component failed to load</div>;
   }
-  return null;
-}
+  return Component;
+};

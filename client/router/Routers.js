@@ -1,4 +1,12 @@
-import React, { Suspense, lazy, Children } from "react";
+/*
+ * @Date: 2022-08-11 09:41:40
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-11 19:09:51
+ * @FilePath: /react-loading-ssr/client/router/Routers.js
+ * @Description:
+ */
+import React from "react";
 import PropTypes from "prop-types";
 import { Router, Switch as Routes, Route } from "./react-router-dom";
 

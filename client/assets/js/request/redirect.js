@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-12 14:33:50
- * @LastEditTime: 2022-08-05 18:52:39
+ * @LastEditTime: 2022-08-11 19:45:17
  * @LastEditors: Yao guan shou
  * @Description: In User Settings Edit
  * @FilePath: /react-loading-ssr/client/assets/js/request/redirect.js
@@ -25,7 +25,7 @@ export const codeMap = {
     //   url: routePaths.logLn,
     // });
   },
-  415: (errorInfo) => {
+  415: () => {
     // historyPush(
     //   url: routePaths.logLn,
     // });

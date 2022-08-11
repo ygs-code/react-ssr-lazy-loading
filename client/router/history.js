@@ -1,12 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2020-11-11 11:21:09
- * @LastEditTime: 2021-08-12 14:40:35
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-08-11 19:10:38
+ * @LastEditors: Yao guan shou
  * @Description: In User Settings Edit
- * @FilePath: /error-sytem/client/src/router/history.js
+ * @FilePath: /react-loading-ssr/client/router/history.js
  */
-import { createBrowserHistory, createHashHistory } from "history";
+
+import { createBrowserHistory } from "history";
 
 export const history = {};
 

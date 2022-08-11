@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-09-29 11:46:06
- * @LastEditTime: 2022-08-06 15:49:47
+ * @LastEditTime: 2022-08-11 19:17:43
  * @LastEditors: Yao guan shou
  * @Description: In User Settings Edit
  * @FilePath: /react-loading-ssr/client/assets/js/request/token.js
@@ -26,7 +26,7 @@ class Token {
 
   publishQueue(token) {
     this.queue.forEach((item) => {
-      const { resolve, reject } = item;
+      const { resolve } = item;
       resolve(token);
     });
     this.queue = [];
@@ -34,7 +34,7 @@ class Token {
 
   clearQueue() {
     this.queue.forEach((item) => {
-      const { resolve, reject } = item;
+      const { reject } = item;
       reject(null);
     });
     this.queue = [];

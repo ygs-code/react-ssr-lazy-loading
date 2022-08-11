@@ -1,17 +1,17 @@
 /*
  * @Author: your name
  * @Date: 2020-11-11 11:21:09
- * @LastEditTime: 2022-08-05 16:52:05
+ * @LastEditTime: 2022-08-11 19:45:04
  * @LastEditors: Yao guan shou
  * @Description: In User Settings Edit
  * @FilePath: /react-loading-ssr/client/assets/js/request/baseUrl.js
  */
 const env = process.env.NODE_ENV; // 环境参数
 let baseUrl = "";
-if (env == "development") {
+if (env === "development") {
   baseUrl = "https://api.apiopen.top";
 }
-if (env == "production") {
+if (env === "production") {
   baseUrl = "https://api.apiopen.top";
 }
 

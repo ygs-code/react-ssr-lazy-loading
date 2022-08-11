@@ -2,21 +2,18 @@
  * @Date: 2022-08-09 09:35:04
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 12:23:25
+ * @LastEditTime: 2022-08-11 19:35:39
  * @FilePath: /react-loading-ssr/client/App/CreateApp.js
  * @Description:
  */
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import Loadable, { Capture } from "@/component/Loadable";
+import { Capture } from "@/component/Loadable";
 import App from "./App.js";
 import "./App.less";
 
 const {
-  NODE_ENV, // 环境参数
-  WEB_ENV, // 环境参数
-  target, // 环境参数
-  htmlWebpackPluginOptions = ""
+  target // 环境参数
 } = process.env; // 环境参数
 
 function CreateApp(props = {}) {

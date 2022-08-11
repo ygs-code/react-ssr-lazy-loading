@@ -2,7 +2,7 @@
  * @Date: 2022-08-01 17:29:00
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-06 15:12:18
+ * @LastEditTime: 2022-08-11 19:52:33
  * @FilePath: /react-loading-ssr/client/utils/getBaseInitState.js
  * @Description: ()
  */
@@ -13,14 +13,16 @@ export const getBaseInitState = async (dispatch, state) => {
   const reg = /(?<=^get)(.+?)(?=Async$)/g;
   // let reg1 = /Async$/g;
   for (const key in dispatchBaseInitState) {
-    let dataKey = key.match(reg);
-    if (dataKey) {
-      dataKey =
-        dataKey[0].substr(0, 1).toLocaleLowerCase() + dataKey[0].substr(1);
-      if (state.baseInitState[dataKey]) {
-        return false;
+    if (Object.prototype.hasOwnProperty.call(dispatchBaseInitState, key)) {
+      let dataKey = key.match(reg);
+      if (dataKey) {
+        dataKey =
+          dataKey[0].substr(0, 1).toLocaleLowerCase() + dataKey[0].substr(1);
+        if (state.baseInitState[dataKey]) {
+          return false;
+        }
+        dispatchBaseInitState[key]();
       }
-      dispatchBaseInitState[key]();
     }
   }
 };

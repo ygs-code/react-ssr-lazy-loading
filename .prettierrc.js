@@ -2,7 +2,7 @@
  * @Date: 2022-08-10 18:46:38
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 13:26:00
+ * @LastEditTime: 2022-08-11 14:11:02
  * @FilePath: /react-loading-ssr/.prettierrc.js
  * @Description:
  */
@@ -24,9 +24,6 @@ module.exports = {
   stylelintIntegration: false, //不让prettier使用stylelint的代码格式进行校验
   tslintIntegration: false, // 不让prettier使用tslint的代码格式进行校验
   eslintIntegration: false, //不让prettier使用eslint的代码格式进行校验
-
-  curly: [2, "all"], //必须使用 if(){} 中的{}
-
   // proseWrap: 'preserve', // 默认值。因为使用了一些折行敏感型的渲染器（如GitHub comment）而按照markdown文本样式进行折行
   // htmlWhitespaceSensitivity: 'ignore',
   // ignorePath: '.prettierignore', // 不使用prettier格式化的文件填写在项目的.prettierignore文件中

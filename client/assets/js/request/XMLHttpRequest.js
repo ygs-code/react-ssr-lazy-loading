@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 import { CheckDataType } from "../../../utils/CheckDataType";
 
 class BrowserXHR {
-  constructor(options) {
+  constructor() {
     // const { method = 'POST', url = '' } = options;
     // this.defaultConfig={
     //     timeout:3000,
@@ -69,7 +69,7 @@ class BrowserXHR {
           this.send();
         })
         .catch((errorInfo) => {
-          const { error = () => {}, complete = () => {} } = errorInfo;
+          const { error = () => {} } = errorInfo;
           console.error("http 请求异常,未发送http请求。", errorInfo);
           error(options);
         });
@@ -87,7 +87,7 @@ class BrowserXHR {
     return this;
   }
 
-  uploadFile() {
+  uploadFile(options) {
     this.ininData(options);
     const { parameter = {} } = this.options;
     const formData = new FormData();
@@ -156,7 +156,7 @@ class BrowserXHR {
         }
       }
     }
-    console.log("xmlHttp======", xmlHttp);
+
     // 插入请求队列中
     if (token) {
       BrowserXHR.XHRQueue = BrowserXHR.XHRQueue
@@ -197,7 +197,7 @@ class BrowserXHR {
       async = true,
       parameter = {}
     } = this.options;
-    console.log("method======", method);
+
     this.xmlHttp.open(
       method,
       method === "GET" ? `${url}?${this.queryStringify(parameter)}` : url,
@@ -324,7 +324,7 @@ class BrowserXHR {
     let { parameter = {}, method, dataType = "json" } = this.options;
     if (!(parameter instanceof FormData)) {
       parameter =
-        dataType == "json"
+        dataType === "json"
           ? JSON.stringify(parameter)
           : this.queryStringify(parameter); // this.queryStringify(data)
     }
@@ -334,7 +334,7 @@ class BrowserXHR {
     //     formData.append(key, data[key]);
     // });
     // this.xmlHttp.responseType = 'json';
-    if (method == "POST") {
+    if (method === "POST") {
       this.xmlHttp.send(parameter);
     } else {
       this.xmlHttp.send();
@@ -380,7 +380,7 @@ class NodeFetch {
           this.send();
         })
         .catch((errorInfo) => {
-          const { error = () => {}, complete = () => {} } = errorInfo;
+          const { error = () => {} } = errorInfo;
           console.error("http 请求异常,未发送http请求。", errorInfo);
           error(options);
         });
@@ -420,7 +420,7 @@ class NodeFetch {
       headers: { token }
     } = this.options;
 
-    const xmlHttp = null;
+    let xmlHttp = null;
 
     // 插入请求队列中
     if (token) {
@@ -429,15 +429,15 @@ class NodeFetch {
             ...BrowserXHR.XHRQueue,
             {
               operationName,
-              urlSuffix
-              // xmlHttp,
+              urlSuffix,
+              xmlHttp
             }
           ]
         : [
             {
               operationName,
-              urlSuffix
-              // xmlHttp,
+              urlSuffix,
+              xmlHttp
             }
           ];
     }
@@ -461,14 +461,7 @@ class NodeFetch {
 
   // 发送数据
   send() {
-    let {
-      async = true,
-      url = "",
-      parameter = {},
-      method,
-      dataType = "json",
-      headers
-    } = this.options;
+    let { url = "", parameter = {}, method, headers } = this.options;
 
     const options = {
       method,
@@ -477,10 +470,10 @@ class NodeFetch {
     if (parameter instanceof FormData) {
       options.body = parameter;
     } else {
-      if (method.toUpperCase() == "POST") {
+      if (method.toUpperCase() === "POST") {
         options.body = JSON.stringify(parameter);
       }
-      if (method.toUpperCase() == "GET") {
+      if (method.toUpperCase() === "GET") {
         url = `${url}?${this.queryStringify(parameter)}`;
       }
     }
@@ -509,9 +502,9 @@ class NodeFetch {
       // 从队列中剔除
       for (let index = XHRQueue.length - 1; index >= 0; index--) {
         // 是graphq请求
-        if (operationName && XHRQueue[index].operationName == operationName) {
+        if (operationName && XHRQueue[index].operationName === operationName) {
           XHRQueue.splice(index, 1);
-        } else if (XHRQueue[index].urlSuffix == urlSuffix) {
+        } else if (XHRQueue[index].urlSuffix === urlSuffix) {
           XHRQueue.splice(index, 1);
         }
       }

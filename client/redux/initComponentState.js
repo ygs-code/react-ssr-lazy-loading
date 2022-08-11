@@ -1,4 +1,12 @@
-import React, { useEffect, useCallback } from "react";
+/*
+ * @Date: 2022-08-11 09:41:40
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-11 19:12:53
+ * @FilePath: /react-loading-ssr/client/redux/initComponentState.js
+ * @Description:
+ */
+import React from "react";
 import { matchPath } from "react-router-dom";
 import routesComponent, { routesConfigs } from "@/router/routesComponent";
 import { mapRedux } from "@/redux";
@@ -12,12 +20,7 @@ const initState = (Component) => {
     }
 
     componentDidMount() {
-      const {
-        children = () => {},
-        history: { location: { pathname } = {} } = {},
-        state = {},
-        dispatch
-      } = this.props;
+      const { state = {}, dispatch } = this.props;
 
       getBaseInitState(dispatch, state);
       this.getInitState();
@@ -45,7 +48,6 @@ const initState = (Component) => {
 
     getInitState = async () => {
       const {
-        children = () => {},
         history: { location: { pathname } = {} } = {},
         state = {},
         dispatch

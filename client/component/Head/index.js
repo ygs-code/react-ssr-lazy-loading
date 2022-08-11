@@ -2,23 +2,17 @@
  * @Date: 2022-08-05 09:22:30
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-05 12:04:20
+ * @LastEditTime: 2022-08-11 19:08:39
  * @FilePath: /react-loading-ssr/client/component/Head/index.js
  * @Description:
  */
-import React, { Component, useMemo } from "react";
-import { Nav, NavItem, NavLink } from "reactstrap";
-import { Link } from "react-router-dom";
+import React from "react";
 import PropTypes from "prop-types";
 import { mapRedux } from "@/redux";
 import "./index.less";
 
 function Index(props) {
-  const {
-    history: { push } = {},
-    dispatch: { baseInitState: { setInitState, setMenuActive } = {} } = {},
-    state: { baseInitState: { weather = {}, menuActive } = {} } = {}
-  } = props;
+  const { state: { baseInitState: { weather = {} } = {} } = {} } = props;
 
   const { city, province, casts = [] } = weather;
 

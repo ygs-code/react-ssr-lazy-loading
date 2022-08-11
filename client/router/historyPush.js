@@ -13,7 +13,7 @@ const getNewUrlArr = (parameter) => {
       // 如果参数等于undefined 则会丢弃
       params[key] !== undefined && newUrlArr.push(`/${params[key]}`);
     } else {
-      (optional == -1 || pathnameArr[index]) &&
+      (optional === -1 || pathnameArr[index]) &&
         newUrlArr.push(`/${pathnameArr[index]}`);
     }
   } else {
@@ -53,9 +53,9 @@ const queryStringify = (data) => {
 // 序列化query参数
 const serialize = (data) => {
   const { location } = window;
-  const { pathname, search } = location;
+  const { search } = location;
   let formStr = "";
-  if (search.length == 0) {
+  if (search.length === 0) {
     formStr = queryStringify(data);
     formStr = `${formStr ? `?${formStr}` : ""}`;
   } else {
@@ -81,7 +81,7 @@ export const historyPush = (parameter) => {
   } = parameter;
 
   const { location } = window;
-  const { pathname, search } = location;
+  const { pathname } = location;
   const pathnameArr = pathname.split("/");
   let urlArr = url.split("/");
   urlArr = urlArr.filter((item) => item !== "");

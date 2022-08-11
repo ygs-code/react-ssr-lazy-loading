@@ -1,4 +1,12 @@
-import axios from "axios";
+/*
+ * @Date: 2022-08-11 09:41:40
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-11 19:18:24
+ * @FilePath: /react-loading-ssr/client/redux/models/baseInitState.js
+ * @Description:
+ */
+
 import { getWeather } from "../../assets/js/request/requestApi";
 
 const setInitData = ($window, name) => {
@@ -40,7 +48,7 @@ export default ($window) => ({
   //     },
   // },
   effects: (dispatch) => ({
-    async getWeatherAsync(num1, rootState, num2) {
+    async getWeatherAsync() {
       return await getWeather({
         key: "2d935fc56c5f9ab2ef2165822cedff56",
         city: "440300",

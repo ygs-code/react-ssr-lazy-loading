@@ -2,13 +2,12 @@
  * @Date: 2022-08-05 09:22:30
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-05 12:04:29
+ * @LastEditTime: 2022-08-11 19:49:33
  * @FilePath: /react-loading-ssr/client/component/Nav/index.js
  * @Description:
  */
-import React, { Component, useMemo, useState } from "react";
+import React from "react";
 import { Nav, NavItem, NavLink } from "reactstrap";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { mapRedux } from "@/redux";
 import addRouterApi from "@/router/addRouterApi";
@@ -16,9 +15,7 @@ import "./index.less";
 
 function Index(props) {
   const {
-    history: { push } = {},
-    dispatch: { baseInitState: { setInitState, setMenuActive } = {} } = {},
-    state: { baseInitState: { menu = [], menuActive } = {} } = {},
+    dispatch: { baseInitState: { setMenuActive } = {} } = {},
     location: { pathname } = {},
     pushRoute
   } = props;
@@ -47,12 +44,12 @@ function Index(props) {
           return (
             <NavItem key={index}>
               <NavLink
-                active={pathname == path}
+                active={pathname === path}
                 onClick={() => {
                   setMenuActive({
                     menuActive: path
                   });
-                  if (index == 1) {
+                  if (index === 1) {
                     pushRoute({ path });
                   } else {
                     pushRoute({ name });
