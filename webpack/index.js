@@ -6,43 +6,77 @@
  * @FilePath: /react-loading-ssr/webpack/index.js
  * @Description:
  */
-const webpack = require('webpack')
-const client = require('./config/client')
-const server = require('./config/server')
-const webpackMerge = require('webpack-merge')
-require('dotenv').config({ path: '.env' })
+// chalk插件，用来在命令行中输入不同颜色的文字
+const chalk = require("chalk");
+const webpack = require("webpack");
+const client = require("./config/client");
+const server = require("./config/server");
+const webpackMerge = require("webpack-merge");
+
+require("dotenv").config({ path: ".env" });
 
 let {
   NODE_ENV, // 环境参数
   WEB_ENV, // 环境参数
   target, // 环境参数
-  htmlWebpackPluginOptions = '',
-} = process.env // 环境参数
+  htmlWebpackPluginOptions = ""
+} = process.env; // 环境参数
 
-const isSsr = target === 'ssr'
+const isSsr = target === "ssr";
 //    是否是生产环境
-const isEnvProduction = NODE_ENV === 'production'
+const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
-const isEnvDevelopment = NODE_ENV === 'development'
+const isEnvDevelopment = NODE_ENV === "development";
+
+const compileRes = async (config) => {
+  await new Promise((reslove, reject) => {
+    webpack(config, (err, stats) => {
+      if (err) {
+        console.log("Errors:" + chalk.red(err.stack || err));
+        reject(chalk.red(err.stack || err));
+        if (err.details) {
+          console.log("Errors:" + chalk.red(err.details));
+        }
+        reject(chalk.red(err.details));
+      }
+      if (stats.hasErrors()) {
+        console.log(
+          "Errors:" +
+            chalk.red(
+              stats.toString({
+                colors: true,
+                chunks: false // Makes the build much quieter
+              }) + "\n\n"
+            )
+        );
+        reject(
+          chalk.red(
+            stats.toString({
+              colors: true,
+              chunks: false // Makes the build much quieter
+            }) + "\n\n"
+          )
+        );
+      }
+      reslove();
+    });
+  });
+};
 
 module.exports = {
-  compiler: () => {
-    if (isEnvProduction) {
-      let clientCompiler = webpack(client)
-      if (isSsr) {
-        // 先编译前端，在编译后台
-
-      }
-
-
-    } else {
-
-    }
+  compiler: async () => {
+    console.log(1)
+    // if (isEnvProduction) {
+    //   await compileRes(client);
+    //   if (isSsr) {
+    //     await compileRes(server);
+    //   }
+    // }
 
 
-
-
+    await compileRes(server);
+    return true;
     // return webpack(isSsr ? [client, server] : [client])
   },
-  config: isSsr ? [client, server] : [client],
-}
+  config: isSsr ? [client, server] : [client]
+};

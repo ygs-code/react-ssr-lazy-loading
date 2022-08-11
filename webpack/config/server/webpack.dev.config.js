@@ -30,6 +30,17 @@ htmlWebpackPluginOptions = (() => {
 })()
 
 module.exports = {
+  entry: {
+    main: [
+        // '@babel/polyfill',
+        // "core-js/stable",
+        // "regenerator-runtime/runtime",
+        path.join(
+            process.cwd(),
+            '/server/middleware/clientRouter/index.js'
+        ),
+    ],
+},
   devServer: {
     open: true,
     contentBase: 'assets',
@@ -217,6 +228,7 @@ module.exports = {
     // ],
   },
   plugins: [
+
     new webpack.HotModuleReplacementPlugin(),
 
     new MiniCssExtractPlugin({
