@@ -2,7 +2,7 @@
  * @Date: 2022-05-09 11:13:39
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 19:48:15
+ * @LastEditTime: 2022-08-11 20:01:55
  * @FilePath: /react-loading-ssr/.eslintrc.js
  * @Description:
  */
@@ -77,7 +77,7 @@ module.exports = {
     // 'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off', // debugger可以终止代码执行
     // 'no-multiple-empty-lines': 'off', // 不允许有连续多行空行(关闭规则)
     "no-undef": 1, // 不能有未定义的变量
-    eqeqeq: ["warn", "always"],
+    eqeqeq: ["warn", "always"], //  == 判断
     // 'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     // 'no-void': 2, //禁用void操作符
     "@babel/new-cap": "warn",
