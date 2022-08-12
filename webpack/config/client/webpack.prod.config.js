@@ -41,8 +41,8 @@ module.exports = {
       // css
       {
         test: /\.css$/i,
-        // 排除文件,因为这些包已经编译过，无需再次编译
-        // exclude: /(node_modules|bower_components)/,
+        // 排除文件,因为这些包已经编译过，无需再次编译  不排除bootstrap
+        exclude: /(node_modules|bower_components)^((?!bootstrap).)+$/,
         use: [
           // 'thread-loader',
           MiniCssExtractPlugin.loader,
@@ -72,6 +72,8 @@ module.exports = {
       //   less
       {
         test: /\.less$/i,
+        // 排除文件,因为这些包已经编译过，无需再次编译  不排除bootstrap
+        exclude: /(node_modules|bower_components)^((?!bootstrap).)+$/,
         use: [
           // 'thread-loader',
           // compiles Less to CSS
@@ -174,13 +176,10 @@ module.exports = {
     //     minChunks: 2,
     // }),
     new ReactLoadablePlugin({
-        filename: path.join(rootPath, './dist/react-loadable.json'),
+      filename: path.join(rootPath, "./dist/react-loadable.json")
     }),
     new ReactLoadablePlugin({
-        filename: path.join(
-            process.cwd(),
-            '/dist/client/react-loadable.json'
-        ),
-    }),
+      filename: path.join(process.cwd(), "/dist/client/react-loadable.json")
+    })
   ]
 };

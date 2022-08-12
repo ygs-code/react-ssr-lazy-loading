@@ -1,5 +1,7 @@
 const path = require("path");
+const fs = require("fs");
 const webpack = require("webpack");
+const nodeExternals = require("webpack-node-externals");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
@@ -229,17 +231,140 @@ module.exports = {
     //     'node_modules',
     // ],
   },
+  //防止将某些 const      的包(package)打包到 bundle 中,而是在运行时(runtime)再去从外部获取这些扩展依赖
+  externals: [
+    //引入缓存
+    // nodeExternals({
+    //   allowlist: ["webpack/hot/poll?1000"]
+    // }),
+    //将node_modules目录下的所有模块加入到externals中    告知 webpack  ，并忽略 externals 中的模块
+    (() => {
+      const nodeModules = {};
+      fs.readdirSync(path.join(process.cwd(), "/node_modules"))
+        .filter((catalogue) => {
+          return (
+            catalogue.indexOf("bootstrap") == -1 &&
+            [".bin"].indexOf(catalogue) === -1
+          );
+        })
+        .forEach((mod) => {
+          if (mod.indexOf(".") === 0) return;
+          nodeModules[mod] = "commonjs " + mod;
+        });
+
+      return nodeModules;
+    })()
+  ],
   module: {
     rules: [
+      // css
+      {
+        test: /\.css$/i,
+        // 排除文件,因为这些包已经编译过，无需再次编译
+        exclude: /(node_modules|bower_components)^((?!bootstrap).)+$/,
+        use: [
+          // 'thread-loader',
+          MiniCssExtractPlugin.loader,
+          {
+            loader: "css-loader",
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: [
+                  [
+                    "autoprefixer",
+                    {
+                      // Options
+                    }
+                  ]
+                ]
+              }
+            }
+          }
+        ]
+      },
+      //   less
+      {
+        test: /\.less$/i,
+        exclude: /(node_modules|bower_components)^((?!bootstrap).)+$/,
+        use: [
+          // 'thread-loader',
+          // compiles Less to CSS
+          MiniCssExtractPlugin.loader,
+
+          "css-loader",
+          {
+            loader: "less-loader",
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: [
+                  [
+                    "autoprefixer",
+                    {
+                      // Options
+                    }
+                  ]
+                ]
+              }
+            }
+          }
+        ]
+      },
+      // //  scss
+      // {
+      //     test: /\.s[ac]ss$/i,
+      //     use: [
+      //         // 'thread-loader',
+      //         MiniCssExtractPlugin.loader,
+      //         // Translates CSS into CommonJS
+      //         'css-loader',
+      //         // Compiles Sass to CSS
+      //         // 'sass-loader',
+      //         {
+      //             loader: 'sass-loader',
+      //             options: {
+      //                 // Prefer `dart-sass`
+      //                 implementation: require('sass'),
+      //                 sourceMap: true,
+      //             },
+      //         },
+      //         {
+      //             loader: 'postcss-loader',
+      //             options: {
+      //                 postcssOptions: {
+      //                     plugins: [
+      //                         [
+      //                             'autoprefixer',
+      //                             {
+      //                                 // Options
+      //                             },
+      //                         ],
+      //                     ],
+      //                 },
+      //             },
+      //         },
+      //     ],
+      // },
       {
         test: /\.json$/,
         use: "json-loader",
         exclude: /(node_modules|bower_components)/,
-        enforce: 'pre'
+        enforce: "pre"
       },
 
       {
-        test: /\.(graphql|gql|sql|json)$/,
+        test: /\.(graphql|gql|sql)$/,
         // 排除文件,因为这些包已经编译过，无需再次编译
         exclude: /(node_modules|bower_components)/,
         use: ["thread-loader", "raw-loader"]

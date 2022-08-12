@@ -123,190 +123,190 @@ class ClientRouter {
       );
     }
 
-    assetsManifest = {
-      entrypoints: ["client", "vendors"],
-      origins: {
-        0: [1, 2, 3, 0],
-        "@/pages/Home/index.js": [0, 1],
-        "@/pages/User/index.js": [0, 2],
-        "@/pages/marketing/pages/DiscountCoupon/index.js": [0, 3],
-        "@/pages/marketing/index.js": [4],
-        client: ["client"],
-        vendors: ["vendors"]
-      },
-      assets: {
-        0: {
-          js: [
-            {
-              file: "static/js/0.899c453b.chunk.js",
-              hash: "5ec8d96755cdbf990be5",
-              publicPath: "/static/js/0.899c453b.chunk.js"
-            }
-          ],
-          "js.map": [
-            {
-              file: "static/js/0.899c453b.chunk.js.map",
-              hash: "5ec8d96755cdbf990be5",
-              publicPath: "/static/js/0.899c453b.chunk.js.map"
-            }
-          ]
-        },
-        1: {
-          css: [
-            {
-              file: "static/css/1.301ef22d.chunk.css",
-              hash: "0c15b1bd6cbb6ea644df",
-              publicPath: "/static/css/1.301ef22d.chunk.css"
-            }
-          ],
-          js: [
-            {
-              file: "static/js/1.899c453b.chunk.js",
-              hash: "0c15b1bd6cbb6ea644df",
-              publicPath: "/static/js/1.899c453b.chunk.js"
-            }
-          ],
-          "css.map": [
-            {
-              file: "static/css/1.301ef22d.chunk.css.map",
-              hash: "0c15b1bd6cbb6ea644df",
-              publicPath: "/static/css/1.301ef22d.chunk.css.map"
-            }
-          ],
-          "js.map": [
-            {
-              file: "static/js/1.899c453b.chunk.js.map",
-              hash: "0c15b1bd6cbb6ea644df",
-              publicPath: "/static/js/1.899c453b.chunk.js.map"
-            }
-          ]
-        },
-        2: {
-          css: [
-            {
-              file: "static/css/2.465fd62a.chunk.css",
-              hash: "3d6aeee78431022d08f0",
-              publicPath: "/static/css/2.465fd62a.chunk.css"
-            }
-          ],
-          js: [
-            {
-              file: "static/js/2.899c453b.chunk.js",
-              hash: "3d6aeee78431022d08f0",
-              publicPath: "/static/js/2.899c453b.chunk.js"
-            }
-          ],
-          "css.map": [
-            {
-              file: "static/css/2.465fd62a.chunk.css.map",
-              hash: "3d6aeee78431022d08f0",
-              publicPath: "/static/css/2.465fd62a.chunk.css.map"
-            }
-          ],
-          "js.map": [
-            {
-              file: "static/js/2.899c453b.chunk.js.map",
-              hash: "3d6aeee78431022d08f0",
-              publicPath: "/static/js/2.899c453b.chunk.js.map"
-            }
-          ]
-        },
-        3: {
-          css: [
-            {
-              file: "static/css/3.447ff964.chunk.css",
-              hash: "3715ea8c92c6ecf58c31",
-              publicPath: "/static/css/3.447ff964.chunk.css"
-            }
-          ],
-          js: [
-            {
-              file: "static/js/3.899c453b.chunk.js",
-              hash: "3715ea8c92c6ecf58c31",
-              publicPath: "/static/js/3.899c453b.chunk.js"
-            }
-          ],
-          "css.map": [
-            {
-              file: "static/css/3.447ff964.chunk.css.map",
-              hash: "3715ea8c92c6ecf58c31",
-              publicPath: "/static/css/3.447ff964.chunk.css.map"
-            }
-          ],
-          "js.map": [
-            {
-              file: "static/js/3.899c453b.chunk.js.map",
-              hash: "3715ea8c92c6ecf58c31",
-              publicPath: "/static/js/3.899c453b.chunk.js.map"
-            }
-          ]
-        },
-        4: {
-          js: [
-            {
-              file: "static/js/4.899c453b.chunk.js",
-              hash: "0f01940299d9e4c1d781",
-              publicPath: "/static/js/4.899c453b.chunk.js"
-            }
-          ],
-          "js.map": [
-            {
-              file: "static/js/4.899c453b.chunk.js.map",
-              hash: "0f01940299d9e4c1d781",
-              publicPath: "/static/js/4.899c453b.chunk.js.map"
-            }
-          ]
-        },
-        client: {
-          css: [
-            {
-              file: "static/css/client.01d554c2.css",
-              hash: "437df4dbdd68a2953f41",
-              publicPath: "/static/css/client.01d554c2.css"
-            }
-          ],
-          js: [
-            {
-              file: "static/js/client.899c453b.js",
-              hash: "437df4dbdd68a2953f41",
-              publicPath: "/static/js/client.899c453b.js"
-            }
-          ],
-          "css.map": [
-            {
-              file: "static/css/client.01d554c2.css.map",
-              hash: "437df4dbdd68a2953f41",
-              publicPath: "/static/css/client.01d554c2.css.map"
-            }
-          ],
-          "js.map": [
-            {
-              file: "static/js/client.899c453b.js.map",
-              hash: "437df4dbdd68a2953f41",
-              publicPath: "/static/js/client.899c453b.js.map"
-            }
-          ]
-        },
-        vendors: {
-          js: [
-            {
-              file: "static/js/vendors.899c453b.js",
-              hash: "9efbfd0b63e651cfbeb3",
-              publicPath: "/static/js/vendors.899c453b.js"
-            }
-          ],
-          "js.map": [
-            {
-              file: "static/js/vendors.899c453b.js.map",
-              hash: "9efbfd0b63e651cfbeb3",
-              publicPath: "/static/js/vendors.899c453b.js.map"
-            }
-          ]
-        }
-      }
-    };
+    // assetsManifest = {
+    //   entrypoints: ["client", "vendors"],
+    //   origins: {
+    //     0: [1, 2, 3, 0],
+    //     "@/pages/Home/index.js": [0, 1],
+    //     "@/pages/User/index.js": [0, 2],
+    //     "@/pages/marketing/pages/DiscountCoupon/index.js": [0, 3],
+    //     "@/pages/marketing/index.js": [4],
+    //     client: ["client"],
+    //     vendors: ["vendors"]
+    //   },
+    //   assets: {
+    //     0: {
+    //       js: [
+    //         {
+    //           file: "static/js/0.899c453b.chunk.js",
+    //           hash: "5ec8d96755cdbf990be5",
+    //           publicPath: "/static/js/0.899c453b.chunk.js"
+    //         }
+    //       ],
+    //       "js.map": [
+    //         {
+    //           file: "static/js/0.899c453b.chunk.js.map",
+    //           hash: "5ec8d96755cdbf990be5",
+    //           publicPath: "/static/js/0.899c453b.chunk.js.map"
+    //         }
+    //       ]
+    //     },
+    //     1: {
+    //       css: [
+    //         {
+    //           file: "static/css/1.301ef22d.chunk.css",
+    //           hash: "0c15b1bd6cbb6ea644df",
+    //           publicPath: "/static/css/1.301ef22d.chunk.css"
+    //         }
+    //       ],
+    //       js: [
+    //         {
+    //           file: "static/js/1.899c453b.chunk.js",
+    //           hash: "0c15b1bd6cbb6ea644df",
+    //           publicPath: "/static/js/1.899c453b.chunk.js"
+    //         }
+    //       ],
+    //       "css.map": [
+    //         {
+    //           file: "static/css/1.301ef22d.chunk.css.map",
+    //           hash: "0c15b1bd6cbb6ea644df",
+    //           publicPath: "/static/css/1.301ef22d.chunk.css.map"
+    //         }
+    //       ],
+    //       "js.map": [
+    //         {
+    //           file: "static/js/1.899c453b.chunk.js.map",
+    //           hash: "0c15b1bd6cbb6ea644df",
+    //           publicPath: "/static/js/1.899c453b.chunk.js.map"
+    //         }
+    //       ]
+    //     },
+    //     2: {
+    //       css: [
+    //         {
+    //           file: "static/css/2.465fd62a.chunk.css",
+    //           hash: "3d6aeee78431022d08f0",
+    //           publicPath: "/static/css/2.465fd62a.chunk.css"
+    //         }
+    //       ],
+    //       js: [
+    //         {
+    //           file: "static/js/2.899c453b.chunk.js",
+    //           hash: "3d6aeee78431022d08f0",
+    //           publicPath: "/static/js/2.899c453b.chunk.js"
+    //         }
+    //       ],
+    //       "css.map": [
+    //         {
+    //           file: "static/css/2.465fd62a.chunk.css.map",
+    //           hash: "3d6aeee78431022d08f0",
+    //           publicPath: "/static/css/2.465fd62a.chunk.css.map"
+    //         }
+    //       ],
+    //       "js.map": [
+    //         {
+    //           file: "static/js/2.899c453b.chunk.js.map",
+    //           hash: "3d6aeee78431022d08f0",
+    //           publicPath: "/static/js/2.899c453b.chunk.js.map"
+    //         }
+    //       ]
+    //     },
+    //     3: {
+    //       css: [
+    //         {
+    //           file: "static/css/3.447ff964.chunk.css",
+    //           hash: "3715ea8c92c6ecf58c31",
+    //           publicPath: "/static/css/3.447ff964.chunk.css"
+    //         }
+    //       ],
+    //       js: [
+    //         {
+    //           file: "static/js/3.899c453b.chunk.js",
+    //           hash: "3715ea8c92c6ecf58c31",
+    //           publicPath: "/static/js/3.899c453b.chunk.js"
+    //         }
+    //       ],
+    //       "css.map": [
+    //         {
+    //           file: "static/css/3.447ff964.chunk.css.map",
+    //           hash: "3715ea8c92c6ecf58c31",
+    //           publicPath: "/static/css/3.447ff964.chunk.css.map"
+    //         }
+    //       ],
+    //       "js.map": [
+    //         {
+    //           file: "static/js/3.899c453b.chunk.js.map",
+    //           hash: "3715ea8c92c6ecf58c31",
+    //           publicPath: "/static/js/3.899c453b.chunk.js.map"
+    //         }
+    //       ]
+    //     },
+    //     4: {
+    //       js: [
+    //         {
+    //           file: "static/js/4.899c453b.chunk.js",
+    //           hash: "0f01940299d9e4c1d781",
+    //           publicPath: "/static/js/4.899c453b.chunk.js"
+    //         }
+    //       ],
+    //       "js.map": [
+    //         {
+    //           file: "static/js/4.899c453b.chunk.js.map",
+    //           hash: "0f01940299d9e4c1d781",
+    //           publicPath: "/static/js/4.899c453b.chunk.js.map"
+    //         }
+    //       ]
+    //     },
+    //     client: {
+    //       css: [
+    //         {
+    //           file: "static/css/client.01d554c2.css",
+    //           hash: "437df4dbdd68a2953f41",
+    //           publicPath: "/static/css/client.01d554c2.css"
+    //         }
+    //       ],
+    //       js: [
+    //         {
+    //           file: "static/js/client.899c453b.js",
+    //           hash: "437df4dbdd68a2953f41",
+    //           publicPath: "/static/js/client.899c453b.js"
+    //         }
+    //       ],
+    //       "css.map": [
+    //         {
+    //           file: "static/css/client.01d554c2.css.map",
+    //           hash: "437df4dbdd68a2953f41",
+    //           publicPath: "/static/css/client.01d554c2.css.map"
+    //         }
+    //       ],
+    //       "js.map": [
+    //         {
+    //           file: "static/js/client.899c453b.js.map",
+    //           hash: "437df4dbdd68a2953f41",
+    //           publicPath: "/static/js/client.899c453b.js.map"
+    //         }
+    //       ]
+    //     },
+    //     vendors: {
+    //       js: [
+    //         {
+    //           file: "static/js/vendors.899c453b.js",
+    //           hash: "9efbfd0b63e651cfbeb3",
+    //           publicPath: "/static/js/vendors.899c453b.js"
+    //         }
+    //       ],
+    //       "js.map": [
+    //         {
+    //           file: "static/js/vendors.899c453b.js.map",
+    //           hash: "9efbfd0b63e651cfbeb3",
+    //           publicPath: "/static/js/vendors.899c453b.js.map"
+    //         }
+    //       ]
+    //     }
+    //   }
+    // };
 
-    console.log("assetsManifest========", assetsManifest);
+    
 
     // assetsManifest = assetsManifest
     //   ? JSON.parse(assetsManifest)

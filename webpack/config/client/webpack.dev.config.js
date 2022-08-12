@@ -1,118 +1,120 @@
-const path = require('path')
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ProgressBarPlugin = require('progress-bar-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const rootPath = process.cwd()
+const path = require("path");
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ProgressBarPlugin = require("progress-bar-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const rootPath = process.cwd();
 let {
   NODE_ENV, // 环境参数
   WEB_ENV, // 环境参数
   target, // 环境参数
-  htmlWebpackPluginOptions = '',
-} = process.env // 环境参数
+  htmlWebpackPluginOptions = ""
+} = process.env; // 环境参数
 
 htmlWebpackPluginOptions = (() => {
-  const regex = /(?<=\{)(.+?)(?=\})/g // {} 花括号，大括号
-  htmlWebpackPluginOptions = htmlWebpackPluginOptions.match(regex)
+  const regex = /(?<=\{)(.+?)(?=\})/g; // {} 花括号，大括号
+  htmlWebpackPluginOptions = htmlWebpackPluginOptions.match(regex);
   if (htmlWebpackPluginOptions) {
-    htmlWebpackPluginOptions = htmlWebpackPluginOptions[0]
-    let htmlWebpackPluginOptionsArr = htmlWebpackPluginOptions.split(',')
-    htmlWebpackPluginOptions = {}
+    htmlWebpackPluginOptions = htmlWebpackPluginOptions[0];
+    let htmlWebpackPluginOptionsArr = htmlWebpackPluginOptions.split(",");
+    htmlWebpackPluginOptions = {};
     for (let item of htmlWebpackPluginOptionsArr) {
-      let [key, value] = item.split(':')
-      htmlWebpackPluginOptions[`${key}`] = value
+      let [key, value] = item.split(":");
+      htmlWebpackPluginOptions[`${key}`] = value;
     }
   } else {
-    htmlWebpackPluginOptions = {}
+    htmlWebpackPluginOptions = {};
   }
-  return htmlWebpackPluginOptions
-})()
+  return htmlWebpackPluginOptions;
+})();
 
 module.exports = {
   mode: NODE_ENV,
   devServer: {
     open: true,
-    contentBase: 'assets',
+    contentBase: "assets",
     hot: true,
     historyApiFallback: true,
     liveReload: true, // 编译之后是否自动刷新浏览器
     writeToDisk: true, // 写入硬盘
-    port: 5000,
+    port: 5000
   },
   watch: true,
   watchOptions: {
     //延迟监听时间
     aggregateTimeout: 300,
     //忽略监听文件夹
-    ignored: '/node_modules/',
+    ignored: "/node_modules/"
   },
   // context: path.join(process.cwd(), '/client'),
-  devtool: 'source-map',
+  devtool: "source-map",
   module: {
     rules: [
       // css
       {
         test: /\.css$/i,
-        // 排除文件,因为这些包已经编译过，无需再次编译
-        // exclude: /(node_modules|bower_components)/,
+        // 排除文件,因为这些包已经编译过，无需再次编译  不排除bootstrap
+        exclude: /(node_modules|bower_components)^((?!bootstrap).)+$/,
         use: [
           // 'thread-loader',
           MiniCssExtractPlugin.loader,
           {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: {
-              sourceMap: true,
-            },
+              sourceMap: true
+            }
           },
           {
-            loader: 'postcss-loader',
+            loader: "postcss-loader",
             options: {
               postcssOptions: {
                 plugins: [
                   [
-                    'autoprefixer',
+                    "autoprefixer",
                     {
                       // Options
-                    },
-                  ],
-                ],
-              },
-            },
-          },
-        ],
+                    }
+                  ]
+                ]
+              }
+            }
+          }
+        ]
       },
       //   less
       {
         test: /\.less$/i,
+        // 排除文件,因为这些包已经编译过，无需再次编译  不排除bootstrap
+        exclude: /(node_modules|bower_components)^((?!bootstrap).)+$/,
         use: [
           // 'thread-loader',
           // compiles Less to CSS
           MiniCssExtractPlugin.loader,
-          'css-loader',
+          "css-loader",
           {
-            loader: 'less-loader',
+            loader: "less-loader",
             options: {
-              sourceMap: true,
-            },
+              sourceMap: true
+            }
           },
           {
-            loader: 'postcss-loader',
+            loader: "postcss-loader",
             options: {
               postcssOptions: {
                 plugins: [
                   [
-                    'autoprefixer',
+                    "autoprefixer",
                     {
                       // Options
-                    },
-                  ],
-                ],
-              },
-            },
-          },
-        ],
-      },
+                    }
+                  ]
+                ]
+              }
+            }
+          }
+        ]
+      }
 
       // //  scss
       // {
@@ -149,7 +151,7 @@ module.exports = {
       //         },
       //     ],
       // },
-    ],
+    ]
     // rules: [
     //     // css
     //     {
@@ -221,10 +223,10 @@ module.exports = {
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: 'static/css/[name].[contenthash:8].css',
-      chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
+      filename: "static/css/[name].[contenthash:8].css",
+      chunkFilename: "static/css/[name].[contenthash:8].chunk.css"
     }),
 
-    new webpack.HotModuleReplacementPlugin(),
-  ],
-}
+    new webpack.HotModuleReplacementPlugin()
+  ]
+};

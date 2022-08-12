@@ -35,6 +35,8 @@ module.exports = {
       // '@babel/polyfill',
       // "core-js/stable",
       // "regenerator-runtime/runtime",
+      //添加编译缓存
+      // "webpack/hot/poll?1000",
       path.join(process.cwd(), "/server/index.js")
     ]
   },
@@ -43,68 +45,68 @@ module.exports = {
   devtool: "source-map",
   module: {
     rules: [
-      // css
-      {
-        test: /\.css$/i,
-        // 排除文件,因为这些包已经编译过，无需再次编译
-        // exclude: /(node_modules|bower_components)/,
-        use: [
-          // 'thread-loader',
-          MiniCssExtractPlugin.loader,
-          {
-            loader: "css-loader",
-            options: {
-              sourceMap: true
-            }
-          },
-          {
-            loader: "postcss-loader",
-            options: {
-              postcssOptions: {
-                plugins: [
-                  [
-                    "autoprefixer",
-                    {
-                      // Options
-                    }
-                  ]
-                ]
-              }
-            }
-          }
-        ]
-      },
-      //   less
-      {
-        test: /\.less$/i,
-        use: [
-          // 'thread-loader',
-          // compiles Less to CSS
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          {
-            loader: "less-loader",
-            options: {
-              sourceMap: true
-            }
-          },
-          {
-            loader: "postcss-loader",
-            options: {
-              postcssOptions: {
-                plugins: [
-                  [
-                    "autoprefixer",
-                    {
-                      // Options
-                    }
-                  ]
-                ]
-              }
-            }
-          }
-        ]
-      }
+      // // css
+      // {
+      //   test: /\.css$/i,
+      //   // 排除文件,因为这些包已经编译过，无需再次编译
+      //   // exclude: /(node_modules|bower_components)/,
+      //   use: [
+      //     // 'thread-loader',
+      //     MiniCssExtractPlugin.loader,
+      //     {
+      //       loader: "css-loader",
+      //       options: {
+      //         sourceMap: true
+      //       }
+      //     },
+      //     {
+      //       loader: "postcss-loader",
+      //       options: {
+      //         postcssOptions: {
+      //           plugins: [
+      //             [
+      //               "autoprefixer",
+      //               {
+      //                 // Options
+      //               }
+      //             ]
+      //           ]
+      //         }
+      //       }
+      //     }
+      //   ]
+      // },
+      // //   less
+      // {
+      //   test: /\.less$/i,
+      //   use: [
+      //     // 'thread-loader',
+      //     // compiles Less to CSS
+      //     MiniCssExtractPlugin.loader,
+      //     "css-loader",
+      //     {
+      //       loader: "less-loader",
+      //       options: {
+      //         sourceMap: true
+      //       }
+      //     },
+      //     {
+      //       loader: "postcss-loader",
+      //       options: {
+      //         postcssOptions: {
+      //           plugins: [
+      //             [
+      //               "autoprefixer",
+      //               {
+      //                 // Options
+      //               }
+      //             ]
+      //           ]
+      //         }
+      //       }
+      //     }
+      //   ]
+      // }
 
       // //  scss
       // {

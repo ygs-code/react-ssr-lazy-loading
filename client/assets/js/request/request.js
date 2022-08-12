@@ -145,10 +145,15 @@ export default class Request {
     const error = options.error || Request.error || (() => {});
 
     const urls = this.transformUrl(baseUrl || this.baseUrl, url);
-    const requestInterceptors = options?.interceptors?.request;
-    Request?.interceptors?.request || ((config) => config);
-    const responseInterceptors = options?.interceptors?.response;
-    Request?.interceptors?.response || ((response) => response);
+    const requestInterceptors =
+      options?.interceptors?.request ||
+      Request?.interceptors?.request ||
+      ((config) => config);
+
+    const responseInterceptors =
+      options?.interceptors?.response ||
+      Request?.interceptors?.response ||
+      ((response) => response);
 
     // this.setLoad({
     //   url,
@@ -237,6 +242,7 @@ export default class Request {
     const error = Request.error || options.error || (() => {});
 
     const requestInterceptors = options?.interceptors?.request;
+    console.log("requestInterceptors=======", requestInterceptors);
     Request?.interceptors?.request || ((config) => config);
     const responseInterceptors = options?.interceptors?.response;
     Request?.interceptors?.response || ((response) => response);
