@@ -75,23 +75,6 @@ module.exports = {
     __dirname: true,
     global: false
   },
-
-  // entry: {
-  //     serverRenderer: path.join(
-  //         process.cwd(),
-  //         '/server/middleware/clientRouter.js'
-  //     ),
-  //     // vendors: [
-  //     //     'react',
-  //     //     'react-dom',
-  //     //     // 'react-loadable',
-  //     //     // 'react-redux',
-  //     //     // 'redux',
-  //     //     // 'react-router-dom',
-  //     //     // 'react-router-redux',
-  //     //     // 'redux-thunk',
-  //     // ],
-  // },
   output: {
     filename: "[name].js",
     path: path.join(process.cwd(), "./dist/server"),
@@ -296,7 +279,6 @@ module.exports = {
           // 'thread-loader',
           // compiles Less to CSS
           MiniCssExtractPlugin.loader,
-
           "css-loader",
           {
             loader: "less-loader",
@@ -523,6 +505,12 @@ module.exports = {
     //     //     // "static/vendor.manifest",
     //     // ],
     // }),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "static/css/[name].[contenthash:8].css",
+      chunkFilename: "static/css/[name].[contenthash:8].chunk.css"
+    }),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
