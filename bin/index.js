@@ -17,14 +17,12 @@ import kill from "kill-port"; // 杀死端口包
 import { execute, iSportTake } from "./cmd"; // 杀死端口包
 import { stabilization } from "../client/utils";
 import ResolveAlias from "../webpack/definePlugin/webpack-plugin-resolve-alias";
-
 import * as dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
 // 如果是开发环境 先拷贝 服务器文件到 dist
 let {
   NODE_ENV, // 环境参数
-  WEB_ENV, // 环境参数
   target, // 环境参数
   htmlWebpackPluginOptions = "",
   port

@@ -6,9 +6,7 @@ require('dotenv').config({ path: '.env' });
 
 let {
     NODE_ENV, // 环境参数
-    WEB_ENV, // 环境参数
     target, // 环境参数
-    htmlWebpackPluginOptions = '',
 } = process.env; // 环境参数
 let config = {};
 if (NODE_ENV == 'development') {

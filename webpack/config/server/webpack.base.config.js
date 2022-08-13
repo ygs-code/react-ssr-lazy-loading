@@ -8,7 +8,6 @@ const ManifestPlugin = require("webpack-manifest-plugin");
 const { ReactLoadablePlugin } = require("react-loadable/webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const ExtendedDefinePlugin = require("extended-define-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const { ProgressPlugin } = require("webpack");
 const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin");
@@ -22,9 +21,9 @@ const os = require("os");
 const WebpackBar = require("webpackbar");
 const { ESBuildPlugin, ESBuildMinifyPlugin } = require("esbuild-loader");
 const ESLintPlugin = require("eslint-webpack-plugin");
+const { strongToObject } = require("../../utils");
 let {
   NODE_ENV, // 环境参数
-  WEB_ENV, // 环境参数
   target, // 环境参数
   htmlWebpackPluginOptions = ""
 } = process.env; // 环境参数
@@ -35,22 +34,7 @@ const isEnvDevelopment = NODE_ENV === "development";
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length - 1 });
 const rootPath = process.cwd();
 
-htmlWebpackPluginOptions = (() => {
-  const regex = /(?<=\{)(.+?)(?=\})/g; // {} 花括号，大括号
-  htmlWebpackPluginOptions = htmlWebpackPluginOptions.match(regex);
-  if (htmlWebpackPluginOptions) {
-    htmlWebpackPluginOptions = htmlWebpackPluginOptions[0];
-    let htmlWebpackPluginOptionsArr = htmlWebpackPluginOptions.split(",");
-    htmlWebpackPluginOptions = {};
-    for (let item of htmlWebpackPluginOptionsArr) {
-      let [key, value] = item.split(":");
-      htmlWebpackPluginOptions[`${key}`] = value;
-    }
-  } else {
-    htmlWebpackPluginOptions = {};
-  }
-  return htmlWebpackPluginOptions;
-})();
+
 
 const cacheLoader = (happypackId) => {
   return isEnvDevelopment
@@ -398,6 +382,12 @@ module.exports = {
     //     quiet: false, //如果设置为true，将只处理和报告错误，而忽略警告。
     //     fix: true, //自动修复
     // }),
+    // 全局变量
+    new webpack.EnvironmentPlugin({
+      NODE_ENV, // 环境参数  除非有定义 process.env.NODE_ENV，否则就使用 NODE_ENV
+      target, // 环境参数
+      htmlWebpackPluginOptions: strongToObject(htmlWebpackPluginOptions),
+    }),
     new CleanWebpackPlugin(),
     // 使用此插件有助于缓解OSX上的开发人员不遵循严格的路径区分大小写的情况，
     // 这些情况将导致与其他开发人员或运行其他操作系统（需要正确使用大小写正确的路径）的构建箱发生冲突。
@@ -464,32 +454,11 @@ module.exports = {
     //         routePaths: '/client/router/routePaths.js',
     //     },
     // }),
-    // 注入全局常量
-    // new ExtendedDefinePlugin({
-    //     GLOBAL_VARIABLE: {
-    //         // ...process.env,
-    //         NODE_ENV, // 环境参数
-    //         WEB_ENV, // 环境参数
-    //         target, // 环境参数
-    //         COMPILER_ENV,
-    //         htmlWebpackPluginOptions,
-    //     },
-    //     process: {
-    //         // ...process,
-    //         env: {
-    //             // ...process.env,
-    //             NODE_ENV, // 环境参数
-    //             WEB_ENV, // 环境参数
-    //             target, // 环境参数
-    //             COMPILER_ENV,
-    //             htmlWebpackPluginOptions,
-    //         },
-    //     },
-    //     htmlWebpackPluginOptions,
-    // }),
+
     // // html静态页面
     // new HtmlWebpackPlugin({
     //     ...htmlWebpackPluginOptions,
+    //  ...strongToObject(htmlWebpackPluginOptions),
     //     minify: true,
     //     // title: 'Custom template using Handlebars',
     //     // 生成出来的html文件名

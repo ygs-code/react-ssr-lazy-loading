@@ -5,7 +5,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const { ReactLoadablePlugin } = require("react-loadable/webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const ExtendedDefinePlugin = require("extended-define-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const { ProgressPlugin } = require("webpack");
 const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin");
@@ -16,10 +15,10 @@ const WebpackBar = require("webpackbar");
 const ReactLoadableSSRAddon = require("react-loadable-ssr-addon");
 const { ESBuildPlugin, ESBuildMinifyPlugin } = require("esbuild-loader");
 const ESLintPlugin = require("eslint-webpack-plugin");
+const { strongToObject } = require("../../utils");
 
 let {
   NODE_ENV, // 环境参数
-  WEB_ENV, // 环境参数
   target, // 环境参数
   htmlWebpackPluginOptions = ""
 } = process.env; // 环境参数
@@ -35,22 +34,6 @@ const isEnvDevelopment = NODE_ENV === "development";
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length - 1 });
 const rootPath = process.cwd();
 
-htmlWebpackPluginOptions = (() => {
-  const regex = /(?<=\{)(.+?)(?=\})/g; // {} 花括号，大括号
-  htmlWebpackPluginOptions = htmlWebpackPluginOptions.match(regex);
-  if (htmlWebpackPluginOptions) {
-    htmlWebpackPluginOptions = htmlWebpackPluginOptions[0];
-    let htmlWebpackPluginOptionsArr = htmlWebpackPluginOptions.split(",");
-    htmlWebpackPluginOptions = {};
-    for (let item of htmlWebpackPluginOptionsArr) {
-      let [key, value] = item.split(":");
-      htmlWebpackPluginOptions[`${key}`] = value;
-    }
-  } else {
-    htmlWebpackPluginOptions = {};
-  }
-  return htmlWebpackPluginOptions;
-})();
 
 const cacheLoader = (happypackId) => {
   return isEnvDevelopment
@@ -322,21 +305,11 @@ module.exports = {
     //         routePaths: '/client/router/routePaths.js',
     //     },
     // }),
-    // 注入全局常量
-    new ExtendedDefinePlugin({
-      process: {
-        env: {
-          NODE_ENV, // 环境参数
-          WEB_ENV, // 环境参数
-          target, // 环境参数
-          htmlWebpackPluginOptions
-        }
-      }
-    }),
-
+    // 全局变量
     new webpack.EnvironmentPlugin({
-      NODE_ENV: "development", // 除非有定义 process.env.NODE_ENV，否则就使用 'development'
-      DEBUG: false
+      NODE_ENV, // 环境参数  除非有定义 process.env.NODE_ENV，否则就使用 NODE_ENV
+      target, // 环境参数
+      htmlWebpackPluginOptions: strongToObject(htmlWebpackPluginOptions)
     }),
 
     ...(isSsr && isEnvDevelopment
@@ -344,7 +317,7 @@ module.exports = {
       : [
           // // // html静态页面
           new HtmlWebpackPlugin({
-            ...htmlWebpackPluginOptions,
+            ...strongToObject(htmlWebpackPluginOptions),
             minify: true,
             // title: 'Custom template using Handlebars',
             // 生成出来的html文件名

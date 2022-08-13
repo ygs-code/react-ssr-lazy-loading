@@ -9,9 +9,7 @@ import { compiler, config } from "../../../webpack";
 
 let {
   NODE_ENV, // 环境参数
-  WEB_ENV, // 环境参数
   target, // 环境参数
-  htmlWebpackPluginOptions = ""
 } = process.env; // 环境参数
 
 const isSsr = target === "ssr";
@@ -94,7 +92,11 @@ class WebpackHot {
       )
     );
   }
-
+  // addEjsMiddleware() {
+  //   // 2. 配置模板引擎中间件：views()第一个参数是视图模板所在的路径，第二个参数是应用ejs模板引擎
+  //   // app.use(views("views", { extension: "ejs" })); // 若这样配置，模板的后缀名是.ejs
+  //   this.app.use(views("views", { map: { html: "ejs" } })); // 若这样配置，模板的后缀名是.html
+  // }
   addWebpackHotServerMiddleware() {
     const _this = this;
     this.app.use(

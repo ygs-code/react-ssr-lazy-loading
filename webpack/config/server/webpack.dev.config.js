@@ -7,28 +7,10 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const rootPath = process.cwd();
 let {
   NODE_ENV, // 环境参数
-  WEB_ENV, // 环境参数
   target, // 环境参数
-  htmlWebpackPluginOptions = ""
 } = process.env; // 环境参数
 
-htmlWebpackPluginOptions = (() => {
-  const regex = /(?<=\{)(.+?)(?=\})/g; // {} 花括号，大括号
-  htmlWebpackPluginOptions = htmlWebpackPluginOptions.match(regex);
-  if (htmlWebpackPluginOptions) {
-    htmlWebpackPluginOptions = htmlWebpackPluginOptions[0];
-    let htmlWebpackPluginOptionsArr = htmlWebpackPluginOptions.split(",");
-    htmlWebpackPluginOptions = {};
-    for (let item of htmlWebpackPluginOptionsArr) {
-      let [key, value] = item.split(":");
-      htmlWebpackPluginOptions[`${key}`] = value;
-    }
-  } else {
-    htmlWebpackPluginOptions = {};
-  }
-  return htmlWebpackPluginOptions;
-})();
-
+ 
 module.exports = {
   entry: {
     main: [

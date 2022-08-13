@@ -14,16 +14,17 @@ import { matchPath } from "react-router-dom";
 import store from "client/redux";
 import routesComponent, { routesConfigs } from "client/router/routesComponent";
 import { findTreeData, getBaseInitState } from "client/utils";
-import CreateApp from "client/App";
+import createApp from "client/App";
 import otherModules from "./otherModules";
 import path, { resolve } from "path";
 import fs from "fs";
+import ejs from "ejs";
+
 const absolutePath = resolve("./");
 let {
   NODE_ENV, // 环境参数
-  WEB_ENV, // 环境参数
   target, // 环境参数
-  htmlWebpackPluginOptions = ""
+  htmlWebpackPluginOptions
 } = process.env; // 环境参数
 
 //    是否是生产环境
@@ -31,7 +32,7 @@ const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === "development";
 
-// const CreateApp = require("client/App").default;
+// const createApp = require("client/App").default;
 // 创建 store
 // const store = createStore({});
 
@@ -89,16 +90,36 @@ class ClientRouter {
       let renderedHtml = await this.makeup({
         ctx,
         store,
-        CreateApp,
+        createApp,
         html,
         isMatchRoute,
         modules
       });
 
-      ctx.body = renderedHtml;
+      ctx.body = ejs.render(renderedHtml, {
+        htmlWebpackPlugin: {
+          options: this.strongToObject(htmlWebpackPluginOptions)
+        }
+      });
     }
     next();
   }
+
+  strongToObject(string) {
+    const regex = /(?<=\{)(.+?)(?=\})/g; // {} 花括号，大括号
+    string = string.match(regex);
+    let obj = {};
+    if (string) {
+      string = string[0];
+      let stringArr = string.split(",");
+      for (let item of stringArr) {
+        let [key, value] = item.split(":");
+        obj[`${key}`] = value;
+      }
+    }
+    return obj;
+  }
+
   // 查找初始化数据
   findInitData(routesConfigs, value, key) {
     return (findTreeData(routesConfigs, value, key) || {}).initState;
@@ -372,7 +393,7 @@ class ClientRouter {
     }
   }
   // 创建react文本
-  async makeup({ ctx, store, CreateApp, html, isMatchRoute, modules }) {
+  async makeup({ ctx, store, createApp, html, isMatchRoute, modules }) {
     let initState = store.getState();
 
     let history = createMemoryHistory({ initialEntries: [ctx.req.url] });
@@ -385,7 +406,7 @@ class ClientRouter {
     let location = ctx.req.url;
 
     let rootString = renderToString(
-      CreateApp({ store, context, history, modules, location })
+      createApp({ store, context, history, modules, location })
     );
 
     let { scripts, styles } = await this.createTags(modules);

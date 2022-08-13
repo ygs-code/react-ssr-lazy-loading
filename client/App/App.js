@@ -12,16 +12,15 @@ import Routers from "client/router";
 import "./App.less";
 import "client/assets/css/base.less";
 import "bootstrap/dist/css/bootstrap.css";
-
-function App(props) {
+console.log("process.env=====", process.env);
+const App = (props) => {
   const { history, location, store } = props;
-
   return (
     <Provider store={store}>
       <Routers history={history} location={location} />
     </Provider>
   );
-}
+};
 // App.propTypes = {
 //     location: PropTypes.string,
 //     store: PropTypes.object,

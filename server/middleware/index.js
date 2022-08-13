@@ -4,9 +4,7 @@ import path, { resolve } from "path";
 
 let {
   NODE_ENV, // 环境参数
-  WEB_ENV, // 环境参数
   target, // 环境参数
-  htmlWebpackPluginOptions = ""
 } = process.env; // 环境参数
 // 是否是ssr
 const isSsr = target == "ssr";

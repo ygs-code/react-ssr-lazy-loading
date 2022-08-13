@@ -14,9 +14,8 @@ import Middleware from "./middleware";
 
 let {
   NODE_ENV, // 环境参数
-  WEB_ENV, // 环境参数
   target, // 环境参数
-  htmlWebpackPluginOptions = "",
+  htmlWebpackPluginOptions,
   port
 } = process.env; // 环境参数
 

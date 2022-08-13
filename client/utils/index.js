@@ -33,12 +33,9 @@ import {
   firstToUpper
 } from "./regular";
 import { setInitData } from "./setInitData";
-import { getEv } from "./getEv";
 import { getBaseInitState } from "./getBaseInitState";
-// import { getGlobal } from './getGlobal'
 
 export {
-  // getGlobal,
   getBaseInitState,
   // FloatingBall, // 浮动球 类
   throttle, // 节流函数
@@ -57,8 +54,7 @@ export {
   checkPassword,
   checkVerificationCode,
   firstToUpper,
-  setInitData,
-  getEv
+  setInitData
 };
 // 整体输出
 export * from "./regular.js";
