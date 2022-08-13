@@ -56,7 +56,7 @@ export const statusThrottle = (() => {
         reject();
         return;
       }
-      // console.log('objParameter=',objParameter)
+
       if (objParameter.status === false) {
         reject();
         return;

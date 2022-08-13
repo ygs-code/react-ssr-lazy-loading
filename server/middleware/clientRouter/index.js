@@ -11,7 +11,7 @@ import {
 import { getBundles } from "react-loadable-ssr-addon";
 import Helmet from "react-helmet";
 import { matchPath } from "react-router-dom";
-import createStore from "client/redux";
+import store from "client/redux";
 import routesComponent, { routesConfigs } from "client/router/routesComponent";
 import { findTreeData, getBaseInitState } from "client/utils";
 import CreateApp from "client/App";
@@ -33,7 +33,7 @@ const isEnvDevelopment = NODE_ENV === "development";
 
 // const CreateApp = require("client/App").default;
 // 创建 store
-const store = createStore({});
+// const store = createStore({});
 
 const { dispatch, getState } = store;
 

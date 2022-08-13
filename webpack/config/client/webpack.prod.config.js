@@ -1,6 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const { ReactLoadablePlugin } = require("react-loadable/webpack");
@@ -150,36 +150,8 @@ module.exports = {
       chunkFilename: "static/css/[name].[contenthash:8].chunk.css"
     }),
 
-    // new CleanWebpackPlugin(["./dist/client"], {
-    //   root: rootPath
-    // }),
-
-    // // 复制
-    // new CopyWebpackPlugin([
-    //     {
-    //         from: path
-    //             .join(process.cwd(), '/client/static/**/*')
-    //             .replace(/\\/gi, '/'),
-    //         to: path
-    //             .join(process.cwd(), '/dist/client/static')
-    //             .replace(/\\/gi, '/')
-    //     },
-    // ]),
-
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
-    }),
-    // new webpack.optimize.OccurrenceOrderPlugin(),
-
-    // new webpack.optimize.CommonsChunkPlugin({
-    //     name: ['vendors', 'manifest'],
-    //     minChunks: 2,
-    // }),
-    new ReactLoadablePlugin({
-      filename: path.join(rootPath, "./dist/react-loadable.json")
-    }),
-    new ReactLoadablePlugin({
-      filename: path.join(process.cwd(), "/dist/client/react-loadable.json")
     })
   ]
 };

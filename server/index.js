@@ -29,9 +29,6 @@ const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === "development";
 
-console.log("process.env.S3_BUCKET==", process.env.S3_BUCKET); //
-console.log("process.env.VITE_PROJECT_TITLE==", process.env.VITE_PROJECT_TITLE); //
-
 // 开启的子进程数
 const workerNum = isEnvProduction ? os.cpus().length - 1 : 1;
 // 如果是主进程

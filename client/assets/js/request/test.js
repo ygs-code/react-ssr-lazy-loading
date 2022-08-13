@@ -8,24 +8,24 @@
  */
 
 // const superagent = require('superagent');
-import superagent from 'superagent'
-import FormData from 'form-data'
-import fetch from 'node-fetch'
-import XMLHttpRequest from './XMLHttpRequest'
+import superagent from "superagent";
+import FormData from "form-data";
+import fetch from "node-fetch";
+import XMLHttpRequest from "./XMLHttpRequest";
 
 new XMLHttpRequest().xhRequest({
-  url: 'http://127.0.0.1:3100/api/set/user/login',
+  url: "http://127.0.0.1:3100/api/set/user/login",
   parameter: {
-    password: 'guan13688426',
-    username: 'qq281113270',
-    verificationCode: 'U8C2W',
+    password: "guan13688426",
+    username: "qq281113270",
+    verificationCode: "U8C2W"
   },
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  success:(data)=>{
-    console.log('data1==========',data)
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  success: (data) => {
+    console.log("data1==========", data);
   }
-})
+});
 
 // const ajax = async () => {
 //   const body = {

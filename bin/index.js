@@ -36,8 +36,6 @@ const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === "development";
 
-console.log("NODE_ENV======", NODE_ENV);
-
 let counter = 0;
 let child = null;
 if (isEnvDevelopment && isSsr) {
@@ -48,8 +46,7 @@ if (isEnvDevelopment && isSsr) {
         "@": path.join(process.cwd()),
         client: path.join(process.cwd(), "/client"),
         server: path.join(process.cwd(), "/server")
-      },
-  
+      }
     }
   });
 

@@ -49,22 +49,28 @@ const mapRedux = (modelsName) => (Component) => {
 };
 export { mapRedux };
 
-// const global = getGlobal()
-
-// console.log('global=======',global)
-
 export const createStore = (global) => {
   const newModels = {};
+  /* eslint-disable   */
   for (const key in models) {
-    if (models.hasOwnProperty(key)) {
-      newModels[key] = models[key](global);
-    }
+    // if (models.hasOwnProperty(key)) {
+    newModels[key] = models[key](global);
+    // }
   }
-
+  /* eslint-enable   */
   // 文档： https://www.icode9.com/content-4-1343821.html
   return init({
     models: newModels
   });
 };
 
-export default createStore; // (global || {})
+let $global = {};
+try {
+  if (window) {
+    $global = window;
+  }
+} catch (error) {
+  $global = global;
+}
+
+export default createStore($global); // (global || {})

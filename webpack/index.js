@@ -65,18 +65,14 @@ const compileRes = async (config) => {
 
 module.exports = {
   compiler: async () => {
-    console.log(1)
-    // if (isEnvProduction) {
-    //   await compileRes(client);
-    //   if (isSsr) {
-    //     await compileRes(server);
-    //   }
-    // }
-
-
-    await compileRes(server);
+ 
+    if (isEnvProduction) {
+      await compileRes(client);
+      if (isSsr) {
+        await compileRes(server);
+      }
+    }
     return true;
-    // return webpack(isSsr ? [client, server] : [client])
   },
   config: isSsr ? [client, server] : [client]
 };

@@ -1,7 +1,3 @@
-
-
-
-
-export default ()=>{
-    console.log('ddddddddd')
-}
+export default () => {
+  console.log("ddddddddd");
+};

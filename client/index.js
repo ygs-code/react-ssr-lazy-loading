@@ -11,9 +11,9 @@ import { hydrate, render } from "react-dom";
 import app from "./App/index.js";
 import Loadable from "client/component/Loadable";
 import { getHistory } from "client/router/history";
-import createStore from "client/redux";
+import store from "client/redux";
 
-const store = createStore(window);
+// const store = createStore(window);
 
 const renderComponent = module.hot ? render : hydrate;
 const renderApp = () => {

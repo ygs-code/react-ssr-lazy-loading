@@ -242,7 +242,7 @@ export default class Request {
     const error = Request.error || options.error || (() => {});
 
     const requestInterceptors = options?.interceptors?.request;
-    console.log("requestInterceptors=======", requestInterceptors);
+
     Request?.interceptors?.request || ((config) => config);
     const responseInterceptors = options?.interceptors?.response;
     Request?.interceptors?.response || ((response) => response);

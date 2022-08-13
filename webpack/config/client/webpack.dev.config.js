@@ -12,6 +12,12 @@ let {
   htmlWebpackPluginOptions = ""
 } = process.env; // 环境参数
 
+const isSsr = target == "ssr";
+//    是否是生产环境
+const isEnvProduction = NODE_ENV === "production";
+//   是否是测试开发环境
+const isEnvDevelopment = NODE_ENV === "development";
+
 htmlWebpackPluginOptions = (() => {
   const regex = /(?<=\{)(.+?)(?=\})/g; // {} 花括号，大括号
   htmlWebpackPluginOptions = htmlWebpackPluginOptions.match(regex);
@@ -37,7 +43,7 @@ module.exports = {
     hot: true,
     historyApiFallback: true,
     liveReload: true, // 编译之后是否自动刷新浏览器
-    writeToDisk: true, // 写入硬盘
+    writeToDisk: isSsr||isEnvProduction, // 写入硬盘
     port: 5000
   },
   watch: true,

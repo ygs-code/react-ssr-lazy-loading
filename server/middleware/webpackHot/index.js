@@ -5,6 +5,7 @@ import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotServerMiddleware from "webpack-hot-server-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 import ReactLoadableSSRAddon from "react-loadable-ssr-addon";
+import { compiler, config } from "../../../webpack";
 
 let {
   NODE_ENV, // 环境参数
@@ -13,13 +14,11 @@ let {
   htmlWebpackPluginOptions = ""
 } = process.env; // 环境参数
 
-const isSsr = target == "ssr";
+const isSsr = target === "ssr";
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === "development";
-
-console.log("target==========", target);
 
 class WebpackHot {
   constructor(app) {
@@ -29,8 +28,6 @@ class WebpackHot {
   }
   async init() {
     var _this = this;
-
-    const { compiler, config } = await import("../../../webpack");
 
     for (let [index, item] of config[0].plugins.entries()) {
       if (item instanceof ReactLoadableSSRAddon) {
@@ -73,13 +70,16 @@ class WebpackHot {
   }
   addWebpackDevMiddleware() {
     const _this = this;
+    const { devServer = {} } = config[0];
+
     this.app.use(
       _this.koaDevware(
         webpackDevMiddleware(_this.compiler, {
+          ...devServer,
           noInfo: true,
           serverSideRender: true, // 是否是服务器渲染
-          publicPath: "/",
-          writeToDisk: true //是否写入本地磁盘
+          publicPath: "/"
+          // writeToDisk: true //是否写入本地磁盘
         }),
         _this.compiler
       )

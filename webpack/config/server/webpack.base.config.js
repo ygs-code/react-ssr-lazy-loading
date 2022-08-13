@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const webpack = require("webpack");
 const nodeExternals = require("webpack-node-externals");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const { ReactLoadablePlugin } = require("react-loadable/webpack");
@@ -398,7 +398,7 @@ module.exports = {
     //     quiet: false, //如果设置为true，将只处理和报告错误，而忽略警告。
     //     fix: true, //自动修复
     // }),
-
+    new CleanWebpackPlugin(),
     // 使用此插件有助于缓解OSX上的开发人员不遵循严格的路径区分大小写的情况，
     // 这些情况将导致与其他开发人员或运行其他操作系统（需要正确使用大小写正确的路径）的构建箱发生冲突。
     new CaseSensitivePathsPlugin(),
