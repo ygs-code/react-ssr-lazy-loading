@@ -9,12 +9,12 @@
 import React, { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { mapRedux } from "@/redux";
-import Nav from "@/component/Nav";
-import Head from "@/component/Head";
-import LazyLoadingImg from "@/component/LazyLoadingImg";
-import { routesConfigs } from "@/router/routesComponent";
-import { findTreeData } from "@/utils";
+import { mapRedux } from "client/redux";
+import Nav from "client/component/Nav";
+import Head from "client/component/Head";
+import LazyLoadingImg from "client/component/LazyLoadingImg";
+import { routesConfigs } from "client/router/routesComponent";
+import { findTreeData } from "client/utils";
 import "./index.less";
 // 权限跳转登录页面可以在这控制
 function Index(props) {

@@ -20,6 +20,7 @@ module.exports = {
   // 如果为 true，则将多行jsx元素的 `>` 放在最后一行的末尾，而不是单独放在下一行
   jsxBracketSameLine: true,
   // arrowParens: 'avoid', // (x) => {} 箭头函数参数只有一个时是否要有小括号。avoid：省略括号
+  // 指定 prettier 的换行符
   endOfLine: "auto", // 结尾是 \n \r \n\r auto
   stylelintIntegration: false, //不让prettier使用stylelint的代码格式进行校验
   tslintIntegration: false, // 不让prettier使用tslint的代码格式进行校验
@@ -44,8 +45,6 @@ module.exports = {
   enable: true,
   // Enable debug logs for troubleshooting.
   enableDebugLogs: false,
-  // 指定 prettier 的换行符
-  endOfLine: "lf",
   // 指定HTML文件的全局空白区域敏感度。
   // 有效选项：
   //  'css' - 尊重CSS显示属性的默认值。

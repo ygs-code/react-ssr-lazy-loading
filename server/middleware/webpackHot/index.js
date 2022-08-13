@@ -34,6 +34,12 @@ class WebpackHot {
 
     for (let [index, item] of config[0].plugins.entries()) {
       if (item instanceof ReactLoadableSSRAddon) {
+        item.apply = function apply(compiler) {
+          const PLUGIN_NAME = "ReactLoadableSSRAddon";
+          // 写入文件
+          fs.writeFileSync(this.options.filename, "{}");
+          compiler.hooks.emit.tapAsync(PLUGIN_NAME, this.handleEmit.bind(this));
+        };
         item.writeAssetsFile = function () {
           const filePath = this.manifestOutputPath;
           const fileDir = path.dirname(filePath);

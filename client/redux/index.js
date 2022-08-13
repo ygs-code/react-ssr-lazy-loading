@@ -1,7 +1,7 @@
 import { init } from "@rematch/core";
 import { connect } from "react-redux";
 import * as models from "./models";
-import { CheckDataType } from "@/utils";
+import { CheckDataType } from "client/utils";
 
 const mapRedux = (modelsName) => (Component) => {
   const mapStateToProps = (state) => {

@@ -9,8 +9,8 @@
 import React from "react";
 import { Nav, NavItem, NavLink } from "reactstrap";
 import PropTypes from "prop-types";
-import { mapRedux } from "@/redux";
-import addRouterApi from "@/router/addRouterApi";
+import { mapRedux } from "client/redux";
+import addRouterApi from "client/router/addRouterApi";
 import "./index.less";
 
 function Index(props) {

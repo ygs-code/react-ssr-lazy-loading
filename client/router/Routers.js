@@ -10,7 +10,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Router, Switch as Routes, Route } from "./react-router-dom";
 
-import initComponentState from "@/redux/initComponentState";
+import initComponentState from "client/redux/initComponentState";
 import addRouterApi from "./addRouterApi";
 import routesConfig from "./routesComponent";
 

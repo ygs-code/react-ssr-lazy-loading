@@ -7,10 +7,10 @@
  * @Description:
  */
 import React, { useEffect } from "react";
-import Nav from "@/component/Nav";
-import Head from "@/component/Head";
-import Table from "@/component/Table";
-import { mapRedux } from "@/redux";
+import Nav from "client/component/Nav";
+import Head from "client/component/Head";
+import Table from "client/component/Table";
+import { mapRedux } from "client/redux";
 import "./index.less";
 
 function Index(props = {}) {

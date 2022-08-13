@@ -7,8 +7,8 @@
  * @Description:
  */
 import React from "react";
-import Nav from "@/component/Nav";
-import Head from "@/component/Head";
+import Nav from "client/component/Nav";
+import Head from "client/component/Head";
 
 // 2234;
 // 权限跳转登录页面可以在这控制

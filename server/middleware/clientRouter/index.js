@@ -11,10 +11,10 @@ import {
 import { getBundles } from "react-loadable-ssr-addon";
 import Helmet from "react-helmet";
 import { matchPath } from "react-router-dom";
-import createStore from "@/redux";
-import routesComponent, { routesConfigs } from "@/router/routesComponent";
-import { findTreeData, getBaseInitState } from "@/utils";
-import CreateApp from "@/App";
+import createStore from "client/redux";
+import routesComponent, { routesConfigs } from "client/router/routesComponent";
+import { findTreeData, getBaseInitState } from "client/utils";
+import CreateApp from "client/App";
 import otherModules from "./otherModules";
 import path, { resolve } from "path";
 import fs from "fs";
@@ -31,7 +31,7 @@ const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === "development";
 
-// const CreateApp = require("@/App").default;
+// const CreateApp = require("client/App").default;
 // 创建 store
 const store = createStore({});
 
@@ -116,21 +116,17 @@ class ClientRouter {
       assetsManifest = JSON.parse(assetsManifest);
     } else {
       // 变成一个js去引入
-      assetsManifest = await import(
-        this.transformPath(
-          path.join(absolutePath + "/dist/client/assets-manifest.json")
-        )
-      );
+      assetsManifest = await import("@/dist/client/assets-manifest.json");
     }
 
     // assetsManifest = {
     //   entrypoints: ["client", "vendors"],
     //   origins: {
     //     0: [1, 2, 3, 0],
-    //     "@/pages/Home/index.js": [0, 1],
-    //     "@/pages/User/index.js": [0, 2],
-    //     "@/pages/marketing/pages/DiscountCoupon/index.js": [0, 3],
-    //     "@/pages/marketing/index.js": [4],
+    //     "client/pages/Home/index.js": [0, 1],
+    //     "client/pages/User/index.js": [0, 2],
+    //     "client/pages/marketing/pages/DiscountCoupon/index.js": [0, 3],
+    //     "client/pages/marketing/index.js": [4],
     //     client: ["client"],
     //     vendors: ["vendors"]
     //   },
@@ -305,8 +301,6 @@ class ClientRouter {
     //     }
     //   }
     // };
-
-    
 
     // assetsManifest = assetsManifest
     //   ? JSON.parse(assetsManifest)

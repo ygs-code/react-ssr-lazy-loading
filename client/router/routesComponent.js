@@ -8,29 +8,29 @@
  */
 // 按需加载插件
 // import React from "react";
-import loadable from "@/component/Loadable";
-import Loading from "@/component/Loading";
-import pagesMarketingRouterRoutesconfig from "@/pages/marketing/router/routesConfig.js";
-import routerRoutesconfig from "@/router/routesConfig.js";
+import loadable from "client/component/Loadable";
+import Loading from "client/component/Loading";
+import pagesMarketingRouterRoutesconfig from "client/pages/marketing/router/routesConfig.js";
+import routerRoutesconfig from "client/router/routesConfig.js";
 
 // 路由组件引入
 const LoadableDiscountcoupon = loadable({
-  loader: () => import("@/pages/marketing/pages/DiscountCoupon/index.js"),
+  loader: () => import("client/pages/marketing/pages/DiscountCoupon/index.js"),
   loading: Loading
 });
 // 路由组件引入
 const LoadableMarketing = loadable({
-  loader: () => import("@/pages/marketing/index.js"),
+  loader: () => import("client/pages/marketing/index.js"),
   loading: Loading
 });
 // 路由组件引入
 const LoadableHome = loadable({
-  loader: () => import("@/pages/Home/index.js"),
+  loader: () => import("client/pages/Home/index.js"),
   loading: Loading
 });
 // 路由组件引入
 const LoadableUser = loadable({
-  loader: () => import("@/pages/User/index.js"),
+  loader: () => import("client/pages/User/index.js"),
   loading: Loading
 });
 const routesComponentConfig = [

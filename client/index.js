@@ -9,9 +9,9 @@
 // 18
 import { hydrate, render } from "react-dom";
 import app from "./App/index.js";
-import Loadable from "@/component/Loadable";
-import { getHistory } from "@/router/history";
-import createStore from "@/redux";
+import Loadable from "client/component/Loadable";
+import { getHistory } from "client/router/history";
+import createStore from "client/redux";
 
 const store = createStore(window);
 

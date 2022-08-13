@@ -150,9 +150,9 @@ module.exports = {
       chunkFilename: "static/css/[name].[contenthash:8].chunk.css"
     }),
 
-    new CleanWebpackPlugin(["./dist/client"], {
-      root: rootPath
-    }),
+    // new CleanWebpackPlugin(["./dist/client"], {
+    //   root: rootPath
+    // }),
 
     // // 复制
     // new CopyWebpackPlugin([

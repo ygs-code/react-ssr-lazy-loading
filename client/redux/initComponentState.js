@@ -8,9 +8,9 @@
  */
 import React from "react";
 import { matchPath } from "react-router-dom";
-import routesComponent, { routesConfigs } from "@/router/routesComponent";
-import { mapRedux } from "@/redux";
-import { findTreeData, getBaseInitState } from "@/utils";
+import routesComponent, { routesConfigs } from "client/router/routesComponent";
+import { mapRedux } from "client/redux";
+import { findTreeData, getBaseInitState } from "client/utils";
 
 // 注入initState
 const initState = (Component) => {

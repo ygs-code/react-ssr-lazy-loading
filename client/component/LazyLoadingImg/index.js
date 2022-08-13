@@ -16,8 +16,8 @@ import {
   CardText
 } from "reactstrap";
 import _ from "lodash";
-import { mapRedux } from "@/redux";
-import { getStyle } from "@/utils";
+import { mapRedux } from "client/redux";
+import { getStyle } from "client/utils";
 import "./index.less";
 
 // 权限跳转登录页面可以在这控制

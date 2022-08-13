@@ -8,7 +8,7 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { mapRedux } from "@/redux";
+import { mapRedux } from "client/redux";
 import "./index.less";
 
 function Index(props) {

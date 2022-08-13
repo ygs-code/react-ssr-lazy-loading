@@ -40,7 +40,7 @@ export default class Middleware {
   }
 
   async addWebpackHotMiddleware() {
-     // 把这个代码注释掉
+    // 把这个代码注释掉
     const webpackHotPromise = await import("./webpackHot");
     const WebpackHot = webpackHotPromise.default;
     new WebpackHot(this.app);
@@ -48,7 +48,7 @@ export default class Middleware {
 
   addMiddleware() {
     this.addCorsMiddleware();
-  
+
     if (isEnvDevelopment) {
       // 如果是生产不在这里编译
       this.addWebpackHotMiddleware();

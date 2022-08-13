@@ -8,7 +8,7 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { Capture } from "@/component/Loadable";
+import { Capture } from "client/component/Loadable";
 import App from "./App.js";
 import "./App.less";
 

@@ -7,8 +7,11 @@ let $ResolveAlias = new ResolveAlias({
     resolve: {
         // 路径配置
         alias: {
-            '@/': path.join(process.cwd(), '/dist/server/client/'),
-        },
+            "@": path.join(process.cwd()),
+            client: path.join(process.cwd(), "/client"),
+            server: path.join(process.cwd(), "/server")
+          },
+      
     },
 });
 

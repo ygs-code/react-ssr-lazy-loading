@@ -8,9 +8,9 @@
  */
 import React from "react";
 import { Provider } from "react-redux";
-import Routers from "@/router";
+import Routers from "client/router";
 import "./App.less";
-import "@/assets/css/base.less";
+import "client/assets/css/base.less";
 import "bootstrap/dist/css/bootstrap.css";
 
 function App(props) {

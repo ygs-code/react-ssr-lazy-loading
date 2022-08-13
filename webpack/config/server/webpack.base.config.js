@@ -196,8 +196,11 @@ module.exports = {
   resolve: {
     // 路径配置
     alias: {
-      "@": path.join(process.cwd(), "/client")
+      "@": path.join(process.cwd()),
+      client: path.join(process.cwd(), "/client"),
+      server: path.join(process.cwd(), "/server")
     },
+
     extensions: [
       ".js",
       ".jsx",
@@ -338,12 +341,12 @@ module.exports = {
       //         },
       //     ],
       // },
-      {
-        test: /\.json$/,
-        use: "json-loader",
-        exclude: /(node_modules|bower_components)/,
-        enforce: "pre"
-      },
+      // {
+      //   test: /\.json$/,
+      //   use: "json-loader",
+      //   exclude: /(node_modules|bower_components)/,
+      //   enforce: "pre"
+      // },
 
       {
         test: /\.(graphql|gql|sql)$/,
@@ -356,7 +359,7 @@ module.exports = {
         // },
       },
       {
-        test: /(\.jsx?$)|(\.js?$)|(\.json?$)/,
+        test: /(\.jsx?$)|(\.js?$)/,
         exclude: /node_modules/,
         // include: path.resolve(rootPath, 'client'),
         use: cacheLoader("jsx")
