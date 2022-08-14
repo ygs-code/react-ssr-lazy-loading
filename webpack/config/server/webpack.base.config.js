@@ -15,6 +15,7 @@ const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin");
 const WebpackPluginRouter = require("../../definePlugin/webpack-plugin-router");
 const MyExampleWebpackPlugin = require("../../definePlugin/MyExampleWebpackPlugin");
 const HelloWorldCheckerPlugin = require("../../definePlugin/HelloWorldCheckerPlugin");
+const ReactLoadableSSRAddon = require("react-loadable-ssr-addon");
 // const HelloWorldCheckerPlugin = require('../../definePlugin/webpack-plugin-no-require-css');
 const HappyPack = require("happypack");
 const os = require("os");
@@ -478,8 +479,12 @@ module.exports = {
       chunkFilename: "static/css/[name].[contenthash:8].chunk.css"
     }),
     new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
-    })
+
+    // new ReactLoadablePlugin({
+    //   filename: path.join(rootPath, "./dist/client/react-loadable.json")
+    // }),
+    // new ReactLoadableSSRAddon({
+    //   filename: path.join(rootPath, "./dist/client/assets-manifest.json")
+    // })
   ]
 };

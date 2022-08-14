@@ -22,6 +22,7 @@ import "bootstrap/dist/css/bootstrap.css";
 
 const App = (props) => {
   const { history, location, store } = props;
+  console.log("App props 234 ghjgjh 234=======", props);
   return (
     <Provider store={store}>
       <Routers history={history} location={location} />

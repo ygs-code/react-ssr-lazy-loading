@@ -145,7 +145,7 @@ module.exports = {
     // 添加 compilation 的哈希值
     hash: false,
     // 设置要显示的模块的最大数量
-    maxModules: 3,
+    // maxModules: 3,
     // 添加构建模块信息
     modules: false,
     // 按指定的字段，对模块进行排序
@@ -233,7 +233,7 @@ module.exports = {
       fix: true //自动修复
     }),
 
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
 
     // 使用此插件有助于缓解OSX上的开发人员不遵循严格的路径区分大小写的情况，
     // 这些情况将导致与其他开发人员或运行其他操作系统（需要正确使用大小写正确的路径）的构建箱发生冲突。
@@ -351,9 +351,9 @@ module.exports = {
 
     new webpack.NoEmitOnErrorsPlugin(),
 
-    new ReactLoadablePlugin({
-      filename: path.join(rootPath, "./dist/client/react-loadable.json")
-    }),
+    // new ReactLoadablePlugin({
+    //   filename: path.join(rootPath, "./dist/client/react-loadable.json")
+    // }),
     new ReactLoadableSSRAddon({
       filename: path.join(rootPath, "./dist/client/assets-manifest.json")
     })

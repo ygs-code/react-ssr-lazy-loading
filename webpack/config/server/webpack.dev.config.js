@@ -23,13 +23,11 @@ module.exports = {
     ]
   },
   devServer: {
-    open: true,
-    contentBase: "assets",
-    hot: true,
-    historyApiFallback: true,
-    liveReload: true, // 编译之后是否自动刷新浏览器
+    // open: true,
+    // contentBase: "assets",
+    // hot: true,
     writeToDisk: true, // 写入硬盘
-    port: 5000
+    // port: 5000
   },
   watch: true,
   watchOptions: {
