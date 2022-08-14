@@ -9,9 +9,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Router, Switch as Routes, Route } from "./react-router-dom";
-
-import initComponentState from "client/redux/initComponentState";
-import addRouterApi from "./addRouterApi";
+import initState, { InitState } from "client/redux/initComponentState";
+import addRouterApi, { AddRouterApi } from "./addRouterApi";
 import routesConfig from "./routesComponent";
 
 function Routers(props) {
@@ -26,7 +25,24 @@ function Routers(props) {
               key={path}
               exact={exact}
               path={path}
-              component={initComponentState(addRouterApi(Component))}
+              component={
+                (props) => {
+                  return (
+                    <InitState {...props}>
+                      {(props) => {
+                        return (
+                          <AddRouterApi {...props}>
+                            {(props) => {
+                              return <Component {...props} />;
+                            }}
+                          </AddRouterApi>
+                        );
+                      }}
+                    </InitState>
+                  );
+                }
+                // initState(addRouterApi(Component))
+              }
               // render={(props) => {
               //     return (
               //         <InitState {...props}>

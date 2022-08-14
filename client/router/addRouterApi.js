@@ -42,4 +42,37 @@ const addRouterApi = (Component) => {
   return withRouter(AddRouter);
 };
 
+@withRouter
+class AddRouterApi extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  pushRoute = (parameter) => {
+    const { name, url, path } = parameter;
+    const { history } = this.props;
+
+    historyPush({
+      history,
+      ...parameter,
+      url: routePaths[name] || url || path
+    });
+  };
+
+  render() {
+    const { children } = this.props;
+    return (
+      <>
+        {children({
+          ...this.props,
+          routePaths: routePaths,
+          pushRoute: this.pushRoute
+        })}
+      </>
+    );
+  }
+}
+
+export { AddRouterApi };
+
 export default addRouterApi;
