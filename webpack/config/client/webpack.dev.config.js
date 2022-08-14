@@ -21,9 +21,11 @@ const isEnvDevelopment = NODE_ENV === "development";
 module.exports = {
     mode: NODE_ENV,
     devServer: {
-        // open: true,
         // contentBase: "assets",
-        // hot: true,
+        open: true,
+        hot: true,
+        historyApiFallback: true,
+        liveReload: true, // 编译之后是否自动刷新浏览器
         writeToDisk: true, // 写入硬盘
     },
     watch: true,

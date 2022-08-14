@@ -20,7 +20,6 @@ import "./index.less";
 function Index(props) {
   let [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  console.log("Home props11=======", props);
   const {
     dispatch: { home: { setInitState = () => {} } = {} } = {},
     state: { home: { initState: { list = [] } = {} } = {} } = {}

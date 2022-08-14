@@ -13,7 +13,6 @@ import "./index.less";
 
 function Index(props) {
   const { state: { baseInitState: { weather = {} } = {} } = {} } = props;
-  console.log(1);
   const { city, province, casts = [] } = weather;
 
   // const menu = useMemo(() => {}, []);
