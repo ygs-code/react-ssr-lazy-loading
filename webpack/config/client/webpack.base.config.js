@@ -4,6 +4,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const { ReactLoadablePlugin } = require("react-loadable/webpack");
+const ExtendedDefinePlugin = require("extended-define-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const { ProgressPlugin } = require("webpack");
@@ -15,7 +16,7 @@ const WebpackBar = require("webpackbar");
 const ReactLoadableSSRAddon = require("react-loadable-ssr-addon");
 const { ESBuildPlugin, ESBuildMinifyPlugin } = require("esbuild-loader");
 const ESLintPlugin = require("eslint-webpack-plugin");
-const { strongToObject } = require("../../utils");
+const { stringToObject, alias } = require("../../utils");
 
 let {
   NODE_ENV, // 环境参数
@@ -29,11 +30,8 @@ const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === "development";
 
-// const isCompileMiddleware = COMPILER_ENV == 'middleware';
-
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length - 1 });
 const rootPath = process.cwd();
-
 
 const cacheLoader = (happypackId) => {
   return isEnvDevelopment
@@ -180,11 +178,7 @@ module.exports = {
   },
   resolve: {
     // 路径配置
-    alias: {
-      "@": path.join(process.cwd()),
-      client: path.join(process.cwd(), "/client"),
-      server: path.join(process.cwd(), "/server")
-    },
+    alias,
 
     extensions: [
       ".js",
@@ -305,19 +299,36 @@ module.exports = {
     //         routePaths: '/client/router/routePaths.js',
     //     },
     // }),
-    // 全局变量
-    new webpack.EnvironmentPlugin({
-      NODE_ENV, // 环境参数  除非有定义 process.env.NODE_ENV，否则就使用 NODE_ENV
-      target, // 环境参数
-      htmlWebpackPluginOptions: strongToObject(htmlWebpackPluginOptions)
+    // 注入全局常量
+    new ExtendedDefinePlugin({
+      process: {
+        env: {
+          NODE_ENV, // 环境参数
+          target, // 环境参数
+          htmlWebpackPluginOptions
+        }
+      }
     }),
+    // new webpack.DefinePlugin({
+    //   "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
+    //   // "process.env.DEBUG": JSON.stringify(process.env.DEBUG),
+    //   // "process.env.DefinePluginFlag": true
+    // }),
+
+    // // 注入全局变量
+    // new webpack.EnvironmentPlugin({
+    //   NODE_ENV, // 环境参数  除非有定义 process.env.NODE_ENV，否则就使用 NODE_ENV
+    //   target, // 环境参数
+    //   // htmlWebpackPluginOptions: stringToObject(htmlWebpackPluginOptions),
+    //   // EnvironmentPluginDEBUG: false
+    // }),
 
     ...(isSsr && isEnvDevelopment
       ? []
       : [
           // // // html静态页面
           new HtmlWebpackPlugin({
-            ...strongToObject(htmlWebpackPluginOptions),
+            ...stringToObject(htmlWebpackPluginOptions),
             minify: true,
             // title: 'Custom template using Handlebars',
             // 生成出来的html文件名
@@ -339,9 +350,7 @@ module.exports = {
         ]),
 
     new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
-    }),
+
     new ReactLoadablePlugin({
       filename: path.join(rootPath, "./dist/client/react-loadable.json")
     }),

@@ -9,10 +9,17 @@
 import React from "react";
 import { Provider } from "react-redux";
 import Routers from "client/router";
+// import { stringToObject } from "client/utils";
 import "./App.less";
 import "client/assets/css/base.less";
 import "bootstrap/dist/css/bootstrap.css";
-console.log("process.env=====", process.env);
+
+// let {
+//   NODE_ENV, // 环境参数
+//   target, // 环境参数
+//   htmlWebpackPluginOptions = ""
+// } = process.env; // 环境参数
+
 const App = (props) => {
   const { history, location, store } = props;
   return (

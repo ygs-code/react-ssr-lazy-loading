@@ -34,8 +34,10 @@ import {
 } from "./regular";
 import { setInitData } from "./setInitData";
 import { getBaseInitState } from "./getBaseInitState";
+import stringToObject from "./stringToObject";
 
 export {
+  stringToObject,
   getBaseInitState,
   // FloatingBall, // 浮动球 类
   throttle, // 节流函数

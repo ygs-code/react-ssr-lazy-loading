@@ -1,6 +1,3 @@
-// require('../../ignore.js')()
-import React from "react";
-import axios from "axios";
 import { renderToString } from "react-dom/server";
 import {
   createMemoryHistory,
@@ -15,6 +12,7 @@ import store from "client/redux";
 import routesComponent, { routesConfigs } from "client/router/routesComponent";
 import { findTreeData, getBaseInitState } from "client/utils";
 import createApp from "client/App";
+import { stringToObject } from "client/utils";
 import otherModules from "./otherModules";
 import path, { resolve } from "path";
 import fs from "fs";
@@ -98,26 +96,11 @@ class ClientRouter {
 
       ctx.body = ejs.render(renderedHtml, {
         htmlWebpackPlugin: {
-          options: this.strongToObject(htmlWebpackPluginOptions)
+          options: stringToObject(htmlWebpackPluginOptions)
         }
       });
     }
     next();
-  }
-
-  strongToObject(string) {
-    const regex = /(?<=\{)(.+?)(?=\})/g; // {} 花括号，大括号
-    string = string.match(regex);
-    let obj = {};
-    if (string) {
-      string = string[0];
-      let stringArr = string.split(",");
-      for (let item of stringArr) {
-        let [key, value] = item.split(":");
-        obj[`${key}`] = value;
-      }
-    }
-    return obj;
   }
 
   // 查找初始化数据
@@ -140,195 +123,6 @@ class ClientRouter {
       assetsManifest = await import("@/dist/client/assets-manifest.json");
     }
 
-    // assetsManifest = {
-    //   entrypoints: ["client", "vendors"],
-    //   origins: {
-    //     0: [1, 2, 3, 0],
-    //     "client/pages/Home/index.js": [0, 1],
-    //     "client/pages/User/index.js": [0, 2],
-    //     "client/pages/marketing/pages/DiscountCoupon/index.js": [0, 3],
-    //     "client/pages/marketing/index.js": [4],
-    //     client: ["client"],
-    //     vendors: ["vendors"]
-    //   },
-    //   assets: {
-    //     0: {
-    //       js: [
-    //         {
-    //           file: "static/js/0.899c453b.chunk.js",
-    //           hash: "5ec8d96755cdbf990be5",
-    //           publicPath: "/static/js/0.899c453b.chunk.js"
-    //         }
-    //       ],
-    //       "js.map": [
-    //         {
-    //           file: "static/js/0.899c453b.chunk.js.map",
-    //           hash: "5ec8d96755cdbf990be5",
-    //           publicPath: "/static/js/0.899c453b.chunk.js.map"
-    //         }
-    //       ]
-    //     },
-    //     1: {
-    //       css: [
-    //         {
-    //           file: "static/css/1.301ef22d.chunk.css",
-    //           hash: "0c15b1bd6cbb6ea644df",
-    //           publicPath: "/static/css/1.301ef22d.chunk.css"
-    //         }
-    //       ],
-    //       js: [
-    //         {
-    //           file: "static/js/1.899c453b.chunk.js",
-    //           hash: "0c15b1bd6cbb6ea644df",
-    //           publicPath: "/static/js/1.899c453b.chunk.js"
-    //         }
-    //       ],
-    //       "css.map": [
-    //         {
-    //           file: "static/css/1.301ef22d.chunk.css.map",
-    //           hash: "0c15b1bd6cbb6ea644df",
-    //           publicPath: "/static/css/1.301ef22d.chunk.css.map"
-    //         }
-    //       ],
-    //       "js.map": [
-    //         {
-    //           file: "static/js/1.899c453b.chunk.js.map",
-    //           hash: "0c15b1bd6cbb6ea644df",
-    //           publicPath: "/static/js/1.899c453b.chunk.js.map"
-    //         }
-    //       ]
-    //     },
-    //     2: {
-    //       css: [
-    //         {
-    //           file: "static/css/2.465fd62a.chunk.css",
-    //           hash: "3d6aeee78431022d08f0",
-    //           publicPath: "/static/css/2.465fd62a.chunk.css"
-    //         }
-    //       ],
-    //       js: [
-    //         {
-    //           file: "static/js/2.899c453b.chunk.js",
-    //           hash: "3d6aeee78431022d08f0",
-    //           publicPath: "/static/js/2.899c453b.chunk.js"
-    //         }
-    //       ],
-    //       "css.map": [
-    //         {
-    //           file: "static/css/2.465fd62a.chunk.css.map",
-    //           hash: "3d6aeee78431022d08f0",
-    //           publicPath: "/static/css/2.465fd62a.chunk.css.map"
-    //         }
-    //       ],
-    //       "js.map": [
-    //         {
-    //           file: "static/js/2.899c453b.chunk.js.map",
-    //           hash: "3d6aeee78431022d08f0",
-    //           publicPath: "/static/js/2.899c453b.chunk.js.map"
-    //         }
-    //       ]
-    //     },
-    //     3: {
-    //       css: [
-    //         {
-    //           file: "static/css/3.447ff964.chunk.css",
-    //           hash: "3715ea8c92c6ecf58c31",
-    //           publicPath: "/static/css/3.447ff964.chunk.css"
-    //         }
-    //       ],
-    //       js: [
-    //         {
-    //           file: "static/js/3.899c453b.chunk.js",
-    //           hash: "3715ea8c92c6ecf58c31",
-    //           publicPath: "/static/js/3.899c453b.chunk.js"
-    //         }
-    //       ],
-    //       "css.map": [
-    //         {
-    //           file: "static/css/3.447ff964.chunk.css.map",
-    //           hash: "3715ea8c92c6ecf58c31",
-    //           publicPath: "/static/css/3.447ff964.chunk.css.map"
-    //         }
-    //       ],
-    //       "js.map": [
-    //         {
-    //           file: "static/js/3.899c453b.chunk.js.map",
-    //           hash: "3715ea8c92c6ecf58c31",
-    //           publicPath: "/static/js/3.899c453b.chunk.js.map"
-    //         }
-    //       ]
-    //     },
-    //     4: {
-    //       js: [
-    //         {
-    //           file: "static/js/4.899c453b.chunk.js",
-    //           hash: "0f01940299d9e4c1d781",
-    //           publicPath: "/static/js/4.899c453b.chunk.js"
-    //         }
-    //       ],
-    //       "js.map": [
-    //         {
-    //           file: "static/js/4.899c453b.chunk.js.map",
-    //           hash: "0f01940299d9e4c1d781",
-    //           publicPath: "/static/js/4.899c453b.chunk.js.map"
-    //         }
-    //       ]
-    //     },
-    //     client: {
-    //       css: [
-    //         {
-    //           file: "static/css/client.01d554c2.css",
-    //           hash: "437df4dbdd68a2953f41",
-    //           publicPath: "/static/css/client.01d554c2.css"
-    //         }
-    //       ],
-    //       js: [
-    //         {
-    //           file: "static/js/client.899c453b.js",
-    //           hash: "437df4dbdd68a2953f41",
-    //           publicPath: "/static/js/client.899c453b.js"
-    //         }
-    //       ],
-    //       "css.map": [
-    //         {
-    //           file: "static/css/client.01d554c2.css.map",
-    //           hash: "437df4dbdd68a2953f41",
-    //           publicPath: "/static/css/client.01d554c2.css.map"
-    //         }
-    //       ],
-    //       "js.map": [
-    //         {
-    //           file: "static/js/client.899c453b.js.map",
-    //           hash: "437df4dbdd68a2953f41",
-    //           publicPath: "/static/js/client.899c453b.js.map"
-    //         }
-    //       ]
-    //     },
-    //     vendors: {
-    //       js: [
-    //         {
-    //           file: "static/js/vendors.899c453b.js",
-    //           hash: "9efbfd0b63e651cfbeb3",
-    //           publicPath: "/static/js/vendors.899c453b.js"
-    //         }
-    //       ],
-    //       "js.map": [
-    //         {
-    //           file: "static/js/vendors.899c453b.js.map",
-    //           hash: "9efbfd0b63e651cfbeb3",
-    //           publicPath: "/static/js/vendors.899c453b.js.map"
-    //         }
-    //       ]
-    //     }
-    //   }
-    // };
-
-    // assetsManifest = assetsManifest
-    //   ? JSON.parse(assetsManifest)
-    //   : require(
-    //       path.join(absolutePath, '/dist/client/assets-manifest.json'),
-    //     )
-
     const modulesToBeLoaded = [
       ...assetsManifest.entrypoints,
       ...otherModules,
@@ -336,17 +130,7 @@ class ClientRouter {
     ];
 
     let bundles = getBundles(assetsManifest, modulesToBeLoaded);
-    const {
-      css = [],
-      js = [
-        // {
-        //   file: './static/js/client.js',
-        // },
-        // {
-        //   file: './static/js/vendors.js',
-        // },
-      ]
-    } = bundles;
+    const { css = [], js = [] } = bundles;
 
     let scripts = js
       .map((script) => `<script src="/${script.file}"></script>`)
@@ -360,7 +144,6 @@ class ClientRouter {
   }
   // 解析html
   prepHTML(data, { html, head, rootString, scripts, styles, initState }) {
-    // rootString = rootString;
     data = data.replace("<html", `<html ${html}`);
     data = data.replace("</head>", `${head} \n ${styles}</head>`);
     data = data.replace(
@@ -427,12 +210,7 @@ class ClientRouter {
   }
 }
 
-export const serverRenderer = ({
-  clientStats,
-  serverStats,
-  foo,
-  options
-} = {}) => {
+export const serverRenderer = ({ clientStats, serverStats, options } = {}) => {
   return async (ctx, next) => {
     await new Promise((reslove, reject) => {
       new ClientRouter(ctx, reslove, options);

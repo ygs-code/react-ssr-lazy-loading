@@ -6,17 +6,14 @@
  * @FilePath: /react-loading-ssr/bin/index.js
  * @Description:
  */
-import cluster from "cluster";
 import path from "path";
-import os from "os";
-import { Worker } from "worker_threads";
-import { copyFile, watchFile, readWriteFiles } from "../webpack/utils";
 import { compiler } from "../webpack";
-import { spawn, SpawnOptions } from "child_process";
+import { alias, readWriteFiles } from "../webpack/utils";
+import ResolveAlias from "../webpack/definePlugin/webpack-plugin-resolve-alias";
 import kill from "kill-port"; // 杀死端口包
 import { execute, iSportTake } from "./cmd"; // 杀死端口包
 import { stabilization } from "../client/utils";
-import ResolveAlias from "../webpack/definePlugin/webpack-plugin-resolve-alias";
+
 import * as dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
@@ -34,58 +31,70 @@ const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === "development";
 
-let counter = 0;
-let child = null;
-if (isEnvDevelopment && isSsr) {
-  let $ResolveAlias = new ResolveAlias({
-    resolve: {
-      // 路径配置
-      alias: {
-        "@": path.join(process.cwd()),
-        client: path.join(process.cwd(), "/client"),
-        server: path.join(process.cwd(), "/server")
-      }
-    }
-  });
-
-  readWriteFiles({
-    from: path.join(process.cwd(), "/server/**/*").replace(/\\/gi, "/"),
-    to: path.join(process.cwd(), "/dist/server").replace(/\\/gi, "/"),
-    transform(content, absoluteFrom) {
-      let reg = /.jsx|.js$/g;
-      if (reg.test(absoluteFrom)) {
-        return $ResolveAlias.alias(content.toString(), "");
-      }
-      return content;
-    },
-    async callback() {
-      if (child && child.kill) {
-        child.kill();
-      }
-      if (iSportTake(port)) {
-        await kill(port, "tcp");
-      }
-      stabilization(1500, async () => {
-        counter = counter >= 10 ? 2 : counter + 1;
-        if (counter === 1) {
-          child = execute(
-            "cross-env target='ssr'  npx babel-node  -r  @babel/register    ./server/index.js   -r    dotenv/config   dotenv_config_path=.env.development"
-          );
-        } else {
-          child = execute("npm run bin");
-          counter = 0;
+class Bin {
+  constructor() {
+    this.counter = 0;
+    this.child = null;
+    this.init();
+  }
+  init() {
+    this.executeScript();
+  }
+  development() {
+    if (isSsr) {
+      let $ResolveAlias = new ResolveAlias({
+        resolve: {
+          // 路径配置
+          alias
         }
       });
+
+      readWriteFiles({
+        from: path.join(process.cwd(), "/server/**/*").replace(/\\/gi, "/"),
+        to: path.join(process.cwd(), "/dist/server").replace(/\\/gi, "/"),
+        transform(content, absoluteFrom) {
+          let reg = /.jsx|.js$/g;
+          if (reg.test(absoluteFrom)) {
+            return $ResolveAlias.alias(content.toString(), "");
+          }
+          return content;
+        },
+        callback: async () => {
+          if (this.child && this.child.kill) {
+            this.child.kill();
+          }
+          if (iSportTake(port)) {
+            await kill(port, "tcp");
+          }
+          stabilization(1500, async () => {
+            this.counter = this.counter >= 10 ? 2 : this.counter + 1;
+            if (this.counter === 1) {
+              this.child = execute(
+                "cross-env  target='ssr'  npx babel-node  -r  @babel/register    ./dist/server/index.js   -r  dotenv/config  dotenv_config_path=.env.development"
+              );
+            } else {
+              this.child = execute("npm run bin");
+              this.counter = 0;
+            }
+          });
+        }
+      });
+    } else {
+      execute(
+        "cross-env target='client' npx babel-node  -r  @babel/register    ./dist/server/index.js   -r  dotenv/config  dotenv_config_path=.env.development"
+      );
     }
-  });
+  }
+  production() {
+    compiler();
+  }
+  executeScript() {
+    if (isEnvDevelopment) {
+      this.development();
+    } else {
+      this.production();
+    }
+  }
 }
 
-if (isEnvDevelopment && !isSsr) {
-  execute(
-    "cross-env target='client'  npx babel-node  -r  @babel/register    ./server/index.js   -r    dotenv/config   dotenv_config_path=.env.development"
-  );
-}
-
-if (isEnvProduction) {
-  compiler();
-}
+new Bin();

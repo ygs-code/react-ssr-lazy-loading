@@ -80,7 +80,6 @@ function Index(props) {
     <div className="home">
       <Head />
       <Nav />
-
       <div className="center-box">
         <LazyLoadingImg
           list={list}

@@ -6,26 +6,26 @@
  * @FilePath: /webpack-cli/delete_node_modules.js
  * @Description:
  */
-var fs = require('fs');
-var path = require('path');
+var fs = require("fs");
+var path = require("path");
 const { readdirSync, stat, statSync } = fs;
 const readFile = (path, callback = () => {}) => {
-    var files = readdirSync(path);
-    files.forEach((item, index) => {
-        var reg = /(\\\\)|(\\)/g;
-        var src = path + '/' + item;
-        src = src.replace(reg, '/');
-        var stat = statSync(src);
-        if (stat.isDirectory()) {
-            //递归读取文件
-            readFile(src, callback);
-        } else if (stat.isFile()) {
-            callback({
-                path: src,
-                filename: item,
-            });
-        }
-    });
+  var files = readdirSync(path);
+  files.forEach((item, index) => {
+    var reg = /(\\\\)|(\\)/g;
+    var src = path + "/" + item;
+    src = src.replace(reg, "/");
+    var stat = statSync(src);
+    if (stat.isDirectory()) {
+      //递归读取文件
+      readFile(src, callback);
+    } else if (stat.isFile()) {
+      callback({
+        path: src,
+        filename: item
+      });
+    }
+  });
 };
 module.exports = readFile;
 

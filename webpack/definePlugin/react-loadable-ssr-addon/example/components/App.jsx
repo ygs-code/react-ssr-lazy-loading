@@ -1,5 +1,5 @@
 import React from 'react';
-import Loadable from 'react-loadable';
+import Loadable from  'react-loadable';  // "client/component/Loadable";
 import Loading from './Loading';
 
 const HeaderExample = Loadable({

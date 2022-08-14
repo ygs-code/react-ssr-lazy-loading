@@ -5,11 +5,11 @@ import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotServerMiddleware from "webpack-hot-server-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 import ReactLoadableSSRAddon from "react-loadable-ssr-addon";
-import { compiler, config } from "../../../webpack";
+import { compiler, config } from "@/webpack";
 
 let {
   NODE_ENV, // 环境参数
-  target, // 环境参数
+  target // 环境参数
 } = process.env; // 环境参数
 
 const isSsr = target === "ssr";

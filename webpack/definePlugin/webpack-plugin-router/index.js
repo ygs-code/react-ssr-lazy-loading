@@ -205,7 +205,7 @@ const Loadable${this.firstToUpper(name)} = loadable({
 
         let routesComponentFile = `
 // 按需加载插件
-import loadable from 'react-loadable';
+import loadable from 'react-loadable';  // "client/component/Loadable";
 import Loading from '@/component/Loading';
 import React, { useEffect } from 'react';
 `;

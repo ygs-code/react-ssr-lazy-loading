@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import Loadable from 'react-loadable';
+import Loadable from   'react-loadable'; // "client/component/Loadable";
 import { getBundles } from 'react-loadable-ssr-addon';
 import App from './components/App';
 

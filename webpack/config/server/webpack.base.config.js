@@ -21,7 +21,7 @@ const os = require("os");
 const WebpackBar = require("webpackbar");
 const { ESBuildPlugin, ESBuildMinifyPlugin } = require("esbuild-loader");
 const ESLintPlugin = require("eslint-webpack-plugin");
-const { strongToObject } = require("../../utils");
+const { stringToObject, alias } = require("../../utils");
 let {
   NODE_ENV, // 环境参数
   target, // 环境参数
@@ -33,8 +33,6 @@ const isEnvProduction = NODE_ENV === "production";
 const isEnvDevelopment = NODE_ENV === "development";
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length - 1 });
 const rootPath = process.cwd();
-
-
 
 const cacheLoader = (happypackId) => {
   return isEnvDevelopment
@@ -179,11 +177,7 @@ module.exports = {
   },
   resolve: {
     // 路径配置
-    alias: {
-      "@": path.join(process.cwd()),
-      client: path.join(process.cwd(), "/client"),
-      server: path.join(process.cwd(), "/server")
-    },
+    alias,
 
     extensions: [
       ".js",
@@ -383,11 +377,11 @@ module.exports = {
     //     fix: true, //自动修复
     // }),
     // 全局变量
-    new webpack.EnvironmentPlugin({
-      NODE_ENV, // 环境参数  除非有定义 process.env.NODE_ENV，否则就使用 NODE_ENV
-      target, // 环境参数
-      htmlWebpackPluginOptions: strongToObject(htmlWebpackPluginOptions),
-    }),
+    // new webpack.EnvironmentPlugin({
+    //   NODE_ENV, // 环境参数  除非有定义 process.env.NODE_ENV，否则就使用 NODE_ENV
+    //   target, // 环境参数
+    //   htmlWebpackPluginOptions: stringToObject(htmlWebpackPluginOptions),
+    // }),
     new CleanWebpackPlugin(),
     // 使用此插件有助于缓解OSX上的开发人员不遵循严格的路径区分大小写的情况，
     // 这些情况将导致与其他开发人员或运行其他操作系统（需要正确使用大小写正确的路径）的构建箱发生冲突。
@@ -458,7 +452,7 @@ module.exports = {
     // // html静态页面
     // new HtmlWebpackPlugin({
     //     ...htmlWebpackPluginOptions,
-    //  ...strongToObject(htmlWebpackPluginOptions),
+    //  ...stringToObject(htmlWebpackPluginOptions),
     //     minify: true,
     //     // title: 'Custom template using Handlebars',
     //     // 生成出来的html文件名

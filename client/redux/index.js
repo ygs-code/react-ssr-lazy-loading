@@ -70,7 +70,8 @@ try {
     $global = window;
   }
 } catch (error) {
-  $global = global;
+  // 不要挂载在global中不然会很慢
+  $global = {};
 }
 
 export default createStore($global); // (global || {})

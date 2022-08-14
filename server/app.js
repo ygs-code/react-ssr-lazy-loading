@@ -6,7 +6,6 @@
  * @FilePath: /react-loading-ssr/server/app.js
  * @Description:
  */
-// require('./ignore.js')()
 import Loadable from "react-loadable";
 import Koa from "koa";
 import Router from "./router";
@@ -19,8 +18,7 @@ let {
   port
 } = process.env; // 环境参数
 
-const b = 11132;
-//    是否是生产环境11
+//    是否是生产环境
 const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === "development";

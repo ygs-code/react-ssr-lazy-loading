@@ -9,7 +9,7 @@
 // 18
 import { hydrate, render } from "react-dom";
 import app from "./App/index.js";
-import Loadable from "client/component/Loadable";
+import Loadable from "react-loadable";
 import { getHistory } from "client/router/history";
 import store from "client/redux";
 
