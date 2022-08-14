@@ -6,7 +6,7 @@
  * @FilePath: /react-loading-ssr/server/app.js
  * @Description:
  */
-import Loadable from "react-loadable";
+import Loadable from "client/component/Loadable";
 import Koa from "koa";
 import Router from "./router";
 import Middleware from "./middleware";

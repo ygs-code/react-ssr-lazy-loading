@@ -21,7 +21,7 @@ export const getBaseInitState = async (dispatch, state) => {
         if (state.baseInitState[dataKey]) {
           return false;
         }
-        dispatchBaseInitState[key]();
+        await dispatchBaseInitState[key]();
       }
     }
   }

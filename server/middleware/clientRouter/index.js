@@ -78,8 +78,7 @@ class ClientRouter {
       if (initState) {
         // 拉去请求或者查询sql等操作
         data = await initState();
-
-        dispatch[isMatchRoute.name].setInitState({
+        await dispatch[isMatchRoute.name].setInitState({
           initState: data
         });
       }

@@ -8,7 +8,7 @@
  */
 // 按需加载插件
 // import React from "react";
-import loadable from "react-loadable";
+import loadable from "client/component/Loadable";
 import Loading from "client/component/Loading";
 import pagesMarketingRouterRoutesconfig from "client/pages/marketing/router/routesConfig.js";
 import routerRoutesconfig from "client/router/routesConfig.js";

@@ -1,20 +1,21 @@
-import React from 'react';
-import Loadable from  'react-loadable';  // "client/component/Loadable";
-import Loading from './Loading';
+import React from "react";
+import Loadable from "client/component/Loadable";
+import Loading from "./Loading";
 
 const HeaderExample = Loadable({
-  loader: () => import(/* webpackChunkName: "header" */'./Header'),
-  loading: Loading,
+  loader: () => import(/* webpackChunkName: "header" */ "./Header"),
+  loading: Loading
 });
 
 const ContentExample = Loadable({
-  loader: () => import(/* webpackChunkName: "content" */'./Content'),
-  loading: Loading,
+  loader: () => import(/* webpackChunkName: "content" */ "./Content"),
+  loading: Loading
 });
 
 const MultilevelExample = Loadable({
-  loader: () => import(/* webpackChunkName: "multilevel" */'./multilevel/Multilevel'),
-  loading: Loading,
+  loader: () =>
+    import(/* webpackChunkName: "multilevel" */ "./multilevel/Multilevel"),
+  loading: Loading
 });
 
 export default function App() {
@@ -24,5 +25,5 @@ export default function App() {
       <ContentExample />
       <MultilevelExample />
     </React.Fragment>
-  )
+  );
 }
