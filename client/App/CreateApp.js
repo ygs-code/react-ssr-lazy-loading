@@ -8,8 +8,7 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { Capture } from "client/component/Loadable";
-("react-loadable");
+import { Capture } from "react-loadable"; // "client/component/Loadable";
 import App from "./App.js";
 import "./App.less";
 
