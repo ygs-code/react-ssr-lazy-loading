@@ -41,49 +41,44 @@ class Bin {
     this.executeScript();
   }
   development() {
-    if (isSsr) {
-      let $ResolveAlias = new ResolveAlias({
-        resolve: {
-          // 路径配置
-          alias
-        }
-      });
+    let $ResolveAlias = new ResolveAlias({
+      resolve: {
+        // 路径配置
+        alias
+      }
+    });
 
-      readWriteFiles({
-        from: path.join(process.cwd(), "/server/**/*").replace(/\\/gi, "/"),
-        to: path.join(process.cwd(), "/dist/server").replace(/\\/gi, "/"),
-        transform(content, absoluteFrom) {
-          let reg = /.jsx|.js$/g;
-          if (reg.test(absoluteFrom)) {
-            return $ResolveAlias.alias(content.toString(), "");
-          }
-          return content;
-        },
-        callback: async () => {
-          if (this.child && this.child.kill) {
-            this.child.kill();
-          }
-          if (iSportTake(port)) {
-            await kill(port, "tcp");
-          }
-          stabilization(1500, async () => {
-            this.counter = this.counter >= 10 ? 2 : this.counter + 1;
-            if (this.counter === 1) {
-              this.child = execute(
-                "cross-env  target='ssr'  npx babel-node  -r  @babel/register    ./dist/server/index.js   -r  dotenv/config  dotenv_config_path=.env.development"
-              );
-            } else {
-              this.child = execute("npm run bin");
-              this.counter = 0;
-            }
-          });
+    readWriteFiles({
+      from: path.join(process.cwd(), "/server/**/*").replace(/\\/gi, "/"),
+      to: path.join(process.cwd(), "/dist/server").replace(/\\/gi, "/"),
+      transform(content, absoluteFrom) {
+        let reg = /.jsx|.js$/g;
+        if (reg.test(absoluteFrom)) {
+          return $ResolveAlias.alias(content.toString(), "");
         }
-      });
-    } else {
-      execute(
-        "cross-env target='client' npx babel-node  -r  @babel/register    ./dist/server/index.js   -r  dotenv/config  dotenv_config_path=.env.development"
-      );
-    }
+        return content;
+      },
+      callback: async () => {
+        if (this.child && this.child.kill) {
+          this.child.kill();
+        }
+        if (iSportTake(port)) {
+          await kill(port, "tcp");
+        }
+        stabilization(1500, async () => {
+          this.counter = this.counter >= 10 ? 2 : this.counter + 1;
+          if (this.counter === 1) {
+            const cmd = isSsr
+              ? "cross-env  target='ssr'  npx babel-node  -r  @babel/register    ./dist/server/index.js   -r  dotenv/config  dotenv_config_path=.env.development"
+              : "cross-env target='client' npx babel-node  -r  @babel/register    ./dist/server/index.js   -r  dotenv/config  dotenv_config_path=.env.development";
+            this.child = execute(cmd);
+          } else {
+            this.child = execute("npm run bin");
+            this.counter = 0;
+          }
+        });
+      }
+    });
   }
   production() {
     compiler();

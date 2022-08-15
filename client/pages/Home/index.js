@@ -2,8 +2,8 @@
  * @Date: 2022-08-05 09:22:30
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 19:50:05
- * @FilePath: /react-loading-ssr/client/pages/Home/index.js
+ * @LastEditTime: 2022-08-15 09:40:03
+ * @FilePath: /react-ssr-lazy-loading/client/pages/Home/index.js
  * @Description:
  */
 import React, { useState, useCallback, useEffect } from "react";
@@ -20,7 +20,6 @@ import "./index.less";
 function Index(props) {
   let [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-
   const {
     dispatch: { home: { setInitState = () => {} } = {} } = {},
     state: { home: { initState: { list = [] } = {} } = {} } = {}
@@ -28,7 +27,7 @@ function Index(props) {
 
   useEffect(() => {
     console.log(
-      "window.__INITIAL_STATE__=",
+      "window.__INITIAL_STATE__ =",
       window && window.__INITIAL_STATE__
     );
   }, []);

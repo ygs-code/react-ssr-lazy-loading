@@ -74,9 +74,20 @@ class WebpackHot {
       _this.koaDevware(
         webpackDevMiddleware(_this.compiler, {
           ...devServer,
-          noInfo: true,
+          // noInfo: true,
           serverSideRender: true, // 是否是服务器渲染
-          publicPath: "/"
+
+          //设置允许跨域
+          headers: () => {
+            return {
+              // "Last-Modified": new Date(),
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Headers": "content-type",
+              "Access-Control-Allow-Methods": "DELETE,PUT,POST,GET,OPTIONS"
+            };
+          }
+
+          // publicPath: "/"
           // writeToDisk: true //是否写入本地磁盘
         }),
         _this.compiler

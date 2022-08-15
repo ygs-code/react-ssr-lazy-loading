@@ -145,7 +145,7 @@ module.exports = {
     // 添加 compilation 的哈希值
     hash: false,
     // 设置要显示的模块的最大数量
-    maxModules: 3,
+    // maxModules: 3,
     // 添加构建模块信息
     modules: false,
     // 按指定的字段，对模块进行排序
@@ -350,10 +350,6 @@ module.exports = {
         ]),
 
     new webpack.NoEmitOnErrorsPlugin(),
-
-    new ReactLoadablePlugin({
-      filename: path.join(rootPath, "./dist/client/react-loadable.json")
-    }),
     new ReactLoadableSSRAddon({
       filename: path.join(rootPath, "./dist/client/assets-manifest.json")
     })
