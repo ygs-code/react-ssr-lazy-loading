@@ -286,44 +286,39 @@ module.exports = {
       },
       // //  scss
       // {
-      //     test: /\.s[ac]ss$/i,
-      //     use: [
-      //         // 'thread-loader',
-      //         MiniCssExtractPlugin.loader,
-      //         // Translates CSS into CommonJS
-      //         'css-loader',
-      //         // Compiles Sass to CSS
-      //         // 'sass-loader',
-      //         {
-      //             loader: 'sass-loader',
-      //             options: {
-      //                 // Prefer `dart-sass`
-      //                 implementation: require('sass'),
-      //                 sourceMap: true,
-      //             },
-      //         },
-      //         {
-      //             loader: 'postcss-loader',
-      //             options: {
-      //                 postcssOptions: {
-      //                     plugins: [
-      //                         [
-      //                             'autoprefixer',
-      //                             {
-      //                                 // Options
-      //                             },
-      //                         ],
-      //                     ],
-      //                 },
-      //             },
-      //         },
-      //     ],
-      // },
-      // {
-      //   test: /\.json$/,
-      //   use: "json-loader",
-      //   exclude: /(node_modules|bower_components)/,
-      //   enforce: "pre"
+      //   test: /\.s[ac]ss$/i,
+      //   use: [
+      //     // 'thread-loader',
+      //     MiniCssExtractPlugin.loader,
+      //     // Translates CSS into CommonJS
+      //     "css-loader",
+      //     // Compiles Sass to CSS
+      //     // 'sass-loader',
+      //     {
+      //       loader: "sass-loader",
+      //       options: {
+      //         // Prefer `dart-sass`
+      //         // implementation: require("sass"),
+              
+      //         sourceMap: true
+      //       }
+      //     },
+      //     {
+      //       loader: "postcss-loader",
+      //       options: {
+      //         postcssOptions: {
+      //           plugins: [
+      //             [
+      //               "autoprefixer",
+      //               {
+      //                 // Options
+      //               }
+      //             ]
+      //           ]
+      //         }
+      //       }
+      //     }
+      //   ]
       // },
 
       {

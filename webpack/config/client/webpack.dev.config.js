@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const rootPath = process.cwd();
 let {
   NODE_ENV, // 环境参数
-  target, // 环境参数
+  target // 环境参数
 } = process.env; // 环境参数
 
 const isSsr = target == "ssr";
@@ -15,8 +15,6 @@ const isSsr = target == "ssr";
 const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === "development";
-
-
 
 module.exports = {
   mode: NODE_ENV,
@@ -26,7 +24,7 @@ module.exports = {
     hot: true,
     historyApiFallback: true,
     liveReload: true, // 编译之后是否自动刷新浏览器
-    writeToDisk: isSsr||isEnvProduction, // 写入硬盘
+    writeToDisk: isSsr || isEnvProduction, // 写入硬盘
     port: 5000
   },
   watch: true,
@@ -39,51 +37,88 @@ module.exports = {
   // context: path.join(process.cwd(), '/client'),
   devtool: "source-map",
   module: {
-    // rules: [
-    //   // css
+    rules: [
+      // css
+      {
+        test: /\.css$/i,
+        // 排除文件,因为这些包已经编译过，无需再次编译
+        // exclude: /(node_modules|bower_components)/,
+        use: [
+          // 'thread-loader',
+          "style-loader",
+          // MiniCssExtractPlugin.loader,
+          {
+            loader: "css-loader",
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: [
+                  [
+                    "autoprefixer",
+                    {
+                      // Options
+                    }
+                  ]
+                ]
+              }
+            }
+          }
+        ]
+      },
+      //   less
+      {
+        test: /\.less$/i,
+        use: [
+          // 'thread-loader',
+          // compiles Less to CSS
+          // MiniCssExtractPlugin.loader,
+          "style-loader",
+          "css-loader",
+          {
+            loader: "less-loader",
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: [
+                  [
+                    "autoprefixer",
+                    {
+                      // Options
+                    }
+                  ]
+                ]
+              }
+            }
+          }
+        ]
+      },
+
+      // //  scss
     //   {
-    //     test: /\.css$/i,
-    //     // 排除文件,因为这些包已经编译过，无需再次编译  不排除bootstrap
-    //     exclude: /(node_modules|bower_components)^((?!bootstrap).)+$/,
+    //     test: /\.s[ac]ss$/i,
     //     use: [
     //       // 'thread-loader',
-    //       MiniCssExtractPlugin.loader,
-    //       {
-    //         loader: "css-loader",
-    //         options: {
-    //           sourceMap: true
-    //         }
-    //       },
-    //       {
-    //         loader: "postcss-loader",
-    //         options: {
-    //           postcssOptions: {
-    //             plugins: [
-    //               [
-    //                 "autoprefixer",
-    //                 {
-    //                   // Options
-    //                 }
-    //               ]
-    //             ]
-    //           }
-    //         }
-    //       }
-    //     ]
-    //   },
-    //   //   less
-    //   {
-    //     test: /\.less$/i,
-    //     // 排除文件,因为这些包已经编译过，无需再次编译  不排除bootstrap
-    //     exclude: /(node_modules|bower_components)^((?!bootstrap).)+$/,
-    //     use: [
-    //       // 'thread-loader',
-    //       // compiles Less to CSS
-    //       MiniCssExtractPlugin.loader,
+    //       "style-loader",
+    //       // MiniCssExtractPlugin.loader,
+    //       // Translates CSS into CommonJS
     //       "css-loader",
+    //       // Compiles Sass to CSS
+    //       // 'sass-loader',
     //       {
-    //         loader: "less-loader",
+    //         loader: "sass-loader",
     //         options: {
+    //           // Prefer `dart-sass`
+    //           implementation: require("sass"),
     //           sourceMap: true
     //         }
     //       },
@@ -104,109 +139,7 @@ module.exports = {
     //       }
     //     ]
     //   }
-
-    //   // //  scss
-    //   // {
-    //   //     test: /\.s[ac]ss$/i,
-    //   //     use: [
-    //   //         // 'thread-loader',
-    //   //         MiniCssExtractPlugin.loader,
-    //   //         // Translates CSS into CommonJS
-    //   //         'css-loader',
-    //   //         // Compiles Sass to CSS
-    //   //         // 'sass-loader',
-    //   //         {
-    //   //             loader: 'sass-loader',
-    //   //             options: {
-    //   //                 // Prefer `dart-sass`
-    //   //                 implementation: require('sass'),
-    //   //                 sourceMap: true,
-    //   //             },
-    //   //         },
-    //   //         {
-    //   //             loader: 'postcss-loader',
-    //   //             options: {
-    //   //                 postcssOptions: {
-    //   //                     plugins: [
-    //   //                         [
-    //   //                             'autoprefixer',
-    //   //                             {
-    //   //                                 // Options
-    //   //                             },
-    //   //                         ],
-    //   //                     ],
-    //   //                 },
-    //   //             },
-    //   //         },
-    //   //     ],
-    //   // },
-    // ]
-    rules: [
-        // css
-        {
-            test: /\.css$/i,
-            // 排除文件,因为这些包已经编译过，无需再次编译
-            // exclude: /(node_modules|bower_components)/,
-            use: [
-                // 'thread-loader',
-                'style-loader',
-                // MiniCssExtractPlugin.loader,
-                {
-                    loader: 'css-loader',
-                    options: {
-                        sourceMap: true,
-                    },
-                },
-                {
-                    loader: 'postcss-loader',
-                    options: {
-                        postcssOptions: {
-                            plugins: [
-                                [
-                                    'autoprefixer',
-                                    {
-                                        // Options
-                                    },
-                                ],
-                            ],
-                        },
-                    },
-                },
-            ],
-        },
-        //   less
-        {
-            test: /\.less$/i,
-            use: [
-                // 'thread-loader',
-                // compiles Less to CSS
-                // MiniCssExtractPlugin.loader,
-                'style-loader',
-                'css-loader',
-                {
-                    loader: 'less-loader',
-                    options: {
-                        sourceMap: true,
-                    },
-                },
-                {
-                    loader: 'postcss-loader',
-                    options: {
-                        postcssOptions: {
-                            plugins: [
-                                [
-                                    'autoprefixer',
-                                    {
-                                        // Options
-                                    },
-                                ],
-                            ],
-                        },
-                    },
-                },
-            ],
-        },
-    ],
+    ]
   },
   plugins: [
     // new MiniCssExtractPlugin({
