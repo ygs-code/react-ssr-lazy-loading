@@ -2,7 +2,7 @@
  * @Date: 2022-08-11 09:41:40
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-15 14:02:57
+ * @LastEditTime: 2022-08-15 18:31:35
  * @FilePath: /react-ssr-lazy-loading/client/redux/models/baseInitState.js
  * @Description:
  */
@@ -63,12 +63,6 @@ export default (global) => ({
         .catch((err) => {
           console.log("Error: ", err.message);
         });
-
-      // await new Promise((resolve) => setTimeout(resolve, 2000));
-      // 方式一
-      // this.increment(num1);
-      // 方式二
-      // dispatch.baseInitState.setInitState(num1);
     }
   })
 });

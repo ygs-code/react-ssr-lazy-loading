@@ -2,7 +2,7 @@
  * @Date: 2022-08-05 09:22:30
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-15 14:10:35
+ * @LastEditTime: 2022-08-15 18:35:56
  * @FilePath: /react-ssr-lazy-loading/client/pages/Home/index.js
  * @Description:
  */
@@ -24,7 +24,6 @@ const Index = (props) => {
     dispatch: { home: { setInitState = () => {} } = {} } = {},
     state: { home: { initState: { list = [] } = {} } = {} } = {}
   } = props;
-  console.log("props=======", props);
   useEffect(() => {
     console.log(
       "window.__INITIAL_STATE__ =",
