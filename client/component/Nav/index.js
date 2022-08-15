@@ -2,8 +2,8 @@
  * @Date: 2022-08-05 09:22:30
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 19:49:33
- * @FilePath: /react-loading-ssr/client/component/Nav/index.js
+ * @LastEditTime: 2022-08-15 13:01:55
+ * @FilePath: /react-ssr-lazy-loading/client/component/Nav/index.js
  * @Description:
  */
 import React from "react";
@@ -13,7 +13,7 @@ import { mapRedux } from "client/redux";
 import addRouterApi from "client/router/addRouterApi";
 import "./index.less";
 
-function Index(props) {
+const Index = (props) => {
   const {
     dispatch: { baseInitState: { setMenuActive } = {} } = {},
     location: { pathname } = {},
@@ -63,7 +63,7 @@ function Index(props) {
       </Nav>
     </div>
   );
-}
+};
 Index.propTypes = {
   history: PropTypes.object,
   dispatch: PropTypes.func,

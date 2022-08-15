@@ -2,24 +2,24 @@
  * @Date: 2022-08-11 09:41:40
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 19:18:24
- * @FilePath: /react-loading-ssr/client/redux/models/baseInitState.js
+ * @LastEditTime: 2022-08-15 14:02:57
+ * @FilePath: /react-ssr-lazy-loading/client/redux/models/baseInitState.js
  * @Description:
  */
 
 import { getWeather } from "../../assets/js/request/requestApi";
 
-const setInitData = ($window, name) => {
+const setInitData = (global, name) => {
   let initState = {};
-  if ($window && $window.__INITIAL_STATE__ && $window.__INITIAL_STATE__[name]) {
-    initState = $window.__INITIAL_STATE__[name];
+  if (global && global.__INITIAL_STATE__ && global.__INITIAL_STATE__[name]) {
+    initState = global.__INITIAL_STATE__[name];
   }
 
   return initState;
 };
-export default ($window) => ({
+export default (global) => ({
   state: {
-    ...setInitData($window, "baseInitState"),
+    ...setInitData(global, "baseInitState"),
     menuActive: "/"
   },
   reducers: {

@@ -1,8 +1,16 @@
+/*
+ * @Date: 2022-08-15 09:17:55
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-15 14:03:23
+ * @FilePath: /react-ssr-lazy-loading/client/redux/models/home.js
+ * @Description:
+ */
 import { setInitData } from "client/utils";
 
-export default ($window) => ({
+export default (global) => ({
   state: {
-    initState: setInitData($window, "home"),
+    initState: setInitData(global, "home"),
     count: 0
   },
   reducers: {

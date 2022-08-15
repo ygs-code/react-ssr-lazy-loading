@@ -2,8 +2,8 @@
  * @Date: 2022-08-05 09:22:30
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 19:53:40
- * @FilePath: /react-loading-ssr/client/App/App.js
+ * @LastEditTime: 2022-08-15 13:47:16
+ * @FilePath: /react-ssr-lazy-loading/client/App/App.js
  * @Description:
  */
 import React from "react";
@@ -21,6 +21,7 @@ import "bootstrap/dist/css/bootstrap.css";
 // } = process.env; // 环境参数
 
 const App = (props) => {
+  console.log("props=====", props);
   const { history, location, store } = props;
   return (
     <Provider store={store}>

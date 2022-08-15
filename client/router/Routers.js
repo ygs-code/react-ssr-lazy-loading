@@ -2,8 +2,8 @@
  * @Date: 2022-08-11 09:41:40
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 19:09:51
- * @FilePath: /react-loading-ssr/client/router/Routers.js
+ * @LastEditTime: 2022-08-15 13:00:24
+ * @FilePath: /react-ssr-lazy-loading/client/router/Routers.js
  * @Description:
  */
 import React from "react";
@@ -13,7 +13,7 @@ import initState, { InitState } from "client/redux/initComponentState";
 import addRouterApi, { AddRouterApi } from "./addRouterApi";
 import routesConfig from "./routesComponent";
 
-function Routers(props) {
+const Routers = (props) => {
   const { history, context } = props;
   return (
     <Router history={history} context={context}>
@@ -71,7 +71,7 @@ function Routers(props) {
       </Routes>
     </Router>
   );
-}
+};
 
 Routers.propTypes = {
   history: PropTypes.object,

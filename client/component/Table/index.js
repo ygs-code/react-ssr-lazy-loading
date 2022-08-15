@@ -2,14 +2,14 @@
  * @Date: 2022-08-11 09:41:40
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 19:49:42
- * @FilePath: /react-loading-ssr/client/component/Table/index.js
+ * @LastEditTime: 2022-08-15 13:02:13
+ * @FilePath: /react-ssr-lazy-loading/client/component/Table/index.js
  * @Description:
  */
 import React from "react";
 import "./index.less";
 
-function Index(props) {
+const Index = (props) => {
   const { columns = [], dataSource = [], rowKey } = props;
 
   return (
@@ -42,6 +42,6 @@ function Index(props) {
       </dl>
     </div>
   );
-}
+};
 
 export default Index;

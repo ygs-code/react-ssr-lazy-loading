@@ -1,3 +1,91 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [
+  
+  
+  
+  
+  
+  Guide
+](#guide)
+- [
+  
+  
+  
+  
+  
+  Server-Side Rendering
+](#server-side-rendering)
+    - [
+  Now server-side rendering should work perfectly!
+](#now-server-side-rendering-should-work-perfectly)
+- [
+  
+  
+  
+  
+  
+  API Docs
+](#api-docs)
+- [Install](#install)
+- [
+  
+  
+  
+  
+  
+  FAQ
+](#faq)
+- [Example](#example)
+- [Happy Customers:](#happy-customers)
+- [Users](#users)
+- [Also See:](#also-see)
+  - [Route-based splitting vs. Component-based splitting](#route-based-splitting-vs-component-based-splitting)
+  - [Introducing React Loadable](#introducing-react-loadable)
+  - [Automatic code-splitting on `import()`](#automatic-code-splitting-on-import)
+  - [Creating a great "Loading..." Component](#creating-a-great-loading-component)
+    - [Loading error states](#loading-error-states)
+    - [Avoiding _Flash Of Loading Component_](#avoiding-_flash-of-loading-component_)
+    - [Timing out when the `loader` is taking too long](#timing-out-when-the-loader-is-taking-too-long)
+  - [Customizing rendering](#customizing-rendering)
+  - [Loading multiple resources](#loading-multiple-resources)
+  - [Preloading](#preloading)
+  - [Preloading all your loadable components on the server](#preloading-all-your-loadable-components-on-the-server)
+  - [Picking up a server-side rendered app on the client](#picking-up-a-server-side-rendered-app-on-the-client)
+    - [Declaring which modules are being loaded](#declaring-which-modules-are-being-loaded)
+    - [Finding out which dynamic modules were rendered](#finding-out-which-dynamic-modules-were-rendered)
+    - [Mapping loaded modules to bundles](#mapping-loaded-modules-to-bundles)
+    - [Preloading ready loadable components on the client](#preloading-ready-loadable-components-on-the-client)
+  - [`Loadable`](#loadable)
+  - [`Loadable.Map`](#loadablemap)
+  - [`Loadable` and `Loadable.Map` Options](#loadable-and-loadablemap-options)
+    - [`opts.loader`](#optsloader)
+    - [`opts.loading`](#optsloading)
+    - [`opts.delay`](#optsdelay)
+    - [`opts.timeout`](#optstimeout)
+    - [`opts.render`](#optsrender)
+    - [`opts.webpack`](#optswebpack)
+    - [`opts.modules`](#optsmodules)
+  - [`LoadableComponent`](#loadablecomponent)
+    - [`LoadableComponent.preload()`](#loadablecomponentpreload)
+  - [`LoadingComponent`](#loadingcomponent)
+    - [`props.error`](#propserror)
+    - [`props.retry`](#propsretry)
+    - [`props.timedOut`](#propstimedout)
+    - [`props.pastDelay`](#propspastdelay)
+  - [`Loadable.preloadAll()`](#loadablepreloadall)
+  - [`Loadable.preloadReady()`](#loadablepreloadready)
+  - [`Loadable.Capture`](#loadablecapture)
+- [Babel Plugin](#babel-plugin)
+- [Webpack Plugin](#webpack-plugin)
+  - [`getBundles`](#getbundles)
+  - [How do I avoid repetition?](#how-do-i-avoid-repetition)
+  - [How do I handle other styles `.css` or sourcemaps `.map` with server-side rendering?](#how-do-i-handle-other-styles-css-or-sourcemaps-map-with-server-side-rendering)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ![React Loadable](http://thejameskyle.com/img/react-loadable-header.png)
 
 > A higher order component for loading components with dynamic imports.

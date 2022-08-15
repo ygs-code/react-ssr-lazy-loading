@@ -1,12 +1,12 @@
-const setInitData = ($window, name) => {
+const setInitData = (global, name) => {
   let initState = {};
   if (
-    $window &&
-    $window.__INITIAL_STATE__ &&
-    $window.__INITIAL_STATE__[name] &&
-    $window.__INITIAL_STATE__[name].initState
+    global &&
+    global.__INITIAL_STATE__ &&
+    global.__INITIAL_STATE__[name] &&
+    global.__INITIAL_STATE__[name].initState
   ) {
-    initState = $window.__INITIAL_STATE__[name].initState;
+    initState = global.__INITIAL_STATE__[name].initState;
   }
 
   return initState;

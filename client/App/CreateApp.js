@@ -2,8 +2,8 @@
  * @Date: 2022-08-09 09:35:04
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 19:35:39
- * @FilePath: /react-loading-ssr/client/App/CreateApp.js
+ * @LastEditTime: 2022-08-15 13:01:06
+ * @FilePath: /react-ssr-lazy-loading/client/App/CreateApp.js
  * @Description:
  */
 import React from "react";
@@ -16,7 +16,7 @@ const {
   target // 环境参数
 } = process.env; // 环境参数
 
-function CreateApp(props = {}) {
+const CreateApp = (props = {}) => {
   const { modules = [] } = props;
 
   return target === "ssr" ? (
@@ -26,7 +26,7 @@ function CreateApp(props = {}) {
   ) : (
     <App {...props} />
   );
-}
+};
 
 CreateApp.propTypes = {
   modules: PropTypes.object

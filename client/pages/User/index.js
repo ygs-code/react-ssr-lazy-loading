@@ -2,8 +2,8 @@
  * @Date: 2022-08-05 09:22:30
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-10 18:41:36
- * @FilePath: /react-loading-ssr/client/pages/User/index.js
+ * @LastEditTime: 2022-08-15 13:03:13
+ * @FilePath: /react-ssr-lazy-loading/client/pages/User/index.js
  * @Description:
  */
 import React, { useEffect } from "react";
@@ -13,7 +13,7 @@ import Table from "client/component/Table";
 import { mapRedux } from "client/redux";
 import "./index.less";
 
-function Index(props = {}) {
+const Index = (props = {}) => {
   useEffect(() => {}, []);
 
   return (
@@ -90,6 +90,6 @@ function Index(props = {}) {
       </div>
     </div>
   );
-}
+};
 
 export default mapRedux()(Index);

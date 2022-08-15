@@ -2,8 +2,8 @@
  * @Date: 2022-08-05 09:22:30
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 19:08:39
- * @FilePath: /react-loading-ssr/client/component/Head/index.js
+ * @LastEditTime: 2022-08-15 13:01:26
+ * @FilePath: /react-ssr-lazy-loading/client/component/Head/index.js
  * @Description:
  */
 import React from "react";
@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import { mapRedux } from "client/redux";
 import "./index.less";
 
-function Index(props) {
+const Index = (props) => {
   const { state: { baseInitState: { weather = {} } = {} } = {} } = props;
   const { city, province, casts = [] } = weather;
 
@@ -55,7 +55,7 @@ function Index(props) {
       </div>
     </div>
   );
-}
+};
 Index.propTypes = {
   history: PropTypes.object,
   dispatch: PropTypes.func,
