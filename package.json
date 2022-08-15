@@ -136,7 +136,6 @@
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-middleware": "3.7.3",
-    "webpack-dev-server": "3.9.0",
     "webpack-hot-middleware": "^2.25.1",
     "webpack-hot-server-middleware": "^0.6.1",
     "webpack-manifest-plugin": "2.0.4",
