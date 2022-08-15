@@ -83,7 +83,7 @@ module.exports = {
             }
           }
         ]
-      }
+      },
 
       // //  scss
       // {

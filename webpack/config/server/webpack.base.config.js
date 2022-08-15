@@ -15,7 +15,6 @@ const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin");
 const WebpackPluginRouter = require("../../definePlugin/webpack-plugin-router");
 const MyExampleWebpackPlugin = require("../../definePlugin/MyExampleWebpackPlugin");
 const HelloWorldCheckerPlugin = require("../../definePlugin/HelloWorldCheckerPlugin");
-const ReactLoadableSSRAddon = require("react-loadable-ssr-addon");
 // const HelloWorldCheckerPlugin = require('../../definePlugin/webpack-plugin-no-require-css');
 const HappyPack = require("happypack");
 const os = require("os");
@@ -287,44 +286,39 @@ module.exports = {
       },
       // //  scss
       // {
-      //     test: /\.s[ac]ss$/i,
-      //     use: [
-      //         // 'thread-loader',
-      //         MiniCssExtractPlugin.loader,
-      //         // Translates CSS into CommonJS
-      //         'css-loader',
-      //         // Compiles Sass to CSS
-      //         // 'sass-loader',
-      //         {
-      //             loader: 'sass-loader',
-      //             options: {
-      //                 // Prefer `dart-sass`
-      //                 implementation: require('sass'),
-      //                 sourceMap: true,
-      //             },
-      //         },
-      //         {
-      //             loader: 'postcss-loader',
-      //             options: {
-      //                 postcssOptions: {
-      //                     plugins: [
-      //                         [
-      //                             'autoprefixer',
-      //                             {
-      //                                 // Options
-      //                             },
-      //                         ],
-      //                     ],
-      //                 },
-      //             },
-      //         },
-      //     ],
-      // },
-      // {
-      //   test: /\.json$/,
-      //   use: "json-loader",
-      //   exclude: /(node_modules|bower_components)/,
-      //   enforce: "pre"
+      //   test: /\.s[ac]ss$/i,
+      //   use: [
+      //     // 'thread-loader',
+      //     MiniCssExtractPlugin.loader,
+      //     // Translates CSS into CommonJS
+      //     "css-loader",
+      //     // Compiles Sass to CSS
+      //     // 'sass-loader',
+      //     {
+      //       loader: "sass-loader",
+      //       options: {
+      //         // Prefer `dart-sass`
+      //         // implementation: require("sass"),
+              
+      //         sourceMap: true
+      //       }
+      //     },
+      //     {
+      //       loader: "postcss-loader",
+      //       options: {
+      //         postcssOptions: {
+      //           plugins: [
+      //             [
+      //               "autoprefixer",
+      //               {
+      //                 // Options
+      //               }
+      //             ]
+      //           ]
+      //         }
+      //       }
+      //     }
+      //   ]
       // },
 
       {
@@ -479,12 +473,8 @@ module.exports = {
       chunkFilename: "static/css/[name].[contenthash:8].chunk.css"
     }),
     new webpack.NoEmitOnErrorsPlugin(),
-
-    // new ReactLoadablePlugin({
-    //   filename: path.join(rootPath, "./dist/client/react-loadable.json")
-    // }),
-    // new ReactLoadableSSRAddon({
-    //   filename: path.join(rootPath, "./dist/client/assets-manifest.json")
-    // })
+    new webpack.DefinePlugin({
+      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
+    })
   ]
 };
