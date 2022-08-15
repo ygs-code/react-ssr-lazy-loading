@@ -607,7 +607,7 @@ yarn
 
 安装完成后 ，
 
-#### Install the required dependencies （安装所需的依赖）
+####  安装所需的依赖
 
 ```
 npm install
