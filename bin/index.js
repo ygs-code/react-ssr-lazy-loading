@@ -49,7 +49,12 @@ class Bin {
     });
 
     readWriteFiles({
-      from: path.join(process.cwd(), "/server/**/*").replace(/\\/gi, "/"),
+      from: [
+        path.join(process.cwd(), "/server/**/*").replace(/\\/gi, "/"),
+        `!${path
+          .join(process.cwd(), "/server/middleware/clientRouter/index.js")
+          .replace(/\\/gi, "/")}`
+      ],
       to: path.join(process.cwd(), "/dist/server").replace(/\\/gi, "/"),
       transform(content, absoluteFrom) {
         let reg = /.jsx|.js$/g;

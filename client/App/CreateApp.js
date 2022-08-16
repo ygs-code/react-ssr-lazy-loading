@@ -17,7 +17,7 @@ const {
 } = process.env; // 环境参数
 
 const CreateApp = (props = {}) => {
-  const { modules = [] } = props;
+  const { modules } = props;
 
   return target === "ssr" ? (
     <Capture report={(moduleName) => modules.push(moduleName)}>
