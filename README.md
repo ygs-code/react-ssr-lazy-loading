@@ -8,12 +8,17 @@ Welcome to React-SSR-lazy-Loading documentation!
 
 ### description：
 
-1. 0 cost learning, the API is almost identical to the REACT API
-2. Pages load on access and load on demand, cut from code
-3. Spa isomorphism is realized.
-4. The development environment utilizes Webpack-dev-middleware and Webpack-hot-server-middleware for hot-compiled memory access 
-5. React-ssr-lazy-loading is a project constructed by REACT + Webpack. The required plugins and loaders can be matched according to your needs
-6. An interactive course with quizzes will guide you through everything you need to use React-SSR-lazy-Loading.
+1. Cost learning, API is almost the same as REACT API 
+
+2. Pages are loaded on access and loaded on demand, cut from code 
+
+3. Realize the isomorphism of routing, rendering, data and Ajax. 
+
+4. Use webpack-dev-middleware and Webpack-hot-server-middleware to realize hot start compiled memory access 
+
+5. Upgrade of SSR + SPA experience. 
+
+6. Good scalability. React-ssr-lazy-loading is a project constructed by REACT + Webpack. The required plugins and loaders can be matched according to your needs
 
 ## [System requirements](https://nextjs.org/docs/getting-started#system-requirements)
 
@@ -579,10 +584,18 @@ If you need other environments, you can add the.env.xxxx file and then run the s
 说明：
 
 1. 0成本学习，api几乎和react api 一致
+
 2. 页面按访问加载和按需加载，与代码切割
-3. 实现了spa同构。
-4. 利用 webpack-dev-middleware 和  webpack-hot-server-middleware  实现 编译内存访问 
-5. 拓展性好，react-ssr-lazy-loading  是 react + webpack 构建的项目。所需的 plugins 和 loader可以根据自己需求搭配
+
+3. 实现了路由，渲染，数据，ajax 同构。
+
+4. 利用 webpack-dev-middleware 和  webpack-hot-server-middleware  实现 热启动编译内存访问 
+
+5. SSR + SPA 体验升级 。
+
+6. 拓展性好，react-ssr-lazy-loading  是 react + webpack 构建的项目。所需的 plugins 和 loader可以根据自己需求搭配
+
+   
 
 带有测验的交互式课程将指导您了解使用 react-ssr-lazy-loading  所需的一切。
 
