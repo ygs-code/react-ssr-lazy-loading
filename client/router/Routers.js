@@ -2,7 +2,7 @@
  * @Date: 2022-08-11 09:41:40
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-15 13:00:24
+ * @LastEditTime: 2022-08-16 19:13:35
  * @FilePath: /react-ssr-lazy-loading/client/router/Routers.js
  * @Description:
  */
@@ -26,21 +26,22 @@ const Routers = (props) => {
               exact={exact}
               path={path}
               component={
-                (props) => {
-                  return (
-                    <InitState {...props}>
-                      {(props) => {
-                        return (
-                          <AddRouterApi {...props}>
-                            {(props) => {
-                              return <Component {...props} />;
-                            }}
-                          </AddRouterApi>
-                        );
-                      }}
-                    </InitState>
-                  );
-                }
+                Component
+                // (props) => {
+                //   return (
+                //     <InitState {...props}>
+                //       {(props) => {
+                //         return (
+                //           <AddRouterApi {...props}>
+                //             {(props) => {
+                //               return <Component {...props} />;
+                //             }}
+                //           </AddRouterApi>
+                //         );
+                //       }}
+                //     </InitState>
+                //   );
+                // }
                 // initState(addRouterApi(Component))
               }
               // render={(props) => {

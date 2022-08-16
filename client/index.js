@@ -2,8 +2,8 @@
  * @Date: 2022-08-04 09:21:17
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 19:13:31
- * @FilePath: /react-loading-ssr/client/index.js
+ * @LastEditTime: 2022-08-16 19:12:21
+ * @FilePath: /react-ssr-lazy-loading/client/index.js
  * @Description:
  */
 // 18

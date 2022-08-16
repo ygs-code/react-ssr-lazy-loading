@@ -2,11 +2,11 @@
  * @Date: 2022-08-09 09:35:05
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-10 16:22:28
- * @FilePath: /react-loading-ssr/server/app.js
+ * @LastEditTime: 2022-08-16 19:11:11
+ * @FilePath: /react-ssr-lazy-loading/server/app.js
  * @Description:
  */
-import Loadable from "client/component/Loadable";
+import Loadable from   "react-loadable" // "client/component/Loadable";
 import Koa from "koa";
 import Router from "./router";
 import Middleware from "./middleware";

@@ -191,6 +191,8 @@ class ClientRouter {
       createApp({ store, context, history, modules, location })
     );
 
+    console.log("rootString=====", rootString);
+
     let { scripts, styles } = await this.createTags(modules);
 
     const helmet = Helmet.renderStatic();

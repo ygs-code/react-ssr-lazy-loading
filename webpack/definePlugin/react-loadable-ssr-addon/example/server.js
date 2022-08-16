@@ -1,8 +1,16 @@
+/*
+ * @Date: 2022-08-15 19:23:52
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-16 18:53:16
+ * @FilePath: /react-ssr-lazy-loading/webpack/definePlugin/react-loadable-ssr-addon/example/server.js
+ * @Description: 
+ */
 import express from "express";
 import path from "path";
 import React from "react";
 import { renderToString } from "react-dom/server";
-import Loadable from "client/component/Loadable";
+import Loadable from  "react-loadable"//"client/component/Loadable";
 import { getBundles } from "react-loadable-ssr-addon";
 import App from "./components/App";
 
