@@ -11,14 +11,14 @@ import PropTypes from "prop-types";
 import { Router, Switch as Routes, Route } from "./react-router-dom";
 import initState, { InitState } from "client/redux/initComponentState";
 import addRouterApi, { AddRouterApi } from "./addRouterApi";
-import routesConfig from "./routesComponent";
+import routesComponent, { routesConfigs } from "client/router/routesComponent";
 
 const Routers = (props) => {
-  const { history, context } = props;
+  const { history, context, routesComponent: serverRoutesComponent } = props;
   return (
     <Router history={history} context={context}>
       <Routes>
-        {routesConfig.map((route) => {
+        {(serverRoutesComponent || routesComponent).map((route) => {
           const { path, exact, Component } = route;
           return (
             <Route

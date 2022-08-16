@@ -87,7 +87,6 @@ class ClientRouter {
       let renderedHtml = await this.makeup({
         ctx,
         store,
-        createApp,
         template,
         isMatchRoute,
         modules
@@ -177,7 +176,7 @@ class ClientRouter {
     }
   }
   // 创建react文本
-  async makeup({ ctx, store, createApp, template, isMatchRoute, modules }) {
+  async makeup({ ctx, store, template, isMatchRoute, modules }) {
     let initState = store.getState();
 
     let history = createMemoryHistory({ initialEntries: [ctx.req.url] });
@@ -189,10 +188,26 @@ class ClientRouter {
     let context = [];
     let location = ctx.req.url;
 
+    const routeComponent = await import("client/pages/Home/index.js");
+    console.log("routeComponent=====", routeComponent);
+
     let rootString = renderToString(
-      createApp({ store, context, history, modules, location })
+      createApp({
+        store,
+        context,
+        history,
+        modules,
+        location,
+        routesComponent: [
+          {
+            Component: routeComponent.default
+          }
+        ]
+      })
     );
 
+    console.log("isMatchRoute===", isMatchRoute);
+    console.log("rootString===", rootString);
     let { scripts, styles } = await this.createTags(modules);
 
     const helmet = Helmet.renderStatic();

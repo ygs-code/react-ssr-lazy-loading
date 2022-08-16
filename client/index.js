@@ -12,7 +12,7 @@ import app from "./App/index.js";
 import Loadable from "client/component/Loadable";
 import { getHistory } from "client/router/history";
 import store from "client/redux";
-
+import routesComponent from "client/router/routesComponent";
 // const store = createStore(window);
 
 const renderComponent = module.hot ? render : hydrate;
@@ -29,6 +29,7 @@ const renderApp = () => {
       context,
       location,
       store
+      // routesComponent
     }),
     document.getElementById("root")
   );

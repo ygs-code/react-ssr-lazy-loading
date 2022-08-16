@@ -40,6 +40,7 @@ const routesComponentConfig = [
     name: "DiscountCoupon",
     entry: "/pages/marketing/pages/DiscountCoupon/index.js",
     Component: LoadableDiscountcoupon,
+    syncComponent: "",
     level: 2,
     routesConfigPath:
       "K:/react-loading-ssr/client/pages/marketing/router/routesConfig.js"
