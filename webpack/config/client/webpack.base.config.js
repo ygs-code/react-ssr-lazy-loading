@@ -350,6 +350,9 @@ module.exports = {
         ]),
 
     new webpack.NoEmitOnErrorsPlugin(),
+    // new ReactLoadablePlugin({
+    //   filename: path.join(rootPath, "./dist/client/react-loadable.json")
+    // }),
     new ReactLoadableSSRAddon({
       filename: path.join(rootPath, "./dist/client/assets-manifest.json")
     })

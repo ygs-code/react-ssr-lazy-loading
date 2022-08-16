@@ -52,7 +52,7 @@ class ClientRouter {
   async init() {
     const { ctx, next } = this.context;
     const modules = new Set();
-    let html = fs.readFileSync(
+    let template = fs.readFileSync(
       path.join(
         path.join(
           absolutePath,
@@ -88,16 +88,17 @@ class ClientRouter {
         ctx,
         store,
         createApp,
-        html,
+        template,
         isMatchRoute,
         modules
       });
 
-      ctx.body = ejs.render(renderedHtml, {
+      renderedHtml = ejs.render(renderedHtml, {
         htmlWebpackPlugin: {
           options: stringToObject(htmlWebpackPluginOptions)
         }
       });
+      ctx.body = renderedHtml;
     }
     next();
   }
@@ -124,7 +125,7 @@ class ClientRouter {
 
     const modulesToBeLoaded = [
       ...assetsManifest.entrypoints,
-      ...otherModules,
+      // ...otherModules,
       ...Array.from(modules)
     ];
 
@@ -142,21 +143,22 @@ class ClientRouter {
     return { scripts, styles };
   }
   // 解析html
-  prepHTML(data, { html, head, rootString, scripts, styles, initState }) {
-    data = data.replace("<html", `<html ${html}`);
-    data = data.replace("</head>", `${head} \n ${styles}</head>`);
-    data = data.replace(
-      '<div id="root"></div>',
-      `<div id="root"><div>${rootString}</div></div>`
+  prepHTML(template, { html, head, rootString, scripts, styles, initState }) {
+    template = template.replace("<html", `<html ${html}`);
+    template = template.replace("</head>", `${head} \n ${styles}</head>`);
+
+    template = template.replace(
+      '<div id="root">',
+      `<div id="root">${rootString}`
     );
-    data = data.replace(
+    template = template.replace(
       "</head>",
       `</head> \n <script>window.__INITIAL_STATE__ =${JSON.stringify(
         initState
       )}</script>`
     );
-    data = data.replace("</body>", `${scripts}</body>`);
-    return data;
+    template = template.replace("</body>", `${scripts}</body>`);
+    return template;
   }
   // 获取路由
   getMatch(routesArray, url) {
@@ -175,7 +177,7 @@ class ClientRouter {
     }
   }
   // 创建react文本
-  async makeup({ ctx, store, createApp, html, isMatchRoute, modules }) {
+  async makeup({ ctx, store, createApp, template, isMatchRoute, modules }) {
     let initState = store.getState();
 
     let history = createMemoryHistory({ initialEntries: [ctx.req.url] });
@@ -194,7 +196,7 @@ class ClientRouter {
     let { scripts, styles } = await this.createTags(modules);
 
     const helmet = Helmet.renderStatic();
-    let renderedHtml = this.prepHTML(html, {
+    let renderedHtml = this.prepHTML(template, {
       html: helmet.htmlAttributes.toString(),
       head:
         helmet.title.toString() +
@@ -205,6 +207,7 @@ class ClientRouter {
       styles,
       initState
     });
+
     return renderedHtml;
   }
 }

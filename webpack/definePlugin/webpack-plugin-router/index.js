@@ -2,8 +2,8 @@
  * @Date: 2022-04-28 10:55:26
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-07-04 13:36:09
- * @FilePath: /webpack-cli/user-webpack-config/definePlugin/MyExampleWebpackPlugin.js
+ * @LastEditTime: 2022-08-16 19:11:21
+ * @FilePath: /react-ssr-lazy-loading/webpack/definePlugin/webpack-plugin-router/index.js
  * @Description:
  */
 const fs = require("fs");
@@ -205,7 +205,7 @@ const Loadable${this.firstToUpper(name)} = loadable({
 
     let routesComponentFile = `
 // 按需加载插件
-import loadable from "client/component/Loadable";
+import loadable from    "react-loadable"  // "client/component/Loadable";
 import Loading from '@/component/Loading';
 import React, { useEffect } from 'react';
 `;

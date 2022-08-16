@@ -2,8 +2,8 @@
  * @Date: 2022-08-11 09:41:40
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-11 19:50:57
- * @FilePath: /react-loading-ssr/client/router/routesComponent.js
+ * @LastEditTime: 2022-08-16 19:23:02
+ * @FilePath: /react-ssr-lazy-loading/client/router/routesComponent.js
  * @Description:
  */
 // 按需加载插件

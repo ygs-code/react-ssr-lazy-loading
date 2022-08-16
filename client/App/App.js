@@ -2,7 +2,7 @@
  * @Date: 2022-08-05 09:22:30
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-15 13:47:16
+ * @LastEditTime: 2022-08-16 19:07:47
  * @FilePath: /react-ssr-lazy-loading/client/App/App.js
  * @Description:
  */
@@ -21,7 +21,6 @@ import "bootstrap/dist/css/bootstrap.css";
 // } = process.env; // 环境参数
 
 const App = (props) => {
-  console.log("props=====", props);
   const { history, location, store } = props;
   return (
     <Provider store={store}>
