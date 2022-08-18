@@ -131,20 +131,6 @@ class ClientRouter {
     let bundles = getBundles(assetsManifest, modulesToBeLoaded);
     let { css = [], js = [] } = bundles;
 
-    console.log("isMatchRoute======", isMatchRoute);
-    console.log("bundles======", bundles);
-    console.log("modules======", modules);
-    console.log("modulesToBeLoaded======", modulesToBeLoaded);
-
-    // js = js.filter((item) => {
-    //   const { file } = item;
-    //   return (
-    //     assetsManifest.entrypoints.findIndex(($item) => {
-    //       return file.indexOf($item) >= 0;
-    //     }) >= 0
-    //   );
-    // });
-
     let scripts = js
       .map((script) => `<script src="/${script.file}"></script>`)
       .join("\n");
