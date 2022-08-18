@@ -8,6 +8,9 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
+import loadable from "client/component/Loadable";
+import Loading from "client/component/Loading";
+import lazy from "client/component/lazy";
 import { Router, Switch as Routes, Route } from "./react-router-dom";
 import initState, { InitState } from "client/redux/initComponentState";
 import addRouterApi, { AddRouterApi } from "./addRouterApi";
@@ -19,29 +22,36 @@ const Routers = (props) => {
     <Router history={history} context={context}>
       <Routes>
         {(serverRoutesComponent || routesComponent).map((route) => {
-          const { path, exact, Component } = route;
+          const {
+            path,
+            exact,
+            Component: { AsynComponent, SyncComponent }
+          } = route;
           return (
             <Route
               key={path}
               exact={exact}
               path={path}
               component={
-                Component
-                // (props) => {
-                //   return (
-                //     <InitState {...props}>
-                //       {(props) => {
-                //         return (
-                //           <AddRouterApi {...props}>
-                //             {(props) => {
-                //               return <Component {...props} />;
-                //             }}
-                //           </AddRouterApi>
-                //         );
-                //       }}
-                //     </InitState>
-                //   );
-                // }
+                (props) => {
+                  return (
+                    <InitState {...props}>
+                      {(props) => {
+                        return (
+                          <AddRouterApi {...props}>
+                            {(props) => {
+                              return AsynComponent ? (
+                                <AsynComponent {...props} />
+                              ) : (
+                                <SyncComponent {...props} />
+                              );
+                            }}
+                          </AddRouterApi>
+                        );
+                      }}
+                    </InitState>
+                  );
+                }
                 // initState(addRouterApi(Component))
               }
               // render={(props) => {

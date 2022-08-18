@@ -79,6 +79,9 @@ function isWebpackReady(getModuleIds) {
 }
 
 function load(loader) {
+
+  console.log('loader==========',loader)
+
   var promise = loader();
 
   var state = {
@@ -158,6 +161,7 @@ function render(loaded, props) {
 }
 
 function createLoadableComponent(loadFn, options) {
+  console.log('loadFn=======',loadFn)
   var _class, _temp;
 
   if (!options.loading) {
@@ -258,7 +262,7 @@ function createLoadableComponent(loadFn, options) {
           if (!res.loading) {
             return;
           }
-
+          // console.log('delay======',delay)
           if (typeof opts.delay === "number") {
             if (opts.delay === 0) {
               this.setState({ pastDelay: true });
@@ -268,7 +272,7 @@ function createLoadableComponent(loadFn, options) {
               }, opts.delay);
             }
           }
-
+          // console.log('timeout======',timeout)
           if (typeof opts.timeout === "number") {
             this._timeout = setTimeout(function () {
               _this2.setState({ timedOut: true });
@@ -336,6 +340,7 @@ function createLoadableComponent(loadFn, options) {
 }
 
 function Loadable(opts) {
+  console.log('load===',load)
   return createLoadableComponent(load, opts);
 }
 

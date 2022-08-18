@@ -1,18 +1,11 @@
-/*
- * @Date: 2022-04-28 10:55:26
- * @Author: Yao guan shou
- * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-16 19:11:21
- * @FilePath: /react-ssr-lazy-loading/webpack/definePlugin/webpack-plugin-router/index.js
- * @Description:
- */
+
 const fs = require("fs");
 const path = require("path");
 const _ = require("lodash");
 const { readFile } = require("../../utils");
 const dataDiff = require("./diff");
 const chalk = require("chalk");
-
+// https://juejin.cn/post/6844903991508205576
 class WebpackPluginRouter {
   constructor(options) {
     this.options = options;
@@ -127,26 +120,29 @@ class WebpackPluginRouter {
         code.routesComponentConfig = routesComponentConfig;
         code.routePaths = routePaths;
       }
-
-      code.loadableComponent = `${code.loadableComponent || ""}
-// 路由组件引入
-const Loadable${this.firstToUpper(name)} = loadable({
-    loader: () => import('@${entry}'),
-    loading: Loading,
-}); `;
+      // import("client/pages/marketing/pages/DiscountCoupon/index.js")  Loadable${this.firstToUpper(name)}
+      code.loadableComponent = `${code.loadableComponent || ""}`
+// // 路由组件引入
+// const Lazy${this.firstToUpper(name)} = lazy({
+//     loader: () => import("client${entry}"),
+//     loading: Loading,
+// }); `;
       code.routesComponentConfig = `${code.routesComponentConfig || ""}
                     {  
-                     path: '${path}',
+                     path: "${path}",
                      exact: ${exact ? true : false},
-                     name:'${name}',
-                     entry:'${entry}',
-                     Component:Loadable${this.firstToUpper(name)},
+                     name:"${name}",
+                     entry:"${entry}",
+                     Component:lazy({
+                          loader: () => import("client${entry}"),
+                          loading: Loading,
+                      }),
                      level:${level},
-                     routesConfigPath:'${routesConfigPath}'
+                     routesConfigPath:"${routesConfigPath}",
                    },`;
 
       code.routePaths = `${code.routePaths || ""}
-  ${name}:'${path}',`;
+  ${name}:"${path}",`;
     }
     return code;
   }
@@ -175,7 +171,7 @@ const Loadable${this.firstToUpper(name)} = loadable({
       fileName = fileName.replace(/\.js$/g, "");
       code.exportRoutesConfigCode += `
   ...${fileName},`;
-      code.importRoutesConfigCode += `import ${fileName} from '@/${path}';\n`;
+      code.importRoutesConfigCode += `import ${fileName} from "client/${path}";\n`;
 
       const { routesComponentConfig, loadableComponent, routePaths } =
         this.mapRoutesConfig(
@@ -205,9 +201,8 @@ const Loadable${this.firstToUpper(name)} = loadable({
 
     let routesComponentFile = `
 // 按需加载插件
-import loadable from    "react-loadable"  // "client/component/Loadable";
-import Loading from '@/component/Loading';
-import React, { useEffect } from 'react';
+import lazy from "client/component/lazy";
+import Loading from "client/component/Loading";
 `;
 
     routesComponentFile += importRoutesConfigCode;
@@ -319,7 +314,7 @@ export default routesComponentConfig;
 
   apply(compiler) {
     // webpack  处理webpack选项的条目配置后调用。 只编译一次
-    // this.hook(compiler, 'entryOption', () => {
+    // this.hook(compiler, "entryOption", () => {
     // this.compilerFile(compiler);
     // });
     this.hook(compiler, "watchRun", (compilation) => {
@@ -334,14 +329,14 @@ export default routesComponentConfig;
       }
     );
 
-    // compiler.plugin('make', (compilation, callback) => {
+    // compiler.plugin("make", (compilation, callback) => {
     //     this.compilerFile(compilation);
     //     callback();
     // });
-    // this.hook(compiler, 'done', (stats) => {
+    // this.hook(compiler, "done", (stats) => {
     //     if (stats.compilation.errors && stats.compilation.errors.length) {
     //         console.log(
-    //             ' stats.compilation.errors===',
+    //             " stats.compilation.errors===",
     //             chalk.red(stats.compilation.errors)
     //         );
     //         // process.exit(1);

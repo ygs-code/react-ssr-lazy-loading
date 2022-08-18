@@ -124,12 +124,21 @@ class ClientRouter {
 
     const modulesToBeLoaded = [
       ...assetsManifest.entrypoints,
-      // ...otherModules,
+      ...otherModules,
       ...Array.from(modules)
     ];
 
     let bundles = getBundles(assetsManifest, modulesToBeLoaded);
-    const { css = [], js = [] } = bundles;
+    let { css = [], js = [] } = bundles;
+
+    js = js.filter((item) => {
+      const { file } = item;
+      return (
+        assetsManifest.entrypoints.findIndex(($item) => {
+          return file.indexOf($item) >= 0;
+        }) >= 0
+      );
+    });
 
     let scripts = js
       .map((script) => `<script src="/${script.file}"></script>`)
@@ -188,8 +197,10 @@ class ClientRouter {
     let context = [];
     let location = ctx.req.url;
 
-    const routeComponent = await import("client/pages/Home/index.js");
-    console.log("routeComponent=====", routeComponent);
+    const {
+      Component: { SyncComponent }
+    } = isMatchRoute;
+    const routeComponent = await SyncComponent();
 
     let rootString = renderToString(
       createApp({
@@ -200,14 +211,14 @@ class ClientRouter {
         location,
         routesComponent: [
           {
-            Component: routeComponent.default
+            ...isMatchRoute,
+            Component: {
+              SyncComponent: routeComponent.default
+            }
           }
         ]
       })
     );
-
-    console.log("isMatchRoute===", isMatchRoute);
-    console.log("rootString===", rootString);
     let { scripts, styles } = await this.createTags(modules);
 
     const helmet = Helmet.renderStatic();

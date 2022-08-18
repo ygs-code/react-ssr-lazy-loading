@@ -45,8 +45,8 @@ module.exports = {
         // exclude: /(node_modules|bower_components)/,
         use: [
           // 'thread-loader',
-          "style-loader",
-          // MiniCssExtractPlugin.loader,
+          // "style-loader",
+          MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
             options: {
@@ -76,8 +76,8 @@ module.exports = {
         use: [
           // 'thread-loader',
           // compiles Less to CSS
-          // MiniCssExtractPlugin.loader,
-          "style-loader",
+          MiniCssExtractPlugin.loader,
+          // "style-loader",
           "css-loader",
           {
             loader: "less-loader",
@@ -142,12 +142,12 @@ module.exports = {
     ]
   },
   plugins: [
-    // new MiniCssExtractPlugin({
-    //   // Options similar to the same options in webpackOptions.output
-    //   // both options are optional
-    //   filename: "static/css/[name].[contenthash:8].css",
-    //   chunkFilename: "static/css/[name].[contenthash:8].chunk.css"
-    // }),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "static/css/[name].[contenthash:8].css",
+      chunkFilename: "static/css/[name].[contenthash:8].chunk.css"
+    }),
 
     new webpack.HotModuleReplacementPlugin()
   ]

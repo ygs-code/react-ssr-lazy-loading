@@ -289,16 +289,16 @@ module.exports = {
       threadPool: happyThreadPool
     }),
 
-    // new WebpackPluginRouter({
-    //     entry: path.join(process.cwd(), '/client'),
-    //     //延迟监听时间
-    //     aggregateTimeout: 30,
-    //     watch: ['routesConfig.js'],
-    //     output: {
-    //         routesComponent: '/client/router/routesComponent.js',
-    //         routePaths: '/client/router/routePaths.js',
-    //     },
-    // }),
+    new WebpackPluginRouter({
+        entry: path.join(process.cwd(), '/client'),
+        //延迟监听时间
+        aggregateTimeout: 30,
+        watch: ['routesConfig.js'],
+        output: {
+            routesComponent: '/client/router/routesComponent.js',
+            routePaths: '/client/router/routePaths.js',
+        },
+    }),
     // 注入全局常量
     new ExtendedDefinePlugin({
       process: {
