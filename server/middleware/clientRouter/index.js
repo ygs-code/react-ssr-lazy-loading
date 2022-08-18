@@ -153,7 +153,7 @@ class ClientRouter {
   // 解析html
   prepHTML(template, { html, head, rootString, scripts, styles, initState }) {
     template = template.replace("<html", `<html ${html}`);
-    template = template.replace("</head>", `${head} \n ${styles}</head>`);
+    template = template.replace("</head>", `${styles}</head>`);
 
     template = template.replace(
       '<div id="root">',
@@ -233,7 +233,6 @@ class ClientRouter {
       styles,
       initState
     });
-
     return renderedHtml;
   }
 }
