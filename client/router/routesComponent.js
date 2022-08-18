@@ -12,7 +12,9 @@ let routesComponentConfig = [
     entry: "/pages/marketing/pages/DiscountCoupon/index.js",
     Component: lazy({
       loader: () =>
-        import("client/pages/marketing/pages/DiscountCoupon/index.js"),
+        import(
+          /* webpackChunkName:"DiscountCoupon" */ "client/pages/marketing/pages/DiscountCoupon/index.js"
+        ),
       loading: Loading
     }),
     level: 2,
@@ -25,7 +27,10 @@ let routesComponentConfig = [
     name: "marketing",
     entry: "/pages/marketing/index.js",
     Component: lazy({
-      loader: () => import("client/pages/marketing/index.js"),
+      loader: () =>
+        import(
+          /* webpackChunkName:"marketing" */ "client/pages/marketing/index.js"
+        ),
       loading: Loading
     }),
     level: 2,
@@ -38,7 +43,8 @@ let routesComponentConfig = [
     name: "home",
     entry: "/pages/Home/index.js",
     Component: lazy({
-      loader: () => import("client/pages/Home/index.js"),
+      loader: () =>
+        import(/* webpackChunkName:"home" */ "client/pages/Home/index.js"),
       loading: Loading
     }),
     level: 1,
@@ -50,7 +56,8 @@ let routesComponentConfig = [
     name: "user",
     entry: "/pages/User/index.js",
     Component: lazy({
-      loader: () => import("client/pages/User/index.js"),
+      loader: () =>
+        import(/* webpackChunkName:"user" */ "client/pages/User/index.js"),
       loading: Loading
     }),
     level: 1,

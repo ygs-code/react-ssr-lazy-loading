@@ -112,7 +112,7 @@ class ClientRouter {
     return path.replace(reg, "/");
   }
   // 创建标签
-  async createTags(modules) {
+  async createTags({ modules, isMatchRoute }) {
     let { assetsManifest } = this.options;
 
     if (assetsManifest) {
@@ -124,21 +124,26 @@ class ClientRouter {
 
     const modulesToBeLoaded = [
       ...assetsManifest.entrypoints,
-      ...otherModules,
+      "client" + isMatchRoute.entry,
       ...Array.from(modules)
     ];
 
     let bundles = getBundles(assetsManifest, modulesToBeLoaded);
     let { css = [], js = [] } = bundles;
 
-    js = js.filter((item) => {
-      const { file } = item;
-      return (
-        assetsManifest.entrypoints.findIndex(($item) => {
-          return file.indexOf($item) >= 0;
-        }) >= 0
-      );
-    });
+    console.log("isMatchRoute======", isMatchRoute);
+    console.log("bundles======", bundles);
+    console.log("modules======", modules);
+    console.log("modulesToBeLoaded======", modulesToBeLoaded);
+
+    // js = js.filter((item) => {
+    //   const { file } = item;
+    //   return (
+    //     assetsManifest.entrypoints.findIndex(($item) => {
+    //       return file.indexOf($item) >= 0;
+    //     }) >= 0
+    //   );
+    // });
 
     let scripts = js
       .map((script) => `<script src="/${script.file}"></script>`)
@@ -219,7 +224,7 @@ class ClientRouter {
         ]
       })
     );
-    let { scripts, styles } = await this.createTags(modules);
+    let { scripts, styles } = await this.createTags({ modules, isMatchRoute });
 
     const helmet = Helmet.renderStatic();
     let renderedHtml = this.prepHTML(template, {
