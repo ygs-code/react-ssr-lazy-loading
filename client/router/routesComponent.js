@@ -14,12 +14,12 @@ let routesComponentConfig = [
       loader: () =>
         import(
           /* webpackChunkName:"DiscountCoupon" */ "client/pages/marketing/pages/DiscountCoupon/index.js"
-        ),
-      loading: Loading
+        )
+      // loading: Loading,
     }),
     level: 2,
     routesConfigPath:
-      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
+      "K:/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
   },
   {
     path: "/marketing",
@@ -30,12 +30,12 @@ let routesComponentConfig = [
       loader: () =>
         import(
           /* webpackChunkName:"marketing" */ "client/pages/marketing/index.js"
-        ),
-      loading: Loading
+        )
+      // loading: Loading,
     }),
     level: 2,
     routesConfigPath:
-      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
+      "K:/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
   },
   {
     path: "/",
@@ -44,12 +44,11 @@ let routesComponentConfig = [
     entry: "/pages/Home/index.js",
     Component: lazy({
       loader: () =>
-        import(/* webpackChunkName:"home" */ "client/pages/Home/index.js"),
-      loading: Loading
+        import(/* webpackChunkName:"home" */ "client/pages/Home/index.js")
+      // loading: Loading,
     }),
     level: 1,
-    routesConfigPath:
-      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/router/routesConfig.js"
+    routesConfigPath: "K:/react-ssr-lazy-loading/client/router/routesConfig.js"
   },
   {
     path: "/user",
@@ -58,12 +57,11 @@ let routesComponentConfig = [
     entry: "/pages/User/index.js",
     Component: lazy({
       loader: () =>
-        import(/* webpackChunkName:"user" */ "client/pages/User/index.js"),
-      loading: Loading
+        import(/* webpackChunkName:"user" */ "client/pages/User/index.js")
+      // loading: Loading,
     }),
     level: 1,
-    routesConfigPath:
-      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/router/routesConfig.js"
+    routesConfigPath: "K:/react-ssr-lazy-loading/client/router/routesConfig.js"
   }
 ];
 

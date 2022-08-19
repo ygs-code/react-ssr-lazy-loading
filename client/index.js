@@ -10,7 +10,7 @@
 import { hydrate, render } from "react-dom";
 import app from "./App/index.js";
 // import Loadable from "client/component/Loadable";
-import lazy, { preloadReady } from "client/component/lazy";
+// import lazy, { preloadReady } from "client/component/lazy";
 import { getHistory } from "client/router/history";
 import store from "client/redux";
 // import { getHistory, history, listen } from   "client/router/history";
@@ -39,9 +39,9 @@ const renderApp = () => {
 
 // node 服务器中只能在这个页面使用window
 window.main = () => {
-  preloadReady().then(() => {
-    renderApp();
-  });
+  // preloadReady().then(() => {
+  renderApp();
+  // });
 };
 
 // // // 只有当开启了模块热替换时 module.hot 才存在

@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 
+const NullComponent = (props) => {
+  return <div></div>;
+};
+
 const lazy = (props) => {
   const { loader, loading: Loading } = props;
   lazy.loaderArr = [...lazy.loaderArr, loader];
@@ -8,22 +12,25 @@ const lazy = (props) => {
       super(props);
       this.init();
       this.state = {
-        isLoading: true,
+        isLoading: !!Loading,
         Loading,
-        Component: null,
+        Component: NullComponent,
         error: null
       };
+      this.timer = null;
     }
     init = () => {
       loader()
         .then((res) => {
           this.setState({
-            Component: res.default
+            Component: res.default,
+            isLoading: false
           });
         })
         .catch((error) => {
           this.setState({
-            error: error
+            error: error,
+            isLoading: true
           });
         });
     };
@@ -31,10 +38,10 @@ const lazy = (props) => {
       const { Component, error, isLoading } = this.state;
       return (
         <>
-          {Component ? (
-            <Component {...this.props} />
-          ) : (
+          {isLoading ? (
             <Loading {...this.props} isLoading={isLoading} error={error} />
+          ) : (
+            <Component {...this.props} />
           )}
         </>
       );

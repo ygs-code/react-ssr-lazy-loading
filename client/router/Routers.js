@@ -8,7 +8,7 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import loadable from "client/component/Loadable";
+// import loadable from "client/component/Loadable";
 import Loading from "client/component/Loading";
 import lazy from "client/component/lazy";
 import { Router, Switch as Routes, Route } from "./react-router-dom";
@@ -17,8 +17,7 @@ import addRouterApi, { AddRouterApi } from "./addRouterApi";
 import routesComponent, { routesConfigs } from "client/router/routesComponent";
 
 const Routers = (props) => {
-  const { history, routesComponent: serverRoutesComponent } = props;
-  console.log("history=======", history);
+  const { history } = props;
   return (
     <Router history={history}>
       <Routes>

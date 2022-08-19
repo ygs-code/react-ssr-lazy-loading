@@ -79,9 +79,6 @@ function isWebpackReady(getModuleIds) {
 }
 
 function load(loader) {
-
-  console.log('loader==========',loader)
-
   var promise = loader();
 
   var state = {

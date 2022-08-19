@@ -8,8 +8,8 @@ import ReactLoadableSSRAddon from "react-loadable-ssr-addon";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import koaProxy from "koa2-proxy-middleware";
 import bodyparser from "koa-bodyparser";
-import koaConnectHistoryApiFallback from "koa2-connect-history-api-fallback";
-import connectHistoryApiFallback from "connect-history-api-fallback";
+// import koaConnectHistoryApiFallback from "koa2-connect-history-api-fallback";
+// import connectHistoryApiFallback from "connect-history-api-fallback";
 import { compiler, config } from "@/webpack";
 
 let {
@@ -148,7 +148,7 @@ class WebpackHot {
     let targets = {};
     if (proxy && type === "[object object]") {
       // 下面是代理表的处理方法， 可以使用后台,代理后台地址
-      /*  
+      /*
             支持对象
             proxy: { // 配置代理（只在本地开发有效，上线无效）
                 "/x": { // 这是请求接口中要替换的标识
@@ -234,13 +234,22 @@ class WebpackHot {
     );
   }
 
-  setConnectHistoryApiFallback() {
-    this.koaConnectHistoryApiFallback = koaConnectHistoryApiFallback();
-    this.app.use(async (ctx, next) => {
-      const { request, response } = ctx;
-      this.koaConnectHistoryApiFallback(request, response, next);
-    });
-  }
+  // setConnectHistoryApiFallback() {
+  //   const historyMiddleware = connectHistoryApiFallback({
+  //     verbose: true,
+  //     rewrites: [
+  //       {
+  //         from: /^\/lvchao\/view\/*/,
+  //         // to: function({ parsedUrl, match, req }) {
+  //         //   return '/static/index.html'
+  //         // },
+  //         to: "/dist/client/index.html"
+  //       }
+  //     ]
+  //   });
+
+  //   this.app.use(historyMiddleware);
+  // }
 
   addWebpackHotServerMiddleware() {
     const _this = this;

@@ -8,7 +8,7 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { Capture } from "client/component/Loadable";
+// import { Capture } from "client/component/Loadable";
 import App from "./App.js";
 import "./App.less";
 
@@ -17,15 +17,9 @@ const {
 } = process.env; // 环境参数
 
 const CreateApp = (props = {}) => {
-  const { modules } = props;
+  // const { modules } = props;
 
-  return target === "ssr" ? (
-    <Capture report={(moduleName) => modules.push(moduleName)}>
-      <App {...props} />
-    </Capture>
-  ) : (
-    <App {...props} />
-  );
+  return <App {...props} />;
 };
 
 CreateApp.propTypes = {

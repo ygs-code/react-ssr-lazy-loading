@@ -19,7 +19,6 @@ import "bootstrap/dist/css/bootstrap.css";
 //   target, // 环境参数
 //   htmlWebpackPluginOptions = ""
 // } = process.env; // 环境参数
-console.log(1111);
 const App = (props) => {
   const { history, store, routesComponent } = props;
   return (

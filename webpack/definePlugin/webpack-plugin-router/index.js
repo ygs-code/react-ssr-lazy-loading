@@ -135,7 +135,7 @@ class WebpackPluginRouter {
                      entry:"${entry}",
                      Component:lazy({
                           loader: () => import(/* webpackChunkName:"${name}" */ "client${entry}"),
-                          loading: Loading,
+                          // loading: Loading,
                       }),
                      level:${level},
                      routesConfigPath:"${routesConfigPath}",
