@@ -46,12 +46,11 @@ export default class Middleware {
 
   addMiddleware() {
     this.addCorsMiddleware();
-
+    this.addStaticCacheMiddleware();
     if (isEnvDevelopment) {
       // 如果是生产不在这里编译
       this.addWebpackHotMiddleware();
     } else if (isSsr) {
-      this.addStaticCacheMiddleware();
       this.addClientRouterMiddleware();
     }
   }

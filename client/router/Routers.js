@@ -17,11 +17,12 @@ import addRouterApi, { AddRouterApi } from "./addRouterApi";
 import routesComponent, { routesConfigs } from "client/router/routesComponent";
 
 const Routers = (props) => {
-  const { history, context, routesComponent: serverRoutesComponent } = props;
+  const { history, routesComponent: serverRoutesComponent } = props;
+  console.log("history=======", history);
   return (
-    <Router history={history} context={context}>
+    <Router history={history}>
       <Routes>
-        {(serverRoutesComponent || routesComponent).map((route) => {
+        {routesComponent.map((route) => {
           const {
             path,
             exact,

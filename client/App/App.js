@@ -19,16 +19,12 @@ import "bootstrap/dist/css/bootstrap.css";
 //   target, // 环境参数
 //   htmlWebpackPluginOptions = ""
 // } = process.env; // 环境参数
-
+console.log(1111);
 const App = (props) => {
-  const { history, location, store, routesComponent } = props;
+  const { history, store, routesComponent } = props;
   return (
     <Provider store={store}>
-      <Routers
-        history={history}
-        routesComponent={routesComponent}
-        location={location}
-      />
+      <Routers history={history} routesComponent={routesComponent} />
     </Provider>
   );
 };

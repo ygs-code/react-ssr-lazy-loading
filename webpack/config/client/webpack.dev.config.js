@@ -20,12 +20,15 @@ module.exports = {
   mode: NODE_ENV,
   devServer: {
     open: true,
-    contentBase: "assets",
+    // publicPath: "/",
+    // contentBase: "assets",
     hot: true,
-    historyApiFallback: true,
+    // historyApiFallback: true,
+    host:"0.0.0.0",
     liveReload: true, // 编译之后是否自动刷新浏览器
     writeToDisk: isSsr || isEnvProduction, // 写入硬盘
-    port: 5000
+    // port: 5000,
+    compress:true,  //浏览器请求静态资源时压缩一下，打开浏览器的检查时可以看到bundle.js的content-encoding是gzip，浏览器自动解压
   },
   watch: true,
   watchOptions: {
@@ -101,44 +104,44 @@ module.exports = {
             }
           }
         ]
-      },
+      }
 
       // //  scss
-    //   {
-    //     test: /\.s[ac]ss$/i,
-    //     use: [
-    //       // 'thread-loader',
-    //       "style-loader",
-    //       // MiniCssExtractPlugin.loader,
-    //       // Translates CSS into CommonJS
-    //       "css-loader",
-    //       // Compiles Sass to CSS
-    //       // 'sass-loader',
-    //       {
-    //         loader: "sass-loader",
-    //         options: {
-    //           // Prefer `dart-sass`
-    //           implementation: require("sass"),
-    //           sourceMap: true
-    //         }
-    //       },
-    //       {
-    //         loader: "postcss-loader",
-    //         options: {
-    //           postcssOptions: {
-    //             plugins: [
-    //               [
-    //                 "autoprefixer",
-    //                 {
-    //                   // Options
-    //                 }
-    //               ]
-    //             ]
-    //           }
-    //         }
-    //       }
-    //     ]
-    //   }
+      //   {
+      //     test: /\.s[ac]ss$/i,
+      //     use: [
+      //       // 'thread-loader',
+      //       "style-loader",
+      //       // MiniCssExtractPlugin.loader,
+      //       // Translates CSS into CommonJS
+      //       "css-loader",
+      //       // Compiles Sass to CSS
+      //       // 'sass-loader',
+      //       {
+      //         loader: "sass-loader",
+      //         options: {
+      //           // Prefer `dart-sass`
+      //           implementation: require("sass"),
+      //           sourceMap: true
+      //         }
+      //       },
+      //       {
+      //         loader: "postcss-loader",
+      //         options: {
+      //           postcssOptions: {
+      //             plugins: [
+      //               [
+      //                 "autoprefixer",
+      //                 {
+      //                   // Options
+      //                 }
+      //               ]
+      //             ]
+      //           }
+      //         }
+      //       }
+      //     ]
+      //   }
     ]
   },
   plugins: [

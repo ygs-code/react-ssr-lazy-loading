@@ -5,6 +5,11 @@ import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotServerMiddleware from "webpack-hot-server-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 import ReactLoadableSSRAddon from "react-loadable-ssr-addon";
+import { createProxyMiddleware } from "http-proxy-middleware";
+import koaProxy from "koa2-proxy-middleware";
+import bodyparser from "koa-bodyparser";
+import koaConnectHistoryApiFallback from "koa2-connect-history-api-fallback";
+import connectHistoryApiFallback from "connect-history-api-fallback";
 import { compiler, config } from "@/webpack";
 
 let {
@@ -60,7 +65,15 @@ class WebpackHot {
     this.addMiddleware();
   }
   addMiddleware() {
+    // dev服务器
     this.addWebpackDevMiddleware();
+    // 开启代理
+    this.setProxyMiddleware();
+    // handle fallback for HTML5 history API
+    // 通过指定的索引页面中间件代理请求，用于单页应用程序，利用HTML5 History API。
+    // 这个插件是用来解决单页面应用，点击刷新按钮和通过其他search值定位页面的404错误
+    // this.setConnectHistoryApiFallback();
+
     // this.addWebpackHotMiddleware();
     if (isSsr) {
       this.addWebpackHotServerMiddleware();
@@ -75,17 +88,17 @@ class WebpackHot {
         webpackDevMiddleware(_this.compiler, {
           ...devServer,
           // noInfo: true,
-          serverSideRender: true, // 是否是服务器渲染
+          serverSideRender: true // 是否是服务器渲染
 
-          //设置允许跨域
-          headers: () => {
-            return {
-              // "Last-Modified": new Date(),
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Headers": "content-type",
-              "Access-Control-Allow-Methods": "DELETE,PUT,POST,GET,OPTIONS"
-            };
-          }
+          // //设置允许跨域
+          // headers: () => {
+          //   return {
+          //     // "Last-Modified": new Date(),
+          //     "Access-Control-Allow-Origin": "*",
+          //     "Access-Control-Allow-Headers": "content-type",
+          //     "Access-Control-Allow-Methods": "DELETE,PUT,POST,GET,OPTIONS"
+          //   };
+          // }
 
           // publicPath: "/"
           // writeToDisk: true //是否写入本地磁盘
@@ -103,11 +116,132 @@ class WebpackHot {
       )
     );
   }
-  // addEjsMiddleware() {
-  //   // 2. 配置模板引擎中间件：views()第一个参数是视图模板所在的路径，第二个参数是应用ejs模板引擎
-  //   // app.use(views("views", { extension: "ejs" })); // 若这样配置，模板的后缀名是.ejs
-  //   this.app.use(views("views", { map: { html: "ejs" } })); // 若这样配置，模板的后缀名是.html
-  // }
+  // 代理服务器
+  setProxyMiddleware() {
+    // proxy: { // 配置代理（只在本地开发有效，上线无效）
+    //   "/x": { // 这是请求接口中要替换的标识
+    //     target: "https://api.bilibili.com", // 被替换的目标地址，即把 /api 替换成这个
+    //     pathRewrite: {"^/api" : ""},
+    //     secure: false, // 若代理的地址是https协议，需要配置这个属性
+    //   },
+    //   '/api': {
+    //     target: 'http://localhost:3000', // 这是本地用node写的一个服务，用webpack-dev-server起的服务默认端口是8080
+    //     pathRewrite: {"/api" : ""}, // 后台在转接的时候url中是没有 /api 的
+    //     changeOrigin: true, // 加了这个属性，那后端收到的请求头中的host是目标地址 target
+    //   },
+    // }
+
+    // proxy: [
+    //   {
+    //     context: ["/api/v1/common/upload/"],
+    //     target: "https://webpack.docschina.org/",
+    //     changeOrigin: true,
+    //     secure: false,
+    //     // pathRewrite: {
+    //     //   "^/api/v1/common/upload/": "/",
+    //     // },
+    //   },
+    // ],
+
+    const { devServer: { proxy } = {} } = config[0];
+    const type = Object.prototype.toString.call(proxy).toLowerCase();
+    let targets = {};
+    if (proxy && type === "[object object]") {
+      // 下面是代理表的处理方法， 可以使用后台,代理后台地址
+      /*  
+            支持对象
+            proxy: { // 配置代理（只在本地开发有效，上线无效）
+                "/x": { // 这是请求接口中要替换的标识
+                  target: "https://api.bilibili.com", // 被替换的目标地址，即把 /api 替换成这个
+                  pathRewrite: {"^/api" : ""},
+                  secure: false, // 若代理的地址是https协议，需要配置这个属性
+                },
+                '/api': {
+                  target: 'http://localhost:3000', // 这是本地用node写的一个服务，用webpack-dev-server起的服务默认端口是8080
+                  pathRewrite: {"/api" : ""}, // 后台在转接的时候url中是没有 /api 的
+                  changeOrigin: true, // 加了这个属性，那后端收到的请求头中的host是目标地址 target
+                },
+            }
+            */
+      // Object.keys(proxy).forEach((context) => {
+      //   // 下面是代理表的处理方法， 可以使用后台管理
+      //   var options = proxy[context];
+      //   if (typeof options === "string") {
+      //     // 支持 proxy: { '/api':'http://localhost:3000' }
+      //     options = { target: options };
+      //   }
+      //   this.app.use(context, createProxyMiddleware(options));
+      // });
+
+      // this.koaProxy
+      targets = proxy;
+    }
+
+    /*
+         支持数组
+          支持单个
+          proxy: [
+            {
+              context: "/api/v1/common/upload/",
+              target: "https://webpack.docschina.org/",
+              changeOrigin: true,
+               secure: false,
+              // pathRewrite: {
+              //   "^/api/v1/common/upload/": "/",
+              // },
+            },
+          ],
+
+           或者
+          proxy: [
+          {
+              context: ["/api/v1/common/upload/","/api/v1/scrm/upload/", ]
+              target: "https://webpack.docschina.org/",
+              changeOrigin: true,
+               secure: false,
+              // pathRewrite: {
+              //   "^/api/v1/common/upload/": "/",
+              // },
+            },
+          ],
+        */
+
+    if (proxy && type === "[object array]") {
+      for (let item of proxy) {
+        let { context } = item;
+        delete item.context;
+        if (
+          Object.prototype.toString.call(context).toLowerCase() ===
+          "[object array]"
+        ) {
+          for (let contextItem of context) {
+            targets[contextItem] = item;
+          }
+        } else {
+          targets[context] = item;
+        }
+      }
+    }
+    this.app.use(
+      koaProxy({
+        targets
+      })
+    );
+    this.app.use(
+      bodyparser({
+        enableTypes: ["json", "form", "text"]
+      })
+    );
+  }
+
+  setConnectHistoryApiFallback() {
+    this.koaConnectHistoryApiFallback = koaConnectHistoryApiFallback();
+    this.app.use(async (ctx, next) => {
+      const { request, response } = ctx;
+      this.koaConnectHistoryApiFallback(request, response, next);
+    });
+  }
+
   addWebpackHotServerMiddleware() {
     const _this = this;
     this.app.use(
