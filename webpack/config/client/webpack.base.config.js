@@ -53,17 +53,17 @@ module.exports = {
   target: "web",
   entry: {
     client: path.join(process.cwd(), "/client/index.js"),
-    vendors: [
-      // '@babel/polyfill',
-      "react",
-      "react-dom"
-      // 'react-loadable',
-      // 'react-redux',
-      // 'redux',
-      // 'react-router-dom',
-      // 'react-router-redux',
-      // 'redux-thunk',
-    ]
+    // vendors: [
+    //   // '@babel/polyfill',
+    //   "react",
+    //   "react-dom",
+    //   "redux",
+    //   "react-router-dom"
+    //   // 'react-loadable',
+    //   // 'react-redux',
+    //   // 'react-router-redux',
+    //   // 'redux-thunk',
+    // ]
   },
 
   output: {
@@ -89,6 +89,7 @@ module.exports = {
   },
   //在第一个错误出现时抛出失败结果，而不是容忍它
   bail: true,
+
   //统计信息(stats)
   stats: {
     // 未定义选项时，stats 选项的备用值(fallback value)（优先级高于 webpack 本地默认值）
@@ -176,6 +177,7 @@ module.exports = {
     // 并返回一个布尔值或上述组合的数组。第一个匹配到的为胜(First match wins.)。
     // warningsFilter: "filter" | /filter/ | ["filter", /filter/] | (warning) => ... return true|false
   },
+
   resolve: {
     // 路径配置
     alias,
@@ -223,6 +225,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.HashedModuleIdsPlugin(), // 确保 hash 不被意外改变
     // eslint 插件
     new ESLintPlugin({
       emitError: true, //发现的错误将始终被触发，将禁用设置为false。
@@ -290,14 +293,14 @@ module.exports = {
     }),
 
     new WebpackPluginRouter({
-        entry: path.join(process.cwd(), '/client'),
-        //延迟监听时间
-        aggregateTimeout: 30,
-        watch: ['routesConfig.js'],
-        output: {
-            routesComponent: '/client/router/routesComponent.js',
-            routePaths: '/client/router/routePaths.js',
-        },
+      entry: path.join(process.cwd(), "/client"),
+      //延迟监听时间
+      aggregateTimeout: 30,
+      watch: ["routesConfig.js"],
+      output: {
+        routesComponent: "/client/router/routesComponent.js",
+        routePaths: "/client/router/routePaths.js"
+      }
     }),
     // 注入全局常量
     new ExtendedDefinePlugin({

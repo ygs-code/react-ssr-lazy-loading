@@ -9,19 +9,7 @@
 import React from "react";
 
 export default (props) => {
-  const { isLoading, timedOut, pastDelay, error } = props;
-  let Component = null;
-  if (isLoading) {
-    if (timedOut) {
-      Component = <div>Loader timed out!</div>;
-    }
-    if (pastDelay) {
-      Component = <div>Loading...</div>;
-    }
-    Component = null;
-  }
-  if (error) {
-    Component = <div>Error! Component failed to load</div>;
-  }
-  return Component;
+  const { error } = props;
+
+  return error ? <div>Error:{error}</div> : <div>Loading...</div>;
 };
