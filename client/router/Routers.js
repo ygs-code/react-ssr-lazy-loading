@@ -6,18 +6,37 @@
  * @FilePath: /react-ssr-lazy-loading/client/router/Routers.js
  * @Description:
  */
-import React from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 // import loadable from "client/component/Loadable";
 import Loading from "client/component/Loading";
 import lazy from "client/component/lazy";
 import { Router, Switch as Routes, Route } from "./react-router-dom";
+import { matchPath } from "react-router-dom";
 import initState, { InitState } from "client/redux/initComponentState";
 import addRouterApi, { AddRouterApi } from "./addRouterApi";
 import routesComponent, { routesConfigs } from "client/router/routesComponent";
+console.log("routesComponent=====", routesComponent);
 
+// 获取路由
+const getMatch = (routesArray, url) => {
+  for (let router of routesArray) {
+    let $router = matchPath(url, {
+      path: router.path,
+      exact: router.exact
+    });
+
+    if ($router) {
+      return {
+        ...router,
+        ...$router
+      };
+    }
+  }
+};
 const Routers = (props) => {
   const { history } = props;
+  const NextComponentRef = useRef(null);
   return (
     <Router history={history}>
       <Routes>
@@ -34,6 +53,11 @@ const Routers = (props) => {
               path={path}
               component={
                 (props) => {
+                  const { match: { url } = {} } = props;
+                  let isMatchRoute = getMatch(routesComponent, url);
+                  isMatchRoute.Component.SyncComponent().then((c) => {
+                    NextComponentRef.current = c.default;
+                  });
                   return (
                     <InitState {...props}>
                       {(props) => {
@@ -41,9 +65,15 @@ const Routers = (props) => {
                           <AddRouterApi {...props}>
                             {(props) => {
                               return AsynComponent ? (
-                                <AsynComponent {...props} />
+                                <AsynComponent
+                                  {...props}
+                                  NextComponent={NextComponentRef.current}
+                                />
                               ) : (
-                                <SyncComponent {...props} />
+                                <SyncComponent
+                                  {...props}
+                                  NextComponent={NextComponentRef.current}
+                                />
                               );
                             }}
                           </AddRouterApi>

@@ -12,7 +12,7 @@ const lazy = (props) => {
       super(props);
       this.init();
       this.state = {
-        isLoading: !!Loading,
+        isLoading: true,
         Loading,
         Component: NullComponent,
         error: null
@@ -22,10 +22,12 @@ const lazy = (props) => {
     init = () => {
       loader()
         .then((res) => {
+          // setTimeout(() => {
           this.setState({
             Component: res.default,
             isLoading: false
           });
+          // }, 5000);
         })
         .catch((error) => {
           this.setState({
@@ -36,10 +38,25 @@ const lazy = (props) => {
     };
     render() {
       const { Component, error, isLoading } = this.state;
+      const { NextComponent } = this.props;
       return (
         <>
           {isLoading ? (
-            <Loading {...this.props} isLoading={isLoading} error={error} />
+            // {
+            //    NextComponent ? (
+            //   <div>
+            //     <NextComponent
+            //       {...this.props}
+            //       isLoading={isLoading}
+            //       error={error}
+            //     />
+            //   </div>
+            // ) :
+            <NullComponent
+              {...this.props}
+              isLoading={isLoading}
+              error={error}
+            />
           ) : (
             <Component {...this.props} />
           )}
