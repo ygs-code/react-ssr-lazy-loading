@@ -19,7 +19,7 @@ let routesComponentConfig = [
     }),
     level: 2,
     routesConfigPath:
-      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
+      "K:/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
   },
   {
     path: "/marketing",
@@ -35,7 +35,7 @@ let routesComponentConfig = [
     }),
     level: 2,
     routesConfigPath:
-      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
+      "K:/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
   },
   {
     path: "/",
@@ -48,8 +48,7 @@ let routesComponentConfig = [
       // loading: Loading,
     }),
     level: 1,
-    routesConfigPath:
-      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/router/routesConfig.js"
+    routesConfigPath: "K:/react-ssr-lazy-loading/client/router/routesConfig.js"
   },
   {
     path: "/user",
@@ -62,8 +61,7 @@ let routesComponentConfig = [
       // loading: Loading,
     }),
     level: 1,
-    routesConfigPath:
-      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/router/routesConfig.js"
+    routesConfigPath: "K:/react-ssr-lazy-loading/client/router/routesConfig.js"
   }
 ];
 

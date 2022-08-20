@@ -14,7 +14,9 @@ import { mapRedux } from "client/redux";
 import "./index.less";
 
 const Index = (props = {}) => {
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log("props=========", props);
+  }, []);
 
   return (
     <div>

@@ -39,7 +39,7 @@ const Routers = (props) => {
   const NextComponentRef = useRef(null);
   return (
     <Router history={history}>
-      <Routes>
+      <Routes {...props}>
         {routesComponent.map((route) => {
           const {
             path,
@@ -51,39 +51,40 @@ const Routers = (props) => {
               key={path}
               exact={exact}
               path={path}
-              component={
-                (props) => {
-                  const { match: { url } = {} } = props;
-                  let isMatchRoute = getMatch(routesComponent, url);
-                  isMatchRoute.Component.SyncComponent().then((c) => {
-                    NextComponentRef.current = c.default;
-                  });
-                  return (
-                    <InitState {...props}>
-                      {(props) => {
-                        return (
-                          <AddRouterApi {...props}>
-                            {(props) => {
-                              return AsynComponent ? (
-                                <AsynComponent
-                                  {...props}
-                                  NextComponent={NextComponentRef.current}
-                                />
-                              ) : (
-                                <SyncComponent
-                                  {...props}
-                                  NextComponent={NextComponentRef.current}
-                                />
-                              );
-                            }}
-                          </AddRouterApi>
-                        );
-                      }}
-                    </InitState>
-                  );
-                }
-                // initState(addRouterApi(Component))
-              }
+              SyncComponent={SyncComponent}
+              // component={
+              //   (props) => {
+              //     const { match: { url } = {} } = props;
+              //     let isMatchRoute = getMatch(routesComponent, url);
+              //     isMatchRoute.Component.SyncComponent().then((c) => {
+              //       NextComponentRef.current = c.default;
+              //     });
+              //     return (
+              //       <InitState {...props}>
+              //         {(props) => {
+              //           return (
+              //             <AddRouterApi {...props}>
+              //               {(props) => {
+              //                 return AsynComponent ? (
+              //                   <AsynComponent
+              //                     {...props}
+              //                     NextComponent={NextComponentRef.current}
+              //                   />
+              //                 ) : (
+              //                   <SyncComponent
+              //                     {...props}
+              //                     NextComponent={NextComponentRef.current}
+              //                   />
+              //                 );
+              //               }}
+              //             </AddRouterApi>
+              //           );
+              //         }}
+              //       </InitState>
+              //     );
+              //   }
+              //   // initState(addRouterApi(Component))
+              // }
               // render={(props) => {
               //     return (
               //         <InitState {...props}>

@@ -19,7 +19,7 @@ const Index = (props) => {
     location: { pathname } = {},
     pushRoute
   } = props;
-
+  // console.log("props======", props);
   return (
     <div className="navigate-box center-box">
       <Nav fill pills className="navigate">
