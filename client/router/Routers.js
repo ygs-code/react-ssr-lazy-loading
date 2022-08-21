@@ -15,8 +15,6 @@ import { Router, Switch as Routes, Route } from "./react-router-dom";
 import { matchPath } from "react-router-dom";
 import initState, { InitState } from "client/redux/initComponentState";
 import addRouterApi, { AddRouterApi } from "./addRouterApi";
-import routesComponent, { routesConfigs } from "client/router/routesComponent";
-console.log("routesComponent=====", routesComponent);
 
 // 获取路由
 const getMatch = (routesArray, url) => {
@@ -35,23 +33,25 @@ const getMatch = (routesArray, url) => {
   }
 };
 const Routers = (props) => {
-  const { history } = props;
+  const { history, routesComponent = [] } = props;
   const NextComponentRef = useRef(null);
   return (
     <Router history={history}>
       <Routes {...props}>
         {routesComponent.map((route) => {
-          const {
+          let {
             path,
             exact,
-            Component: { AsynComponent, SyncComponent }
+            Component: { SyncComponent }
           } = route;
+
           return (
             <Route
               key={path}
               exact={exact}
               path={path}
               SyncComponent={SyncComponent}
+              AsynComponent={SyncComponent ? null : route.Component}
               // component={
               //   (props) => {
               //     const { match: { url } = {} } = props;

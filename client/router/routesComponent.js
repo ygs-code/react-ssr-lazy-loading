@@ -10,13 +10,13 @@ let routesComponentConfig = [
     exact: false,
     name: "DiscountCoupon",
     entry: "/pages/marketing/pages/DiscountCoupon/index.js",
-    Component: lazy({
-      loader: () =>
+    Component: lazy(
+      () =>
         import(
           /* webpackChunkName:"DiscountCoupon" */ "client/pages/marketing/pages/DiscountCoupon/index.js"
         )
       // loading: Loading,
-    }),
+    ),
     level: 2,
     routesConfigPath:
       "K:/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
@@ -26,13 +26,13 @@ let routesComponentConfig = [
     exact: true,
     name: "marketing",
     entry: "/pages/marketing/index.js",
-    Component: lazy({
-      loader: () =>
+    Component: lazy(
+      () =>
         import(
           /* webpackChunkName:"marketing" */ "client/pages/marketing/index.js"
         )
       // loading: Loading,
-    }),
+    ),
     level: 2,
     routesConfigPath:
       "K:/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
@@ -42,11 +42,10 @@ let routesComponentConfig = [
     exact: true,
     name: "home",
     entry: "/pages/Home/index.js",
-    Component: lazy({
-      loader: () =>
-        import(/* webpackChunkName:"home" */ "client/pages/Home/index.js")
+    Component: lazy(
+      () => import(/* webpackChunkName:"home" */ "client/pages/Home/index.js")
       // loading: Loading,
-    }),
+    ),
     level: 1,
     routesConfigPath: "K:/react-ssr-lazy-loading/client/router/routesConfig.js"
   },
@@ -55,11 +54,10 @@ let routesComponentConfig = [
     exact: false,
     name: "user",
     entry: "/pages/User/index.js",
-    Component: lazy({
-      loader: () =>
-        import(/* webpackChunkName:"user" */ "client/pages/User/index.js")
+    Component: lazy(
+      () => import(/* webpackChunkName:"user" */ "client/pages/User/index.js")
       // loading: Loading,
-    }),
+    ),
     level: 1,
     routesConfigPath: "K:/react-ssr-lazy-loading/client/router/routesConfig.js"
   }

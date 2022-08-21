@@ -30,8 +30,8 @@ const renderApp = () => {
       history,
       context,
       // location,
-      store
-      // routesComponent
+      store,
+      routesComponent
     }),
     document.getElementById("root")
   );

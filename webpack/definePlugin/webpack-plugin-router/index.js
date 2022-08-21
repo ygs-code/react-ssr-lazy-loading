@@ -133,10 +133,10 @@ class WebpackPluginRouter {
                      exact: ${exact ? true : false},
                      name:"${name}",
                      entry:"${entry}",
-                     Component:lazy({
-                          loader: () => import(/* webpackChunkName:"${name}" */ "client${entry}"),
+                     Component:lazy(
+                           () => import(/* webpackChunkName:"${name}" */ "client${entry}")
                           // loading: Loading,
-                      }),
+                      ),
                      level:${level},
                      routesConfigPath:"${routesConfigPath}",
                    },`;

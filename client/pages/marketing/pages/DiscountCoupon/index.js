@@ -9,7 +9,7 @@
 import React from "react";
 import Nav from "client/component/Nav";
 import Head from "client/component/Head";
-
+import { mapRedux } from "client/redux";
 // 2234;
 // 权限跳转登录页面可以在这控制
 const Index = (props = {}) => {
@@ -23,4 +23,4 @@ const Index = (props = {}) => {
   );
 };
 
-export default Index; // mapRedux()(Index);
+export default mapRedux()(Index);

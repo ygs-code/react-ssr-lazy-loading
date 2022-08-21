@@ -97,6 +97,7 @@ class ClientRouter {
           options: stringToObject(htmlWebpackPluginOptions)
         }
       });
+      console.log("renderedHtml=======", renderedHtml);
       ctx.body = renderedHtml;
     }
     next();
@@ -188,10 +189,8 @@ class ClientRouter {
     let context = [];
     let location = ctx.req.url;
 
-    const {
-      Component: { SyncComponent }
-    } = isMatchRoute;
-    const routeComponent = await SyncComponent();
+    const { Component } = isMatchRoute;
+    const routeComponent = await Component();
 
     let rootString = renderToString(
       createApp({
@@ -204,7 +203,7 @@ class ClientRouter {
           {
             ...isMatchRoute,
             Component: {
-              SyncComponent: routeComponent.default
+              SyncComponent: routeComponent
             }
           }
         ]
