@@ -12,9 +12,9 @@ import PropTypes from "prop-types";
 import App from "./App.js";
 import "./App.less";
 
-const {
-  target // 环境参数
-} = process.env; // 环境参数
+// const {
+//   // target // 环境参数
+// } = process.env; // 环境参数
 
 const CreateApp = (props = {}) => {
   // const { modules } = props;

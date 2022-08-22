@@ -13,7 +13,7 @@ import routesComponent, { routesConfigs } from "client/router/routesComponent";
 import { findTreeData, getBaseInitState } from "client/utils";
 import createApp from "client/App";
 import { stringToObject } from "client/utils";
-import otherModules from "./otherModules";
+// import otherModules from "./otherModules";
 import path, { resolve } from "path";
 import fs from "fs";
 import ejs from "ejs";
@@ -21,12 +21,12 @@ import ejs from "ejs";
 const absolutePath = resolve("./");
 let {
   NODE_ENV, // 环境参数
-  target, // 环境参数
+  // target, // 环境参数
   htmlWebpackPluginOptions
 } = process.env; // 环境参数
 
 //    是否是生产环境
-const isEnvProduction = NODE_ENV === "production";
+// const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === "development";
 
@@ -38,7 +38,12 @@ const { dispatch, getState } = store;
 
 // 中间件
 class ClientRouter {
-  constructor(ctx, next, options = {}, compiler) {
+  constructor(
+    ctx,
+    next,
+    options = {}
+    // compiler
+  ) {
     this.context = {
       ctx,
       next
@@ -97,7 +102,7 @@ class ClientRouter {
           options: stringToObject(htmlWebpackPluginOptions)
         }
       });
-      console.log("renderedHtml=======", renderedHtml);
+      // console.log("renderedHtml=======", renderedHtml);
       ctx.body = renderedHtml;
     }
     next();
@@ -202,9 +207,7 @@ class ClientRouter {
         routesComponent: [
           {
             ...isMatchRoute,
-            Component: {
-              SyncComponent: routeComponent
-            }
+            Component: routeComponent
           }
         ]
       })

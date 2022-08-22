@@ -122,11 +122,6 @@ class WebpackPluginRouter {
       }
       // import("client/pages/marketing/pages/DiscountCoupon/index.js")  Loadable${this.firstToUpper(name)}
       code.loadableComponent = `${code.loadableComponent || ""}`
-// // 路由组件引入
-// const Lazy${this.firstToUpper(name)} = lazy({
-//     loader: () => import("client${entry}"),
-//     loading: Loading,
-// }); `;
       code.routesComponentConfig = `${code.routesComponentConfig || ""}
                     {  
                      path: "${path}",
@@ -135,7 +130,6 @@ class WebpackPluginRouter {
                      entry:"${entry}",
                      Component:lazy(
                            () => import(/* webpackChunkName:"${name}" */ "client${entry}")
-                          // loading: Loading,
                       ),
                      level:${level},
                      routesConfigPath:"${routesConfigPath}",
@@ -202,7 +196,6 @@ class WebpackPluginRouter {
     let routesComponentFile = `
 // 按需加载插件
 import lazy from "client/component/lazy";
-import Loading from "client/component/Loading";
 `;
 
     routesComponentFile += importRoutesConfigCode;

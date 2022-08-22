@@ -10,7 +10,7 @@
 import { hydrate, render } from "react-dom";
 import app from "./App/index.js";
 // import Loadable from "client/component/Loadable";
-import lazy, { preloadReady } from "client/component/lazy";
+// import lazy, { preloadReady } from "client/component/lazy";
 import { getHistory } from "client/router/history";
 import store from "client/redux";
 // import { getHistory, history, listen } from   "client/router/history";

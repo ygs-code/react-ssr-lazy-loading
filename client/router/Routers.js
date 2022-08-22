@@ -6,52 +6,33 @@
  * @FilePath: /react-ssr-lazy-loading/client/router/Routers.js
  * @Description:
  */
-import React, { useRef } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 // import loadable from "client/component/Loadable";
 import Loading from "client/component/Loading";
-import lazy from "client/component/lazy";
+// import lazy from "client/component/lazy";
 import { Router, Switch as Routes, Route } from "./react-router-dom";
-import { matchPath } from "react-router-dom";
-import initState, { InitState } from "client/redux/initComponentState";
-import addRouterApi, { AddRouterApi } from "./addRouterApi";
+// import { matchPath } from "react-router-dom";
+// import initState, { InitState } from "client/redux/initComponentState";
+// import addRouterApi, { AddRouterApi } from "./addRouterApi";
 
-// 获取路由
-const getMatch = (routesArray, url) => {
-  for (let router of routesArray) {
-    let $router = matchPath(url, {
-      path: router.path,
-      exact: router.exact
-    });
-
-    if ($router) {
-      return {
-        ...router,
-        ...$router
-      };
-    }
-  }
-};
 const Routers = (props) => {
   const { history, routesComponent = [] } = props;
-  const NextComponentRef = useRef(null);
   return (
     <Router history={history}>
-      <Routes {...props}>
+      <Routes {...props} loading={Loading}>
         {routesComponent.map((route) => {
-          let {
-            path,
-            exact,
-            Component: { SyncComponent }
-          } = route;
+          let { path, exact, Component } = route;
 
           return (
             <Route
               key={path}
               exact={exact}
               path={path}
-              SyncComponent={SyncComponent}
-              AsynComponent={SyncComponent ? null : route.Component}
+              // component={Component}
+              component={() => {
+                return Component;
+              }}
               // component={
               //   (props) => {
               //     const { match: { url } = {} } = props;

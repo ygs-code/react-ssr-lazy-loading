@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+// import React from "react";
 
-const NullComponent = (props) => {
-  return <div></div>;
-};
+// const NullComponent = (props) => {
+//   return <div></div>;
+// };
 
 const lazy = (loader) => {
   lazy.loaderArr = [...lazy.loaderArr, loader];
