@@ -5,7 +5,7 @@ const isValidElement = (object) => {
   return typeof object === "object" && object !== null && object.$$typeof;
 };
 
-const NullLoading = () => {
+const NullComponent = () => {
   return <div></div>;
 };
 class Switch extends Component {
@@ -14,7 +14,7 @@ class Switch extends Component {
     const { loading: Loading, history: { location: { pathname } = {} } = {} } =
       this.props;
     this.state = {
-      AsynComponent: NullLoading || Loading,
+      AsynComponent: NullComponent || Loading,
       pathname,
       match: null,
       isSync: true
