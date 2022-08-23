@@ -564,6 +564,13 @@ If you need other environments, you can add the.env.xxxx file and then run the s
 
 
 
+## thanks
+
+under the  [MIT License](http://mit-license.org/.)
+Authored and maintained by yao guan shou.
+
+
+
   
 
 
@@ -1139,9 +1146,13 @@ function Profile() {
 
 如果你对你有用，请移动你的手指，为我点击starred。谢谢你！  
 
-​	
 
-  
+
+根据[MIT许可证](http://mit-license.org/。) 
+
+作者 姚观寿 维护
+
+
 
 ​	
 
