@@ -196,6 +196,9 @@ class ClientRouter {
 
     const { Component } = isMatchRoute;
     const routeComponent = await Component();
+    console.log("routeComponent=========", routeComponent);
+    console.log("routeComponent.WrappedComponent=========", routeComponent.WrappedComponent);
+    console.log("routeComponent=========", routeComponent.getData);
 
     let rootString = renderToString(
       createApp({

@@ -99,4 +99,8 @@ Index.propTypes = {
   state: PropTypes.object
 };
 
+Index.getData = () => {
+  console.log("data============");
+};
+
 export default mapRedux()(Index);
