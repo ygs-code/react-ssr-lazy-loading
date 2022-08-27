@@ -198,7 +198,7 @@ class ClientRouter {
     const routeComponent = await Component();
     console.log("routeComponent=========", routeComponent);
     console.log("routeComponent.WrappedComponent=========", routeComponent.WrappedComponent);
-    console.log("routeComponent=========", routeComponent.getData);
+    console.log("routeComponent=========", routeComponent.WrappedComponent.getData);
 
     let rootString = renderToString(
       createApp({
