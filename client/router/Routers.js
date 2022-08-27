@@ -11,7 +11,18 @@ import PropTypes from "prop-types";
 // import loadable from "client/component/Loadable";
 import Loading from "client/component/Loading";
 // import lazy from "client/component/lazy";
-import { Router, Switch as Routes, Route } from "./react-router-dom";
+import {
+  //  Router,
+  Switch as Routes
+  // Route
+} from "./react-router-dom";
+
+import {
+  Router,
+  // Switch as Routes,
+  Route
+} from "react-router-dom";
+
 // import { matchPath } from "react-router-dom";
 // import initState, { InitState } from "client/redux/initComponentState";
 // import addRouterApi, { AddRouterApi } from "./addRouterApi";
