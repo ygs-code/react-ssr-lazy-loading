@@ -17,7 +17,7 @@ export {
   // SwitchProps,
   //   Switch,
   // match,
-  matchPath,
+  // matchPath,
   // withRouter,
   // RouterChildContext,
   useHistory,
@@ -28,3 +28,4 @@ export {
 export * from "./Switch";
 export * from "./Router";
 export * from "./withRouter";
+export * from "./matchPath";

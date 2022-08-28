@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import routesComponent, { routesConfigs } from "@/router/routesComponent";
-import { matchPath } from "react-router-dom";
+import { matchPath } from "client/router/react-router-dom";
 import { mapRedux } from "@/redux";
 import { findTreeData, getBaseInitState } from "@/utils";
 

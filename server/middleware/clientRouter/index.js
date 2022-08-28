@@ -7,7 +7,7 @@ import {
 // import { getBundles } from 'react-loadable/webpack';
 import { getBundles } from "react-loadable-ssr-addon";
 import Helmet from "react-helmet";
-import { matchPath } from "react-router-dom";
+import { matchPath } from "client/router/react-router-dom";
 import store from "client/redux";
 import routesComponent, { routesConfigs } from "client/router/routesComponent";
 import { findTreeData, getBaseInitState } from "client/utils";
@@ -112,7 +112,7 @@ class ClientRouter {
           }
         }
       });
-      console.log("renderedHtml====", renderedHtml);
+      // console.log("renderedHtml====", renderedHtml);
       ctx.body = renderedHtml;
     }
     next();
