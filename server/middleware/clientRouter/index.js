@@ -56,6 +56,7 @@ class ClientRouter {
   //      初始化
   async init() {
     const { ctx, next } = this.context;
+
     const modules = new Set();
     let template = fs.readFileSync(
       path.join(
@@ -68,21 +69,26 @@ class ClientRouter {
       "utf-8"
     );
 
-    let isMatchRoute = this.getMatch(routesComponent, ctx.req.url);
+    let isMatchRoute = this.getMatch(
+      routesComponent,
+      ctx.req._parsedUrl.pathname
+    );
 
     if (isMatchRoute) {
+      const { Component } = isMatchRoute;
+      /* eslint-disable   */
+      const routeComponent = await Component();
+      /* eslint-enable   */
+      const { WrappedComponent: { getInitPropsState, getMetaProps } = {} } =
+        routeComponent;
+
       let data = null;
-      let initState = this.findInitData(
-        routesConfigs,
-        isMatchRoute.name,
-        "name"
-      );
 
       await getBaseInitState(dispatch, getState());
 
-      if (initState) {
+      if (getInitPropsState) {
         // 拉去请求或者查询sql等操作
-        data = await initState();
+        data = await getInitPropsState();
         await dispatch[isMatchRoute.name].setInitState({
           initState: data
         });
@@ -94,15 +100,19 @@ class ClientRouter {
         store,
         template,
         isMatchRoute,
-        modules
+        modules,
+        routeComponent
       });
 
       renderedHtml = ejs.render(renderedHtml, {
         htmlWebpackPlugin: {
-          options: stringToObject(htmlWebpackPluginOptions)
+          options: {
+            ...stringToObject(htmlWebpackPluginOptions),
+            ...(getMetaProps ? getMetaProps() : {})
+          }
         }
       });
-      // console.log("renderedHtml=======", renderedHtml);
+      console.log("renderedHtml====", renderedHtml);
       ctx.body = renderedHtml;
     }
     next();
@@ -148,7 +158,17 @@ class ClientRouter {
     return { scripts, styles };
   }
   // 解析html
-  prepHTML(template, { html, head, rootString, scripts, styles, initState }) {
+  prepHTML(
+    template,
+    {
+      html,
+      // head,
+      rootString,
+      scripts,
+      styles,
+      initState
+    }
+  ) {
     template = template.replace("<html", `<html ${html}`);
     template = template.replace("</head>", `${styles}</head>`);
 
@@ -172,6 +192,10 @@ class ClientRouter {
         path: router.path,
         exact: router.exact
       });
+      // console.log("router.path=======", router.path);
+      // console.log("exact=======", router.exact);
+      // console.log("$router=======", $router);
+      // console.log("url=======", url);
 
       if ($router) {
         return {
@@ -182,7 +206,14 @@ class ClientRouter {
     }
   }
   // 创建react文本
-  async makeup({ ctx, store, template, isMatchRoute, modules }) {
+  async makeup({
+    ctx,
+    store,
+    template,
+    isMatchRoute,
+    modules,
+    routeComponent
+  }) {
     let initState = store.getState();
 
     let history = createMemoryHistory({ initialEntries: [ctx.req.url] });
@@ -194,11 +225,18 @@ class ClientRouter {
     let context = [];
     let location = ctx.req.url;
 
-    const { Component } = isMatchRoute;
-    const routeComponent = await Component();
-    console.log("routeComponent=========", routeComponent);
-    console.log("routeComponent.WrappedComponent=========", routeComponent.WrappedComponent);
-    console.log("routeComponent=========", routeComponent.WrappedComponent.getData);
+    // console.log("routeComponent=========", routeComponent);
+    // console.log(
+    //   "routeComponent.WrappedComponent=========",
+    //   routeComponent.WrappedComponent
+    // );
+    // console.log(
+    //   "routeComponent=========",
+    //   routeComponent.WrappedComponent.getData
+    // );
+
+    // getInitPropsState: [Function (anonymous)],
+    // getMetaProps: [Function (anonymous)]
 
     let rootString = renderToString(
       createApp({

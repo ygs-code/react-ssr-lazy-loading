@@ -26,20 +26,19 @@ import { Router, Switch as Routes, Route } from "./react-router-dom";
 const Routers = (props) => {
   const { history, routesComponent = [] } = props;
   return (
-    <Router history={history}>
-      <Routes {...props} loading={Loading}>
+    <Router history={history} loading={Loading}>
+      <Routes>
         {routesComponent.map((route) => {
           let { path, exact, Component } = route;
-
           return (
             <Route
               key={path}
               exact={exact}
               path={path}
-              // component={Component}
-              component={() => {
-                return Component;
-              }}
+              component={Component}
+              // component={() => {
+              //   return Component;
+              // }}
               // component={
               //   (props) => {
               //     const { match: { url } = {} } = props;

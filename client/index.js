@@ -6,30 +6,22 @@
  * @FilePath: /react-ssr-lazy-loading/client/index.js
  * @Description:
  */
-// 18
 import { hydrate, render } from "react-dom";
 import app from "./App/index.js";
-// import Loadable from "client/component/Loadable";
-// import lazy, { preloadReady } from "client/component/lazy";
 import { getHistory } from "client/router/history";
 import store from "client/redux";
-// import { getHistory, history, listen } from   "client/router/history";
 import routesComponent from "client/router/routesComponent";
-// const store = createStore(window);
 
 const renderComponent = module.hot ? render : hydrate;
 const renderApp = () => {
-  // let modules = [];
   const modules = new Set();
   const history = getHistory();
   const context = [];
-  // const location = "/";
   renderComponent(
     app({
       modules,
       history,
       context,
-      // location,
       store,
       routesComponent
     }),

@@ -1,5 +1,19 @@
-import React, { Component, Children } from "react";
-import { matchPath } from "react-router-dom";
+import React, {
+  Component,
+  Children,
+  createContext
+  // createElement
+} from "react";
+import { matchPath } from "react-router";
+import { __RouterContext as RouterContext } from "./Router";
+
+var createNamedContext = function createNamedContext(name) {
+  var context = createContext();
+  context.displayName = name;
+  return context;
+};
+
+const MatchContext = createNamedContext("Router-Match");
 
 const isValidElement = (object) => {
   return typeof object === "object" && object !== null && object.$$typeof;
@@ -11,17 +25,21 @@ const NullComponent = () => {
 class Switch extends Component {
   constructor(props) {
     super(props);
-    const { loading: Loading, history: { location: { pathname } = {} } = {} } =
-      this.props;
     this.state = {
-      AsynComponent: NullComponent || Loading,
-      pathname,
+      AsynComponent: NullComponent,
+      locationKey: "",
       match: null,
       isSync: true
     };
   }
-
-  componentDidMount = () => {};
+  componentDidMount() {
+    let { loading: Loading } = this.context;
+    if (Loading) {
+      this.setState({
+        AsynComponent: Loading
+      });
+    }
+  }
 
   getSyncComponent = (component, callback = () => {}) => {
     if (
@@ -55,6 +73,14 @@ class Switch extends Component {
       Object.prototype.toString.call(component).slice(1, -1) ===
       "object Promise"
     ) {
+      /* eslint-disable   */
+      // component = await new Promise(async (relove, reject) => {
+      //   setTimeout(async () => {
+      //     let data = await component;
+      //     relove(data);
+      //   }, 2000);
+      // });
+      /* eslint-enable   */
       component = await component;
       component = this.resolveComponent(component, callback);
     } else {
@@ -63,70 +89,93 @@ class Switch extends Component {
     return component;
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    const { pathname } = prevState;
-    const { history: { location: { pathname: propsPathname } = {} } = {} } =
-      this.props;
-    if (pathname !== propsPathname) {
-      this.setState({
-        pathname: propsPathname
-      });
-      this.getComponent();
-    }
-  }
   getComponent = () => {
-    const { AsynComponent } = this.state;
-    let { children, history = {} } = this.props;
-    let { location } = history;
-    const { router: { route: { location: routeLocation } = {} } = {} } =
-      this.context || {};
-    location = location || routeLocation;
-    var match = null;
+    const { AsynComponent, locationKey, match } = this.state;
+    let { children } = this.props;
+    let { history = {}, location } = this.context;
+    let { key } = location;
+
+    if (key === locationKey) {
+      return (
+        <MatchContext.Provider
+          value={{
+            history,
+            location,
+            match
+          }}>
+          <AsynComponent match={match} history={history} location={location} />
+        </MatchContext.Provider>
+      );
+    }
+
+    var newMatch = null;
     let SyncComponent = null;
-    Children.forEach(children, (element) => {
-      if (match === null && isValidElement(element)) {
-        const {
+    Children.forEach(children, (el) => {
+      if (newMatch === null) {
+        let {
           path: pathProp,
           exact,
           strict,
           sensitive,
           from,
-          component
-        } = element.props;
-        var path = pathProp || from;
-        match = matchPath(location.pathname, {
+          component,
+          element,
+          render
+        } = el.props;
+        let path = pathProp || from;
+        component = component || element || render;
+        newMatch = matchPath(location.pathname, {
           path: path,
           exact: exact,
           strict: strict,
           sensitive: sensitive
         });
-
-        if (match) {
+        if (newMatch) {
           SyncComponent = this.getSyncComponent(component, (AsynComponent) => {
             this.setState({
               isSync: false,
-              AsynComponent
+              AsynComponent,
+              match: newMatch,
+              locationKey: key
             });
           });
           if (SyncComponent) {
             this.setState({
-              AsynComponent: SyncComponent
+              isSync: true,
+              AsynComponent: SyncComponent,
+              match: newMatch,
+              locationKey: key
             });
           }
         }
       }
     });
     return SyncComponent ? (
-      <SyncComponent match={match} history={history} location={location} />
+      <MatchContext.Provider
+        value={{
+          history,
+          location,
+          match: newMatch
+        }}>
+        <SyncComponent match={newMatch} history={history} location={location} />
+      </MatchContext.Provider>
     ) : (
-      <AsynComponent match={match} history={history} location={location} />
+      <MatchContext.Provider
+        value={{
+          history,
+          location,
+          match: newMatch
+        }}>
+        <AsynComponent match={newMatch} history={history} location={location} />
+      </MatchContext.Provider>
     );
   };
 
   render() {
-    const { AsynComponent, isSync } = this.state;
-    return isSync ? this.getComponent() : <AsynComponent />;
+    return this.getComponent();
   }
 }
 
-export { Switch };
+Switch.contextType = RouterContext;
+
+export { Switch, MatchContext };

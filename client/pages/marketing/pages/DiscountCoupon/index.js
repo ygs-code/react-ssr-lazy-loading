@@ -6,17 +6,20 @@
  * @FilePath: /react-ssr-lazy-loading/client/pages/marketing/pages/DiscountCoupon/index.js
  * @Description:
  */
-import React from "react";
+import React, { useEffect } from "react";
 import Nav from "client/component/Nav";
 import Head from "client/component/Head";
 import { mapRedux } from "client/redux";
 // 2234;
 // 权限跳转登录页面可以在这控制
-const Index = (props = {}) => {
+const Index = () => {
+  useEffect(() => {
+    console.log("DiscountCoupon");
+  }, []);
   return (
     <div>
       <Head />
-      <Nav {...props} />
+      <Nav />
 
       <div className="center-box">当前页面是DiscountCoupon页面</div>
     </div>

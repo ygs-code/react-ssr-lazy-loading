@@ -29,6 +29,18 @@ module.exports = {
     writeToDisk: isSsr || isEnvProduction, // 写入硬盘
     // port: 5000,
     compress:true,  //浏览器请求静态资源时压缩一下，打开浏览器的检查时可以看到bundle.js的content-encoding是gzip，浏览器自动解压
+    proxy: [
+      {
+        context: "/api",
+        target: "http://localhost:3002",
+        changeOrigin: true,
+         secure: false,
+        // pathRewrite: {
+        //   "^/api/v1/common/upload/": "/",
+        // },
+      },
+    ],
+  
   },
   watch: true,
   watchOptions: {

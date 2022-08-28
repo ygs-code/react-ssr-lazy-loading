@@ -309,11 +309,11 @@ Request.baseUrl = baseUrl;
 Request.defaultHeaders = {
   // token: localStorage.getItem("token"),
   // "content-type": "application/x-www-form-urlencoded",  //文件上传
-  "Content-Type": "application/json;charset=utf-8",
-  accept: "application/json, text/plain, */*",
-  "accept-language": "zh-CN,zh;q=0.9",
-  "cache-control": "no-cache",
-  pragma: "no-cache"
+  "Content-Type": "application/json;charset=utf-8"
+  // accept: "application/json, text/plain, */*",
+  // "accept-language": "zh-CN,zh;q=0.9",
+  // "cache-control": "no-cache",
+  // pragma: "no-cache"
 };
 // 错误拦截提示
 Request.error = (errorInfo) => {

@@ -1,6 +1,6 @@
 import FormData from "form-data";
 import fetch from "node-fetch";
-import { CheckDataType } from "../../../utils/CheckDataType";
+import { CheckDataType } from "client/utils/CheckDataType";
 
 class BrowserXHR {
   constructor() {

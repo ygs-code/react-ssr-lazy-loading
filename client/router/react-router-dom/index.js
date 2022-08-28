@@ -1,30 +1,30 @@
-// export * from "react-router-dom";
 export {
   generatePath,
-  PromptProps,
+  // PromptProps,
   Prompt,
-  MemoryRouterProps,
+  // MemoryRouterProps,
   MemoryRouter,
-  RedirectProps,
+  // RedirectProps,
   Redirect,
-  RouteChildrenProps,
-  RouteComponentProps,
-  RouteProps,
+  // RouteChildrenProps,
+  // RouteComponentProps,
+  // RouteProps,
   Route,
-  RouterProps,
-  Router,
-  StaticRouterProps,
+  // RouterProps,
+  // Router,
+  // StaticRouterProps,
   StaticRouter,
-  SwitchProps,
+  // SwitchProps,
   //   Switch,
-  match,
+  // match,
   matchPath,
-  withRouter,
-  RouterChildContext,
+  // withRouter,
+  // RouterChildContext,
   useHistory,
   useLocation,
   useParams,
   useRouteMatch
 } from "react-router-dom";
-
 export * from "./Switch";
+export * from "./Router";
+export * from "./withRouter";

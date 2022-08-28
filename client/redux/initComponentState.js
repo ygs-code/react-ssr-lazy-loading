@@ -8,12 +8,15 @@
  */
 import React from "react";
 import { matchPath } from "react-router-dom";
+import hoistStatics from "hoist-non-react-statics";
 import routesComponent, { routesConfigs } from "client/router/routesComponent";
 import { mapRedux } from "client/redux";
 import { findTreeData, getBaseInitState } from "client/utils";
 
 // 注入initState
 const initState = (Component) => {
+  const displayName =
+    "withRouter(" + (Component.displayName || Component.name) + ")";
   class InitState extends React.Component {
     constructor(props) {
       super(props);
@@ -75,7 +78,10 @@ const initState = (Component) => {
     }
   }
 
-  return mapRedux()(InitState);
+  InitState.displayName = displayName;
+  InitState.WrappedComponent = Component;
+  // return hoistStatics(withRouter(AddRouter), Component);
+  return hoistStatics(mapRedux()(InitState), Component);
 };
 
 @mapRedux()

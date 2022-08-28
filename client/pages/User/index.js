@@ -21,7 +21,7 @@ const Index = (props = {}) => {
   return (
     <div>
       <Head />
-      <Nav {...props} />
+      <Nav />
       <div className="center-box">
         <div>这个是user页面</div>
         <Table

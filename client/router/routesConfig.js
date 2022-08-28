@@ -6,7 +6,6 @@
  * @FilePath: /react-loading-ssr/client/router/routesConfig.js
  * @Description:
  */
-import { getHaoKanVideo } from "../assets/js/request/requestApi";
 // 路由配置
 export default [
   {
@@ -14,26 +13,6 @@ export default [
     exact: true,
     name: "home",
     entry: "/pages/Home/index.js",
-    initState: async (parameter = {}) => {
-      const { page = 1, size = 10 } = parameter;
-      return await getHaoKanVideo({
-        page,
-        size
-      })
-        .then((res) => {
-          const { result: { list = [], total } = {} } = res;
-          return {
-            list: list.map((item) => ({
-              ...item,
-              url: item.userPic
-            })),
-            total
-          };
-        })
-        .catch(() => {
-          // console.log("Error: ", err.message);
-        });
-    },
     level: 1
   },
   {

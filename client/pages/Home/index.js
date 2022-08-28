@@ -13,8 +13,9 @@ import { mapRedux } from "client/redux";
 import Nav from "client/component/Nav";
 import Head from "client/component/Head";
 import LazyLoadingImg from "client/component/LazyLoadingImg";
-import { routesConfigs } from "client/router/routesComponent";
-import { findTreeData } from "client/utils";
+// import { routesConfigs } from "client/router/routesComponent";
+// import { findTreeData } from "client/utils";
+import { getHaoKanVideo } from "client/assets/js/request/requestApi";
 import "./index.less";
 // 权限跳转登录页面可以在这控制
 const Index = (props) => {
@@ -29,14 +30,17 @@ const Index = (props) => {
       "window.__INITIAL_STATE__ =",
       window && window.__INITIAL_STATE__
     );
+    if (!list.length) {
+      getImages();
+    }
   }, []);
 
   // 获取组件初始化数据
-  const findInitData = useCallback(
-    (routesConfigs, value, key) =>
-      (findTreeData(routesConfigs, value, key) || {}).initState,
-    []
-  );
+  // const findInitData = useCallback(
+  //   (routesConfigs, value, key) =>
+  //     (findTreeData(routesConfigs, value, key) || {}).initState,
+  //   []
+  // );
 
   const getImages = useCallback(async () => {
     if (loading) {
@@ -46,7 +50,8 @@ const Index = (props) => {
     /* eslint-disable   */
     page += 1;
     /* eslint-enable   */
-    findInitData(routesConfigs, "home", "name");
+
+    // const initStateFn =findInitData(routesConfigs, "home", "name");
     setPage(page);
     const {
       data: { result: data }
@@ -54,6 +59,12 @@ const Index = (props) => {
       `https://api.apiopen.top/api/getHaoKanVideo?page=${page}&size=10`
     );
 
+    // let $data = await Index.getInitPropsState({
+    //   page,
+    //   size: 10
+    // });
+
+    // console.log("$data=====", $data);
     // let data = await initStateFn({
     //     page,
     //     size: 10,
@@ -99,8 +110,34 @@ Index.propTypes = {
   state: PropTypes.object
 };
 
-Index.getData = () => {
-  console.log("data============");
+Index.getInitPropsState = async (parameter = {}) => {
+  const { page = 1, size = 10 } = parameter;
+
+  return await getHaoKanVideo({
+    page,
+    size
+  })
+    .then((res) => {
+      const { result: { list = [], total } = {} } = res;
+      return {
+        list: list.map((item) => ({
+          ...item,
+          url: item.userPic
+        })),
+        total
+      };
+    })
+    .catch(() => {
+      // console.log("Error: ", err.message);
+    });
+};
+
+Index.getMetaProps = () => {
+  return {
+    title: "首页",
+    keywords: "网站关键词",
+    description: "网站描述"
+  };
 };
 
 export default mapRedux()(Index);

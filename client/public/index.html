@@ -1,23 +1,20 @@
-<!--
- * @Date: 2022-07-13 11:29:00
- * @Author: Yao guan shou
- * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-08-16 19:12:37
- * @FilePath: /react-ssr-lazy-loading/client/public/index.html
- * @Description: 
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <meta name="aplus-waiting" content="MAN">
+  <meta name="spm-id" content="a2e0b">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
-  <meta name="description" content="Web site created using create-react-app" />
+  <meta name="renderer" content="webkit">
+  <meta name="keywords" content="<%= htmlWebpackPlugin.options.keywords %>" />
+  <meta name="description" content="<%= htmlWebpackPlugin.options.description %>" />
   <meta name="referrer" content="no-referrer" />
   <title>
     <%= htmlWebpackPlugin.options.title %>
   </title>
 </head>
+
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root">
@@ -25,7 +22,8 @@
 </body>
 <script>
   //  window.addEventListener('load', function () {
-      window.main()
+  window.main()
   //  })
 </script>
+
 </html>

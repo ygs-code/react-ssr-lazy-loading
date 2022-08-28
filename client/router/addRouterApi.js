@@ -7,11 +7,14 @@
  * @Description:
  */
 import React from "react";
+import hoistStatics from "hoist-non-react-statics";
 import { withRouter } from "./react-router-dom";
 import routePaths from "./routePaths";
 import { historyPush } from "./historyPush";
 
 const addRouterApi = (Component) => {
+  const displayName =
+    "withRouter(" + (Component.displayName || Component.name) + ")";
   class AddRouter extends React.Component {
     constructor(props) {
       super(props);
@@ -20,7 +23,6 @@ const addRouterApi = (Component) => {
     pushRoute = (parameter) => {
       const { name, url, path } = parameter;
       const { history } = this.props;
-
       historyPush({
         history,
         ...parameter,
@@ -39,7 +41,9 @@ const addRouterApi = (Component) => {
     }
   }
 
-  return withRouter(AddRouter);
+  AddRouter.displayName = displayName;
+  AddRouter.WrappedComponent = Component;
+  return hoistStatics(withRouter(AddRouter), Component);
 };
 
 @withRouter
