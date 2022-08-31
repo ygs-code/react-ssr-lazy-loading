@@ -112,7 +112,7 @@ class ClientRouter {
           }
         }
       });
-      // console.log("renderedHtml====", renderedHtml);
+
       ctx.body = renderedHtml;
     }
     next();
@@ -192,10 +192,6 @@ class ClientRouter {
         path: router.path,
         exact: router.exact
       });
-      // console.log("router.path=======", router.path);
-      // console.log("exact=======", router.exact);
-      // console.log("$router=======", $router);
-      // console.log("url=======", url);
 
       if ($router) {
         return {
@@ -224,19 +220,6 @@ class ClientRouter {
 
     let context = [];
     let location = ctx.req.url;
-
-    // console.log("routeComponent=========", routeComponent);
-    // console.log(
-    //   "routeComponent.WrappedComponent=========",
-    //   routeComponent.WrappedComponent
-    // );
-    // console.log(
-    //   "routeComponent=========",
-    //   routeComponent.WrappedComponent.getData
-    // );
-
-    // getInitPropsState: [Function (anonymous)],
-    // getMetaProps: [Function (anonymous)]
 
     let rootString = renderToString(
       createApp({

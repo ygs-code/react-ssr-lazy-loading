@@ -7,26 +7,60 @@
  * @Description:
  */
 import { hydrate, render } from "react-dom";
+import { createRoot, hydrateRoot } from "react-dom/client";
 import app from "./App/index.js";
 import { getHistory } from "client/router/history";
 import store from "client/redux";
 import routesComponent from "client/router/routesComponent";
 
-const renderComponent = module.hot ? render : hydrate;
+let {
+  NODE_ENV, // 环境参数
+  target // 环境参数
+} = process.env; // 环境参数
+// 是否是ssr
+const isSsr = target === "ssr";
+//    是否是生产环境
+const isEnvProduction = NODE_ENV === "production";
+//   是否是测试开发环境
+const isEnvDevelopment = NODE_ENV === "development";
+
+// const renderComponent = module.hot ? render : hydrate;
 const renderApp = () => {
   const modules = new Set();
   const history = getHistory();
   const context = [];
-  renderComponent(
-    app({
-      modules,
-      history,
-      context,
-      store,
-      routesComponent
-    }),
-    document.getElementById("root")
-  );
+  if (module.hot) {
+    createRoot(document.getElementById("root")).render(
+      app({
+        modules,
+        history,
+        context,
+        store,
+        routesComponent
+      })
+    );
+  } else {
+    hydrateRoot(
+      document.getElementById("root"),
+      app({
+        modules,
+        history,
+        context,
+        store,
+        routesComponent
+      })
+    );
+  }
+  // renderComponent(
+  //   app({
+  //     modules,
+  //     history,
+  //     context,
+  //     store,
+  //     routesComponent
+  //   }),
+  //   document.getElementById("root")
+  // );
 };
 
 // node 服务器中只能在这个页面使用window
