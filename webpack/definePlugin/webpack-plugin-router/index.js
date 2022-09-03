@@ -195,7 +195,7 @@ class WebpackPluginRouter {
 
     let routesComponentFile = `
 // 按需加载插件
-import lazy from "client/component/lazy";
+import { lazy } from "client/router/react-router-dom";
 `;
 
     routesComponentFile += importRoutesConfigCode;

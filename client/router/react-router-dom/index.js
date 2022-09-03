@@ -1,25 +1,9 @@
 export {
   generatePath,
-  // PromptProps,
   Prompt,
-  // MemoryRouterProps,
   MemoryRouter,
-  // RedirectProps,
   Redirect,
-  // RouteChildrenProps,
-  // RouteComponentProps,
-  // RouteProps,
-  Route,
-  // RouterProps,
-  // Router,
-  // StaticRouterProps,
   StaticRouter,
-  // SwitchProps,
-  //   Switch,
-  // match,
-  // matchPath,
-  // withRouter,
-  // RouterChildContext,
   useHistory,
   useLocation,
   useParams,
@@ -27,5 +11,7 @@ export {
 } from "react-router-dom";
 export * from "./Switch";
 export * from "./Router";
+export * from "./Route";
 export * from "./withRouter";
 export * from "./matchPath";
+export * from "./lazy";

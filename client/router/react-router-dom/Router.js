@@ -1,10 +1,11 @@
-import React, {
+import {
   createContext,
   Component,
-  //   createElement,
+  createElement,
   Children
+  // isValidElement
 } from "react";
-
+import PropTypes from "prop-types";
 var createNamedContext = function createNamedContext(name) {
   var context = createContext();
   context.displayName = name;
@@ -17,15 +18,17 @@ class Router extends Component {
   constructor(props) {
     super(props);
 
+    const { history, staticContext } = this.props;
+
     this.state = {
-      location: props.history.location
+      location: history.location
     };
 
     this._isMounted = false;
     this._pendingLocation = null;
 
-    if (!props.staticContext) {
-      this.unlisten = props.history.listen(({ location }) => {
+    if (!staticContext) {
+      this.unlisten = history.listen(({ location }) => {
         this._pendingLocation = location;
       });
     }
@@ -74,28 +77,37 @@ class Router extends Component {
   render() {
     const { children, staticContext, loading, history } = this.props;
     const { location } = this.state;
-    return (
-      <RouterContext.Provider
-        value={{
-          history,
-          location,
-          staticContext,
-          loading
-        }}>
-        {children ? Children.only(children) : null}
-      </RouterContext.Provider>
-    );
     /* eslint-disable   */
-    // return createElement(context.Provider, {
-    //   value: {
-    //     history: this.props.history,
-    //     location: this.state.location,
-    //     staticContext: this.props.staticContext
-    //   },
-    //   children: this.props.children || null
-    // });
-    /* eslint-enable   */
+    return createElement(RouterContext.Provider, {
+      value: {
+        history,
+        location,
+        staticContext,
+        loading
+      },
+      children: children ? Children.only(children) : null
+    });
+    /* eslint-enable */
   }
 }
+
+Router.propTypes = {
+  history: PropTypes.object.isRequired,
+  staticContext: PropTypes.object,
+  loading: function (props, propName, componentName) {
+    if (!props[propName]) {
+      return new Error(
+        `In component ${componentName} props ${propName} type is invalid -- expected a ${propName} is component`
+      );
+    }
+    try {
+      createElement(props[propName]);
+    } catch (error) {
+      return new Error(
+        `In component ${componentName} props ${propName} type is invalid -- expected a ${propName} is component`
+      );
+    }
+  }
+};
 
 export { Router, RouterContext as __RouterContext };

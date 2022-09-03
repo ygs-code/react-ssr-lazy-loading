@@ -4,9 +4,10 @@ import React, {
   createContext
   // createElement
 } from "react";
-import { matchPath } from "client/router/react-router-dom";
+import invariant from "tiny-invariant";
+import { matchPath } from "./matchPath";
 import { __RouterContext as RouterContext } from "./Router";
-
+import PropTypes from "prop-types";
 var createNamedContext = function createNamedContext(name) {
   var context = createContext();
   context.displayName = name;
@@ -20,7 +21,7 @@ const isValidElement = (object) => {
 };
 
 const NullComponent = () => {
-  return <div></div>;
+  return <div> </div>;
 };
 class Switch extends Component {
   constructor(props) {
@@ -92,8 +93,14 @@ class Switch extends Component {
   getComponent = () => {
     const { AsynComponent, locationKey, match } = this.state;
     let { children } = this.props;
-    let { history = {}, location } = this.context;
+    let { history = {}, location = {} } = this.context;
     let { key } = location;
+
+    if (!Object.keys(this.context).length) {
+      throw new Error(
+        invariant(false, "You should not use <Switch/> outside a <Router>")
+      );
+    }
 
     if (key === locationKey) {
       return (
@@ -103,7 +110,12 @@ class Switch extends Component {
             location,
             match
           }}>
-          <AsynComponent match={match} history={history} location={location} />
+          <AsynComponent
+            match={match}
+            history={history}
+            location={location}
+            exact={match.isExact}
+          />
         </MatchContext.Provider>
       );
     }
@@ -150,6 +162,7 @@ class Switch extends Component {
         }
       }
     });
+
     return SyncComponent ? (
       <MatchContext.Provider
         value={{
@@ -157,7 +170,12 @@ class Switch extends Component {
           location,
           match: newMatch
         }}>
-        <SyncComponent match={newMatch} history={history} location={location} />
+        <SyncComponent
+          match={newMatch}
+          history={history}
+          location={location}
+          exact={newMatch.isExact}
+        />
       </MatchContext.Provider>
     ) : (
       <MatchContext.Provider
@@ -166,7 +184,12 @@ class Switch extends Component {
           location,
           match: newMatch
         }}>
-        <AsynComponent match={newMatch} history={history} location={location} />
+        <AsynComponent
+          match={newMatch}
+          history={history}
+          location={location}
+          exact={newMatch.isExact}
+        />
       </MatchContext.Provider>
     );
   };
@@ -177,5 +200,11 @@ class Switch extends Component {
 }
 
 Switch.contextType = RouterContext;
+Switch.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired
+};
 
 export { Switch, MatchContext };

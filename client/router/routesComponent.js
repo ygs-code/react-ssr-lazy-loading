@@ -1,5 +1,5 @@
 // 按需加载插件
-import lazy from "client/component/lazy";
+import { lazy } from "client/router/react-router-dom";
 import pagesMarketingRouterRoutesconfig from "client/pages/marketing/router/routesConfig.js";
 import routerRoutesconfig from "client/router/routesConfig.js";
 

@@ -8,9 +8,7 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-// import loadable from "client/component/Loadable";
 import Loading from "client/component/Loading";
-// import lazy from "client/component/lazy";
 import { Router, Switch as Routes, Route } from "./react-router-dom";
 
 const Routers = (props) => {
@@ -19,69 +17,14 @@ const Routers = (props) => {
     <Router history={history} loading={Loading}>
       <Routes>
         {routesComponent.map((route) => {
-          let { path, exact, Component } = route;
+          let { path, exact = true, Component } = route;
           return (
-            <Route
-              key={path}
-              exact={exact}
-              path={path}
-              component={Component}
-              // component={() => {
-              //   return Component;
-              // }}
-              // component={
-              //   (props) => {
-              //     const { match: { url } = {} } = props;
-              //     let isMatchRoute = getMatch(routesComponent, url);
-              //     isMatchRoute.Component.SyncComponent().then((c) => {
-              //       NextComponentRef.current = c.default;
-              //     });
-              //     return (
-              //       <InitState {...props}>
-              //         {(props) => {
-              //           return (
-              //             <AddRouterApi {...props}>
-              //               {(props) => {
-              //                 return AsynComponent ? (
-              //                   <AsynComponent
-              //                     {...props}
-              //                     NextComponent={NextComponentRef.current}
-              //                   />
-              //                 ) : (
-              //                   <SyncComponent
-              //                     {...props}
-              //                     NextComponent={NextComponentRef.current}
-              //                   />
-              //                 );
-              //               }}
-              //             </AddRouterApi>
-              //           );
-              //         }}
-              //       </InitState>
-              //     );
-              //   }
-              //   // initState(addRouterApi(Component))
-              // }
-              // render={(props) => {
-              //     return (
-              //         <InitState {...props}>
-              //             {(props) => {
-              //                 // const AddRouterApi =
-              //                 //     addRouterApi(Component);
-              //                 return <Component {...props} />;
-              //             }}
-              //         </InitState>
-              //     );
-              // }}
-              // loader={async () => {
-              //     console.log('loader================loader');
-              // }}
-            />
+            <Route key={path} exact={exact} path={path} component={Component} />
           );
         })}
         <Route
           path="*"
-          element={
+          component={
             <div style={{ padding: "1rem" }}>
               <p>There s nothing here!</p>
             </div>
@@ -93,7 +36,7 @@ const Routers = (props) => {
 };
 
 Routers.propTypes = {
-  history: PropTypes.object,
+  history: PropTypes.object.isRequired,
   dispatch: PropTypes.func,
   state: PropTypes.object,
   context: PropTypes.object

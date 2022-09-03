@@ -1,15 +1,10 @@
 import { renderToString } from "react-dom/server";
-import {
-  createMemoryHistory,
-  createBrowserHistory,
-  createHashHistory
-} from "history";
-// import { getBundles } from 'react-loadable/webpack';
 import { getBundles } from "react-loadable-ssr-addon";
 import Helmet from "react-helmet";
 import { matchPath } from "client/router/react-router-dom";
 import store from "client/redux";
-import routesComponent, { routesConfigs } from "client/router/routesComponent";
+import routesComponent from "client/router/routesComponent";
+import { getMemoryHistory } from "client/router/history";
 import { findTreeData, getBaseInitState } from "client/utils";
 import createApp from "client/App";
 import { stringToObject } from "client/utils";
@@ -88,10 +83,10 @@ class ClientRouter {
 
       if (getInitPropsState) {
         // 拉去请求或者查询sql等操作
-        data = await getInitPropsState();
-        await dispatch[isMatchRoute.name].setInitState({
-          initState: data
-        });
+        // data = await getInitPropsState();
+        // await dispatch[isMatchRoute.name].setInitState({
+        //   initState: data
+        // });
       }
 
       // 渲染html
@@ -212,7 +207,7 @@ class ClientRouter {
   }) {
     let initState = store.getState();
 
-    let history = createMemoryHistory({ initialEntries: [ctx.req.url] });
+    let history = getMemoryHistory({ initialEntries: [ctx.req.url] });
     history = {
       ...history,
       ...isMatchRoute

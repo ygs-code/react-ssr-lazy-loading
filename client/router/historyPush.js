@@ -1,4 +1,3 @@
-// import { history as getHistory } from './history';
 // 获取url地址
 const getNewUrlArr = (parameter) => {
   const newUrlArr = [];
@@ -160,10 +159,3 @@ export const openWindow = (url, data, options = {}) => {
     isOpenWin
   });
 };
-
-// navigateTo, redirectTo, openWindow, transformRoutePaths, getRoutePaths, historyPush
-// import { navigateTo, redirectTo, openWindow, transformRoutePaths, getRoutePaths, historyPush} from 'toss.utils';
-// import getHistory from 'toss.history';
-// export {
-//      redirectTo, openWindow, historyPush,redirectTo
-// }

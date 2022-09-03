@@ -25,25 +25,20 @@ const compilePath = (path, options) => {
   return result;
 };
 
-export const matchPath = (pathname, options) => {
-  if (options === void 0) {
-    options = {};
-  }
-
+export const matchPath = (pathname, options = {}) => {
   if (typeof options === "string" || Array.isArray(options)) {
     options = {
       path: options
     };
   }
 
-  var _options = options,
-    path = _options.path,
-    _options$exact = _options.exact,
-    exact = _options$exact === void 0 ? false : _options$exact,
-    _options$strict = _options.strict,
-    strict = _options$strict === void 0 ? false : _options$strict,
-    _options$sensitive = _options.sensitive,
-    sensitive = _options$sensitive === void 0 ? false : _options$sensitive;
+  const {
+    path = false,
+    exact = false,
+    strict = false,
+    sensitive = false
+  } = options;
+
   var paths = [].concat(path);
   return paths.reduce(function (matched, path) {
     if (!path && path !== "") {
@@ -53,13 +48,11 @@ export const matchPath = (pathname, options) => {
       return matched;
     }
 
-    var _compilePath = compilePath(path, {
-        end: exact,
-        strict: strict,
-        sensitive: sensitive
-      }),
-      regexp = _compilePath.regexp,
-      keys = _compilePath.keys;
+    var { regexp, keys } = compilePath(path, {
+      end: exact,
+      strict: strict,
+      sensitive: sensitive
+    });
 
     var match = regexp.exec(pathname);
     if (!match) {
