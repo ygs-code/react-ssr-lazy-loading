@@ -7,7 +7,7 @@
  * @Description:
  */
 import React from "react";
-import { matchPath } from "client/router/react-router-dom";
+import { matchPath } from "react-lazy-router-dom";
 import hoistStatics from "hoist-non-react-statics";
 import routesComponent, { routesConfigs } from "client/router/routesComponent";
 import { mapRedux } from "client/redux";

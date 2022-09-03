@@ -1,7 +1,7 @@
 import { renderToString } from "react-dom/server";
 import { getBundles } from "react-loadable-ssr-addon";
 import Helmet from "react-helmet";
-import { matchPath } from "client/router/react-router-dom";
+import { matchPath } from "react-lazy-router-dom";
 import store from "client/redux";
 import routesComponent from "client/router/routesComponent";
 import { getMemoryHistory } from "client/router/history";
@@ -83,10 +83,10 @@ class ClientRouter {
 
       if (getInitPropsState) {
         // 拉去请求或者查询sql等操作
-        // data = await getInitPropsState();
-        // await dispatch[isMatchRoute.name].setInitState({
-        //   initState: data
-        // });
+        data = await getInitPropsState();
+        await dispatch[isMatchRoute.name].setInitState({
+          initState: data
+        });
       }
 
       // 渲染html
@@ -107,7 +107,6 @@ class ClientRouter {
           }
         }
       });
-
       ctx.body = renderedHtml;
     }
     next();
