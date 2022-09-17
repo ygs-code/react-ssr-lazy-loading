@@ -8,7 +8,7 @@ import ReactLoadableSSRAddon from "react-loadable-ssr-addon";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import koaProxy from "koa2-proxy-middleware";
 import bodyparser from "koa-bodyparser";
-// import koaConnectHistoryApiFallback from "koa2-connect-history-api-fallback";
+import historyApiFallback from "koa-history-api-fallback";
 // import connectHistoryApiFallback from "connect-history-api-fallback";
 import { compiler, config } from "@/webpack";
 
@@ -65,16 +65,15 @@ class WebpackHot {
     this.addMiddleware();
   }
   addMiddleware() {
-    // dev服务器
-    this.addWebpackDevMiddleware();
-    // 开启代理
-    this.setProxyMiddleware();
     // handle fallback for HTML5 history API
     // 通过指定的索引页面中间件代理请求，用于单页应用程序，利用HTML5 History API。
     // 这个插件是用来解决单页面应用，点击刷新按钮和通过其他search值定位页面的404错误
-    // this.setConnectHistoryApiFallback();
+    this.setConnectHistoryApiFallback();
+    // 开启代理
+    this.setProxyMiddleware();
+    // dev服务器
+    this.addWebpackDevMiddleware();
 
-    // this.addWebpackHotMiddleware();
     if (isSsr) {
       this.addWebpackHotServerMiddleware();
     }
@@ -86,9 +85,9 @@ class WebpackHot {
     this.app.use(
       _this.koaDevware(
         webpackDevMiddleware(_this.compiler, {
-          ...devServer,
+          ...devServer
           // noInfo: true,
-          serverSideRender: true // 是否是服务器渲染
+          // serverSideRender: true // 是否是服务器渲染
 
           // //设置允许跨域
           // headers: () => {
@@ -108,14 +107,6 @@ class WebpackHot {
     );
   }
 
-  addWebpackHotMiddleware() {
-    const _this = this;
-    this.app.use(
-      webpackHotMiddleware(
-        _this.compiler.compilers.find((compiler) => compiler.name === "client")
-      )
-    );
-  }
   // 代理服务器
   setProxyMiddleware() {
     // proxy: { // 配置代理（只在本地开发有效，上线无效）
@@ -234,22 +225,9 @@ class WebpackHot {
     );
   }
 
-  // setConnectHistoryApiFallback() {
-  //   const historyMiddleware = connectHistoryApiFallback({
-  //     verbose: true,
-  //     rewrites: [
-  //       {
-  //         from: /^\/lvchao\/view\/*/,
-  //         // to: function({ parsedUrl, match, req }) {
-  //         //   return '/static/index.html'
-  //         // },
-  //         to: "/dist/client/index.html"
-  //       }
-  //     ]
-  //   });
-
-  //   this.app.use(historyMiddleware);
-  // }
+  setConnectHistoryApiFallback() {
+    this.app.use(historyApiFallback());
+  }
 
   addWebpackHotServerMiddleware() {
     const _this = this;

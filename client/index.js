@@ -12,10 +12,27 @@ import app from "./App/index.js";
 import { getBrowserHistory } from "client/router/history";
 import store from "client/redux";
 import routesComponent from "client/router/routesComponent";
+
+// 如果是开发环境 先拷贝 服务器文件到 dist
+let {
+  NODE_ENV, // 环境参数
+  target, // 环境参数
+  htmlWebpackPluginOptions = "",
+  port
+} = process.env; // 环境参数
+
+const isSsr = target === "ssr";
+//    是否是生产环境
+const isEnvProduction = NODE_ENV === "production";
+//   是否是测试开发环境
+const isEnvDevelopment = NODE_ENV === "development";
+
 const renderApp = () => {
   const history = getBrowserHistory();
-  if (module.hot) {
-    createRoot(document.getElementById("root")).render(
+
+  if (isSsr && !module.hot) {
+    hydrateRoot(
+      document.getElementById("root"),
       app({
         history,
         store,
@@ -23,8 +40,7 @@ const renderApp = () => {
       })
     );
   } else {
-    hydrateRoot(
-      document.getElementById("root"),
+    createRoot(document.getElementById("root")).render(
       app({
         history,
         store,

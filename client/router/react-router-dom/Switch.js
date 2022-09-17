@@ -162,7 +162,6 @@ class Switch extends Component {
         }
       }
     });
-
     return SyncComponent ? (
       <MatchContext.Provider
         value={{
@@ -174,7 +173,7 @@ class Switch extends Component {
           match={newMatch}
           history={history}
           location={location}
-          exact={newMatch.isExact}
+          exact={newMatch?.isExact}
         />
       </MatchContext.Provider>
     ) : (
@@ -188,7 +187,7 @@ class Switch extends Component {
           match={newMatch}
           history={history}
           location={location}
-          exact={newMatch.isExact}
+          exact={newMatch?.isExact}
         />
       </MatchContext.Provider>
     );
