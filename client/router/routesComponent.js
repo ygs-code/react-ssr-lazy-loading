@@ -16,7 +16,7 @@ let routesComponentConfig = [
     ),
     level: 2,
     routesConfigPath:
-      "K:/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
+      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
   },
   {
     path: "/marketing",
@@ -30,7 +30,7 @@ let routesComponentConfig = [
     ),
     level: 2,
     routesConfigPath:
-      "K:/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
+      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
   },
   {
     path: "/",
@@ -41,7 +41,8 @@ let routesComponentConfig = [
       import(/* webpackChunkName:"home" */ "client/pages/Home/index.js")
     ),
     level: 1,
-    routesConfigPath: "K:/react-ssr-lazy-loading/client/router/routesConfig.js"
+    routesConfigPath:
+      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/router/routesConfig.js"
   },
   {
     path: "/user",
@@ -52,7 +53,8 @@ let routesComponentConfig = [
       import(/* webpackChunkName:"user" */ "client/pages/User/index.js")
     ),
     level: 1,
-    routesConfigPath: "K:/react-ssr-lazy-loading/client/router/routesConfig.js"
+    routesConfigPath:
+      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/router/routesConfig.js"
   }
 ];
 

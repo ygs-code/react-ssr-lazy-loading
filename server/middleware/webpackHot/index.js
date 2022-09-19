@@ -11,6 +11,7 @@ import bodyparser from "koa-bodyparser";
 import historyApiFallback from "koa-history-api-fallback";
 // import connectHistoryApiFallback from "connect-history-api-fallback";
 import { compiler, config } from "@/webpack";
+import { writeFile } from "@/webpack/utils";
 
 let {
   NODE_ENV, // 环境参数
@@ -37,7 +38,8 @@ class WebpackHot {
         item.apply = function apply(compiler) {
           const PLUGIN_NAME = "ReactLoadableSSRAddon";
           // 写入文件
-          fs.writeFileSync(this.options.filename, "{}");
+          writeFile(this.options.filename, "{}");
+          // fs.writeFileSync(this.options.filename, "{}");
           compiler.hooks.emit.tapAsync(PLUGIN_NAME, this.handleEmit.bind(this));
         };
         item.writeAssetsFile = function () {
@@ -65,10 +67,13 @@ class WebpackHot {
     this.addMiddleware();
   }
   addMiddleware() {
-    // handle fallback for HTML5 history API
-    // 通过指定的索引页面中间件代理请求，用于单页应用程序，利用HTML5 History API。
-    // 这个插件是用来解决单页面应用，点击刷新按钮和通过其他search值定位页面的404错误
-    this.setConnectHistoryApiFallback();
+    if (!isSsr) {
+      // handle fallback for HTML5 history API
+      // 通过指定的索引页面中间件代理请求，用于单页应用程序，利用HTML5 History API。
+      // 这个插件是用来解决单页面应用，点击刷新按钮和通过其他search值定位页面的404错误
+      this.setConnectHistoryApiFallback();
+    }
+
     // 开启代理
     this.setProxyMiddleware();
     // dev服务器

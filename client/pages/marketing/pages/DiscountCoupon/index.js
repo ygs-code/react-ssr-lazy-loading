@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import Nav from "client/component/Nav";
 import Head from "client/component/Head";
 import { mapRedux } from "client/redux";
-const Index = (props) => {
-  console.log("props========", props);
+const Index = () => {
   useEffect(() => {
     console.log("DiscountCoupon");
   }, []);

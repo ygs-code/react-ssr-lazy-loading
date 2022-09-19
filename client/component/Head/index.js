@@ -6,16 +6,22 @@
  * @FilePath: /react-ssr-lazy-loading/client/component/Head/index.js
  * @Description:
  */
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { mapRedux } from "client/redux";
 import "./index.less";
 
 const Index = (props) => {
-  const { state: { baseInitState: { weather = {} } = {} } = {} } = props;
+  const {
+    state: { baseInitState: { weather = {} } = {} } = {},
+    dispatch: { baseInitState: { getWeatherAsync } = {} } = {}
+  } = props;
+  useEffect(() => {
+    if (Object.keys(weather).length === 0) {
+      getWeatherAsync();
+    }
+  }, []);
   const { city, province, casts = [] } = weather;
-
-  // const menu = useMemo(() => {}, []);
   return (
     <div className=" head-box">
       <div className="head center-box">

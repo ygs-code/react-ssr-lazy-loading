@@ -8,6 +8,10 @@ yarn.lock
 
 yarn
 
+
+client/router/routesComponent.js
+
+
 .idea/
 
 dist/

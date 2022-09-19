@@ -15,17 +15,10 @@ import routesComponent from "client/router/routesComponent";
 
 // 如果是开发环境 先拷贝 服务器文件到 dist
 let {
-  NODE_ENV, // 环境参数
-  target, // 环境参数
-  htmlWebpackPluginOptions = "",
-  port
+  target // 环境参数
 } = process.env; // 环境参数
 
 const isSsr = target === "ssr";
-//    是否是生产环境
-const isEnvProduction = NODE_ENV === "production";
-//   是否是测试开发环境
-const isEnvDevelopment = NODE_ENV === "development";
 
 const renderApp = () => {
   const history = getBrowserHistory();

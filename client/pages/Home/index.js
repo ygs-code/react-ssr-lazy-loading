@@ -31,7 +31,7 @@ const Index = (props) => {
       window && window.__INITIAL_STATE__
     );
     if (!list.length) {
-      getImages();
+      getImages(page - 1);
     }
   }, []);
 
@@ -42,48 +42,51 @@ const Index = (props) => {
   //   []
   // );
 
-  const getImages = useCallback(async () => {
-    if (loading) {
-      return false;
-    }
-    setLoading(true);
-    /* eslint-disable   */
-    page += 1;
-    /* eslint-enable   */
-
-    // const initStateFn =findInitData(routesConfigs, "home", "name");
-    setPage(page);
-    const {
-      data: { result: data }
-    } = await axios(
-      `https://api.apiopen.top/api/getHaoKanVideo?page=${page}&size=10`
-    );
-
-    // let $data = await Index.getInitPropsState({
-    //   page,
-    //   size: 10
-    // });
-
-    // console.log("$data=====", $data);
-    // let data = await initStateFn({
-    //     page,
-    //     size: 10,
-    // });
-    const { total, list: resList = [] } = data;
-    setInitState({
-      initState: {
-        total,
-        list: list.concat(
-          resList.map((item) => ({
-            ...item,
-            url: item.userPic
-          }))
-        )
+  const getImages = useCallback(
+    async (page) => {
+      if (loading) {
+        return false;
       }
-    });
+      setLoading(true);
+      /* eslint-disable   */
+    page += 1;
+      /* eslint-enable   */
 
-    setLoading(false);
-  }, [page, list, loading]);
+      // const initStateFn =findInitData(routesConfigs, "home", "name");
+      setPage(page);
+      const {
+        data: { result: data }
+      } = await axios(
+        `https://api.apiopen.top/api/getHaoKanVideo?page=${page}&size=10`
+      );
+
+      // let $data = await Index.getInitPropsState({
+      //   page,
+      //   size: 10
+      // });
+
+      // console.log("$data=====", $data);
+      // let data = await initStateFn({
+      //     page,
+      //     size: 10,
+      // });
+      const { total, list: resList = [] } = data;
+      setInitState({
+        initState: {
+          total,
+          list: list.concat(
+            resList.map((item) => ({
+              ...item,
+              url: item.userPic
+            }))
+          )
+        }
+      });
+
+      setLoading(false);
+    },
+    [page, list, loading]
+  );
 
   return (
     <div className="home">
@@ -93,7 +96,7 @@ const Index = (props) => {
         <LazyLoadingImg
           list={list}
           callback={() => {
-            getImages();
+            getImages(page);
           }}
         />
       </div>
