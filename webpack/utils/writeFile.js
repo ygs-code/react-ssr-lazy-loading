@@ -61,7 +61,7 @@ class WriteFile {
     let paths = path.filter((item) => item !== "");
     let $path = "";
     for (let [index, path] of paths.entries()) {
-      $path += "/" + path;
+      $path +=index==0? path:"/" + path;
       let stat = this.statSync($path);
       // 最后一个
       if (index == paths.length - 1) {
