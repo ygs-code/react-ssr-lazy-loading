@@ -58,7 +58,7 @@ module.exports = {
     //   "react",
     //   "react-dom",
     //   "redux",
-    //   "react-router-dom"
+    //   "react-lazy-router-dom"
     //   // 'react-loadable',
     //   // 'react-redux',
     //   // 'react-router-redux',

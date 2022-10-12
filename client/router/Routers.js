@@ -9,7 +9,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Loading from "client/component/Loading";
-import { Router, Switch as Routes, Route } from "./react-router-dom";
+import { Router, Switch as Routes, Route } from "react-lazy-router-dom";
 
 const Routers = (props) => {
   const { history, routesComponent = [] } = props;
