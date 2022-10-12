@@ -93,7 +93,7 @@ http.createServer((req, res) => {
             'Content-Type': 'text/html' 
         });
         // 渲染文件 index.ejs
-        ejs.renderFile('./views/index.ejs', {
+        ejs.renderFile('./views/index.html', {
             title: 'react ssr', 
             data: '首页'}, 
             (err, data) => {
@@ -119,45 +119,83 @@ http.createServer((req, res) => {
 
 我们来看看react ssr例子
 
-```
-const  React  = require('react');
+app.js
 
+```
+//node ssr
+import ejs from "ejs";
+import http from "http";
+import React from "react";
 import { renderToString } from "react-dom/server";
 
-const http = require('http');
+const renderHtml = (domHtml) => {
+  return `
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="aplus-waiting" content="MAN">
+    <meta name="spm-id" content="a2e0b">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="renderer" content="webkit">
+    <meta name="keywords" content="<%= keywords %>" />
+    <meta name="description" content="<%= description %>" />
+    <meta name="referrer" content="no-referrer" />
+    <title>
+      <%= title %>
+    </title>
+  </head>
+  
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+      ${domHtml}
+    </div>
+  </body>
+  <script src="/static/js/build.js"></script>
+  
+  </html>>
 
-//组件
-class Index extends React.Component{
-    constructor(props){
-        super(props);
-    }
-
-    render(){
-        return <h1>{this.props.data.title}</h1>
-    }
-}
-
+    `;
+};
 //模拟数据的获取
 const fetch = function () {
-    return {
-        title:'react ssr',
-        data:[]
-    }
+  return {
+    title: "react ssr",
+    data: []
+  };
+};
+//组件
+class Index extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return <h1>{this.props.data.title}</h1>;
+  }
 }
 
-//服务
-http.createServer((req, res) => {
-    if (req.url === '/') {
-        res.writeHead(200, {
-            'Content-Type': 'text/html'
-        });
-
-        const data = fetch();
-
-        const html = renderToString(<Index data={data}/>);
-        res.end(html);
+http
+  .createServer((req, res) => {
+    if (req.url === "/") {
+      res.writeHead(200, {
+        "Content-Type": "text/html"
+      });
+      const data = fetch();
+      // 渲染文件 index.ejs
+      let html = ejs.render(renderHtml(renderToString(<Index data={data} />)), {
+        title: "react ssr",
+        data: "首页",
+        keywords: "网站关键词",
+        description: "网站描述"
+      });
+      res.end(html);
     }
-}).listen(8080);
+  })
+  .listen(8080);
+
 
 ```
 
@@ -168,20 +206,544 @@ http.createServer((req, res) => {
 运行脚本指令
 
 ```
-npx babel script.js --out-file script-compiled.js --presets=@babel/preset-react
+npx babel-node -r @babel/register  app.js 
+```
+
+
+
+## 引出问题
+
+在上面非常简单的就是实现了 react ssr ,把jsx作为模板引擎，  那我们如何构建企业级的ssr构架呢？
+
+所以这里我们就用node Koa框架。上面例子只是一个简单的例子，我们知道一个大型项目有很多页面和组件，我们如果是单纯的用node 路由，然后每次通过客户端访问路由 通过访问地址 而引用不同的组件，这种方式叫做后端静态路由。
+
+比如例子：
+
+```
+import Koa  from 'koa' 
+import Router  from 'koa-router' 
+import ejs from "ejs";
+import http from "http";
+import React from "react";
+import { renderToString } from "react-dom/server";
+
+import Index from "./Index";
+import News from "./News";
+import User from "./User";
+
+const app = new Koa();
+const router = new Router();
+
+
+const renderHtml = (domHtml) => {
+  return `
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="aplus-waiting" content="MAN">
+    <meta name="spm-id" content="a2e0b">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="renderer" content="webkit">
+    <meta name="keywords" content="<%= keywords %>" />
+    <meta name="description" content="<%= description %>" />
+    <meta name="referrer" content="no-referrer" />
+    <title>
+      <%= title %>
+    </title>
+  </head>
+  
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+      ${domHtml}
+    </div>
+  </body>
+  <script src="/static/js/build.js"></script>
+  
+  </html>>
+
+    `;
+};
+
+//模拟数据的获取
+const fetch = function () {
+  return {
+    title: "react ssr",
+    data: []
+  };
+};
+
+router.get('/',async (ctx) => {
+  ctx.body = ejs.render(renderHtml(renderToString(<Index data={data} />)), {
+        title: "首页",
+        data: "首页",
+        keywords: "网站关键词",
+        description: "网站描述"
+      });
+})
+
+router.get('/news',async (ctx) => {
+  ctx.type = 'html';
+    ctx.body = ejs.render(renderHtml(renderToString(<News data={data} />)), {
+        title: "新闻",
+        data: "新闻",
+        keywords: "网站关键词",
+        description: "网站描述"
+      });
+})
+
+router.get('/news',async (ctx) => {
+  ctx.type = 'html';
+    ctx.body = ejs.render(renderHtml(renderToString(<User data={data} />)), {
+        title: "react ssr",
+        data: "用户",
+        keywords: "网站关键词",
+        description: "网站描述"
+      });
+})
+
+// 调用router.routes()来组装匹配好的路由，返回一个合并好的中间件
+app.use(router.routes());
+/*
+  调用router.allowedMethods()获得一个中间件，当发送了不符合的请求时，
+  会返回 `405 Method Not Allowed` 或 `501 Not Implemented`
+*/ 
+app.use(router.allowedMethods({ 
+    // throw: true, // 抛出错误，代替设置响应头状态
+    // notImplemented: () => '不支持当前请求所需要的功能',
+    // methodNotAllowed: () => '不支持的请求方式'
+}));
+
+app.listen(3000,()=>{ 
+  console.log('应用已经启动，http://localhost:3000'); 
+});
+
+```
+
+如果这样方式放在以前ssr是没有问题的，但是放在现在你会发现react和一些基础库在每个页面都要重新加载一次，比如一个框架基础代码是2-5m 如果你用antd这种ui框架的话基本可以达到这个大小。每个页面都会加载2-5m的基础代码是不是很浪费资源。有MVVM框架了 有SPA体验，我们是不是可以利用SPA体验去实现只加载一次基础框架呢？这个方式我想了好久，并且参考了网上很多例子，发现是可以做到的。然后我看了底层react路由代码，和node的路由方式，熟悉他们方式之后我自己写了一个ssr  路由 懒加载，实现了路由 同构，并且可以异步代码加载和按需切分代码。具体实现请看我的github仓库 https://github.com/qq281113270/react-lazy-router-dom
+
+###  路由同构
+
+ 那么接下来的例子我会拿一个框架去讲请看我的github仓库https://github.com/qq281113270/react-ssr-lazy-loading
+
+ 双端使用同一套路由规则，node server 通过req url path 进行组件的查找，得到需要渲染的组件。
+
+首先 在client/router/routesComponent.js我们会配置好路由路劲和组件地址还有一些路由信息
+
+```
+
+let routesComponentConfig = [
+  {
+    path: "/marketing/discount-coupon",
+    exact: false,
+    name: "DiscountCoupon",
+    entry: "/pages/marketing/pages/DiscountCoupon/index.js",
+    Component: lazy(() =>
+      import(
+        /* webpackChunkName:"DiscountCoupon" */ "client/pages/marketing/pages/DiscountCoupon/index.js"
+      )
+    ),
+    level: 2,
+    routesConfigPath:
+      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
+  },
+  {
+    path: "/marketing",
+    exact: true,
+    name: "marketing",
+    entry: "/pages/marketing/index.js",
+    Component: lazy(() =>
+      import(
+        /* webpackChunkName:"marketing" */ "client/pages/marketing/index.js"
+      )
+    ),
+    level: 2,
+    routesConfigPath:
+      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
+  },
+  {
+    path: "/",
+    exact: true,
+    name: "home",
+    entry: "/pages/Home/index.js",
+    Component: lazy(() =>
+      import(/* webpackChunkName:"home" */ "client/pages/Home/index.js")
+    ),
+    level: 1,
+    routesConfigPath:
+      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/router/routesConfig.js"
+  },
+  {
+    path: "/user",
+    exact: false,
+    name: "user",
+    entry: "/pages/User/index.js",
+    Component: lazy(() =>
+      import(/* webpackChunkName:"user" */ "client/pages/User/index.js")
+    ),
+    level: 1,
+    routesConfigPath:
+      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/router/routesConfig.js"
+  }
+];
+```
+
+<img src="./1.jpg" />
+
+
+
+上面方式是这样子，每次切换路由都会走node server路由，而且每次都会重新加载基础代码。
+
+
+
+如果我们利用node server 路由+react 路由是可以解决每次都会重新加载基础代码的问题。就是第一次加载时候走node server路由，而第二次加载时候走react  history路由。所以我们的在react代码最外层需要加一个路由组件
+
+```
+/*
+ * @Date: 2022-08-11 09:41:40
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-16 19:13:35
+ * @FilePath: /react-ssr-lazy-loading/client/router/Routers.js
+ * @Description:
+ */
+import React from "react";
+import PropTypes from "prop-types";
+import Loading from "client/component/Loading";
+import { Router, Switch as Routes, Route } from "react-lazy-router-dom";
+
+const Routers = (props) => {
+  const { history, routesComponent = [] } = props;
+  return (
+    <Router history={history} loading={Loading}>
+      <Routes>
+        {routesComponent.map((route) => {
+          let { path, exact = true, Component } = route;
+          return (
+            <Route key={path} exact={exact} path={path} component={Component} />
+          );
+        })}
+        <Route
+          path="*"
+          component={
+            <div style={{ padding: "1rem" }}>
+              <p>There s nothing here!</p>
+            </div>
+          }
+        />
+      </Routes>
+    </Router>
+  );
+};
+
+Routers.propTypes = {
+  history: PropTypes.object.isRequired,
+  dispatch: PropTypes.func,
+  state: PropTypes.object,
+  context: PropTypes.object
+};
+export default Routers;
+
+```
+
+
+
+client/App.js
+
+```
+/*
+ * @Date: 2022-08-05 09:22:30
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-16 19:07:47
+ * @FilePath: /react-ssr-lazy-loading/client/App/App.js
+ * @Description:
+ */
+import React from "react";
+import { Provider } from "react-redux";
+import Routers from "client/router";
+// import { stringToObject } from "client/utils";
+import "./App.less";
+import "client/assets/css/base.less";
+import "bootstrap/dist/css/bootstrap.css";
+
+// let {
+//   NODE_ENV, // 环境参数
+//   target, // 环境参数
+//   htmlWebpackPluginOptions = ""
+// } = process.env; // 环境参数
+const App = (props) => {
+  const { history, store, routesComponent } = props;
+  return (
+    <Provider store={store}>
+      <Routers history={history} routesComponent={routesComponent} />
+    </Provider>
+  );
+};
+// App.propTypes = {
+//     location: PropTypes.string,
+//     store: PropTypes.object,
+//     history: PropTypes.object,
+//     dispatch: PropTypes.func,
+//     state: PropTypes.object,
+// };
+
+export default App;
+
 ```
 
 
 
 
 
- 
+server/middleware/clientRouter/index.js
 
+```
+import createApp from "client/App";
+  // ...省略代码
+    let rootString = renderToString(
+      createApp({
+        store,
+        context,
+        history,
+        modules,
+        location,
+        routesComponent: [
+          {
+            ...isMatchRoute,
+            Component: routeComponent
+          }
+        ]
+      })
+    );
+  // ...省略代码
 
+```
 
+<img src="./2.jpg" />
 
+这样方式就能实现server和client 路由同构问题。
 
+#### 路由按需加载代码切分
 
+我们知道react在client中代码切分用的是React.lazy。官方说React.lazy不支持服务端渲染。所以我们不能用这个。后面我看到有第三方插件React Loadable ，但是我在使用的时候发现这个插件有两个问题，第一个问题就是加载延迟问题，在我每次切换组件的时候都能看到 loading 闪烁效果。第二个问题是在第一次访问页面的时候走的路由也是异步的，这样的方式是不利于seo搜索引擎优化。我是我们想要的是第一次访问请求路由应该是走同步，以为server是不支持异步加载，而代码切分需要异步，如果不是异步webpack打包的时候会把整个项目打包在一起，这样就会让我们的JavaScript脚本变得很大，如果项目很大就会产生 5-10m代码。这样不是我们想要的效果，最终我自己看了react 官方路由和React Loadable 思想写了一个 可以兼容 ssr和client的路由 具体看我的github仓库 https://github.com/qq281113270/react-lazy-router-dom。
+
+这里个库大概功能就是，在第一次访问server的时候 组件是同步的，这样在react-lazy-router-dom就直接渲染出来，如果是异步的将会放在一个状态中，等待异步加载完组件在展现。 大概思想是通过递归和 Promise 方式加载 直至获取到组件。
+
+```
+ getSyncComponent = (component, callback = () => {}) => {
+    if (
+      Object.prototype.toString.call(component).slice(1, -1) === "object Object"
+    ) {
+      if (isValidElement(component)) {
+        return component;
+      } else if (component.__esModule) {
+        component = this.getSyncComponent(component.default, callback);
+      }
+    } else if (
+      Object.prototype.toString.call(component).slice(1, -1) ===
+      "object Function"
+    ) {
+      component = component(this.props);
+      component = this.getSyncComponent(component, callback);
+    } else if (
+      Object.prototype.toString.call(component).slice(1, -1) ===
+      "object Promise"
+    ) {
+      this.resolveComponent(component, callback).then((AsynComponent) => {
+        callback(AsynComponent);
+      });
+      return null;
+    }
+    return component;
+  };
+
+  resolveComponent = async (component, callback = () => {}) => {
+    if (
+      Object.prototype.toString.call(component).slice(1, -1) ===
+      "object Promise"
+    ) {
+      /* eslint-disable   */
+      // component = await new Promise(async (relove, reject) => {
+      //   setTimeout(async () => {
+      //     let data = await component;
+      //     relove(data);
+      //   }, 2000);
+      // });
+      /* eslint-enable   */
+      component = await component;
+      component = this.resolveComponent(component, callback);
+    } else {
+      component = this.getSyncComponent(component, callback);
+    }
+    return component;
+  };
+
+```
+
+## 数据同构（预取同构）
+
+数据预取同构，解决双端如何使用同一套数据请求方法来进行数据请求。
+
+先说下流程，在查找到要渲染的组件后，需要预先得到此组件所需要的数据，然后将数据传递给组件后，再进行组件的渲染。
+
+我们可以通过给组件定义静态方法来处理，组件内定义异步数据请求的方法也合情合理，同时声明为静态（static），在 server 端和组件内都也可以直接通过组件（function） 来进行访问。
+
+比如 Index.getInitPropsState
+
+/client/pages/Home/index.js组件
+
+```
+/*
+ * @Date: 2022-08-05 09:22:30
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-15 18:35:56
+ * @FilePath: /react-ssr-lazy-loading/client/pages/Home/index.js
+ * @Description:
+ */
+import React, { useState, useCallback, useEffect } from "react";
+import axios from "axios";
+import PropTypes from "prop-types";
+import { mapRedux } from "client/redux";
+import Nav from "client/component/Nav";
+import Head from "client/component/Head";
+import LazyLoadingImg from "client/component/LazyLoadingImg";
+// import { routesConfigs } from "client/router/routesComponent";
+// import { findTreeData } from "client/utils";
+import { getHaoKanVideo } from "client/assets/js/request/requestApi";
+import "./index.less";
+// 权限跳转登录页面可以在这控制
+const Index = (props) => {
+  let [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const {
+    dispatch: { home: { setInitState = () => {} } = {} } = {},
+    state: { home: { initState: { list = [] } = {} } = {} } = {}
+  } = props;
+  useEffect(() => {
+    console.log(
+      "window.__INITIAL_STATE__ =",
+      window && window.__INITIAL_STATE__
+    );
+    if (!list.length) {
+      getImages(page - 1);
+    }
+  }, []);
+
+  // 获取组件初始化数据
+  // const findInitData = useCallback(
+  //   (routesConfigs, value, key) =>
+  //     (findTreeData(routesConfigs, value, key) || {}).initState,
+  //   []
+  // );
+
+  const getImages = useCallback(
+    async (page) => {
+      if (loading) {
+        return false;
+      }
+      setLoading(true);
+      /* eslint-disable   */
+    page += 1;
+      /* eslint-enable   */
+
+      // const initStateFn =findInitData(routesConfigs, "home", "name");
+      setPage(page);
+      const {
+        data: { result: data }
+      } = await Index.getInitPropsState({
+       page,
+        size: 10
+      });
+
+      // console.log("$data=====", $data);
+      // let data = await initStateFn({
+      //     page,
+      //     size: 10,
+      // });
+      const { total, list: resList = [] } = data;
+      setInitState({
+        initState: {
+          total,
+          list: list.concat(
+            resList.map((item) => ({
+              ...item,
+              url: item.userPic
+            }))
+          )
+        }
+      });
+
+      setLoading(false);
+    },
+    [page, list, loading]
+  );
+
+  return (
+    <div className="home">
+      <Head />
+      <Nav />
+      <div className="center-box">
+        <LazyLoadingImg
+          list={list}
+          callback={() => {
+            getImages(page);
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+Index.propTypes = {
+  location: PropTypes.object,
+  store: PropTypes.object,
+  context: PropTypes.object,
+  history: PropTypes.object,
+  dispatch: PropTypes.func,
+  state: PropTypes.object
+};
+
+Index.getInitPropsState = async (parameter = {}) => {
+  const { page = 1, size = 10 } = parameter;
+
+  return await getHaoKanVideo({
+    page,
+    size
+  })
+    .then((res) => {
+      const { result: { list = [], total } = {} } = res;
+      return {
+        list: list.map((item) => ({
+          ...item,
+          url: item.userPic
+        })),
+        total
+      };
+    })
+    .catch(() => {
+      // console.log("Error: ", err.message);
+    });
+};
+
+Index.getMetaProps = () => {
+  return {
+    title: "首页",
+    keywords: "网站关键词",
+    description: "网站描述"
+  };
+};
+
+export default mapRedux()(Index);
+
+```
+
+ 把数据请求方法挂载在Index.getInitPropsState 静态中这么做主要是为了后端server 可以拿到该方法，可以去调用他。
+
+### 数据注水
 
 
 
