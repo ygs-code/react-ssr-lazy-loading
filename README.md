@@ -129,7 +129,7 @@ npm  run  start:server
 │   │   ├── history.js
 │   │   ├── historyPush.js
 │   │   ├── index.js
-│   │   ├── react-router-dom
+│   │   ├── react-lazy-router-dom
 │   │   ├── routePaths.js
 │   │   ├── routesComponent.js
 │   │   └── routesConfig.js
@@ -707,7 +707,7 @@ npm  run  start:server
 │   │   ├── history.js
 │   │   ├── historyPush.js
 │   │   ├── index.js
-│   │   ├── react-router-dom
+│   │   ├── react-lazy-router-dom
 │   │   ├── routePaths.js
 │   │   ├── routesComponent.js
 │   │   └── routesConfig.js
