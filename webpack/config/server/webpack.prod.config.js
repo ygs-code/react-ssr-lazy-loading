@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -27,5 +28,7 @@ module.exports = {
   module: {
     rules: []
   },
-  plugins: []
+  plugins: [
+    new CleanWebpackPlugin(),
+  ]
 };
