@@ -90,7 +90,7 @@ class ClientRouter {
       }
 
       // 渲染html
-      let renderedHtml = await this.makeup({
+      let renderedHtml = await this.reactToHtml({
         ctx,
         store,
         template,
@@ -151,8 +151,8 @@ class ClientRouter {
 
     return { scripts, styles };
   }
-  // 解析html
-  prepHTML(
+  // 拼装html页面
+  assemblyHTML(
     template,
     {
       html,
@@ -195,8 +195,8 @@ class ClientRouter {
       }
     }
   }
-  // 创建react文本
-  async makeup({
+  // 创建react转换成HTMl 
+  async reactToHtml({
     ctx,
     store,
     template,
@@ -206,6 +206,7 @@ class ClientRouter {
   }) {
     let initState = store.getState();
 
+    // 路由注入到react中
     let history = getMemoryHistory({ initialEntries: [ctx.req.url] });
     history = {
       ...history,
@@ -222,6 +223,7 @@ class ClientRouter {
         history,
         modules,
         location,
+        // 同步路由配置
         routesComponent: [
           {
             ...isMatchRoute,
@@ -233,7 +235,7 @@ class ClientRouter {
     let { scripts, styles } = await this.createTags({ modules, isMatchRoute });
 
     const helmet = Helmet.renderStatic();
-    let renderedHtml = this.prepHTML(template, {
+    let renderedHtml = this.assemblyHTML(template, {
       html: helmet.htmlAttributes.toString(),
       head:
         helmet.title.toString() +

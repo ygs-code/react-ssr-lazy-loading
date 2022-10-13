@@ -1,6 +1,16 @@
-# React SSR 服务端渲染和同构原理
+# React SSR 同构服务端渲染构架搭建
 
-**CSR**与**SSR**概念与区别。
+讲师：姚观寿
+
+SSR渲染有哪些优点？
+
+* 更友好的的首页加载访问速度，无论你是访问网站首页还是第一次访问其他页面他的速度是比传统的SCR快很多。
+  * 因为减少了HTTP请求次数所以他比传统的CSR访问速度更快。
+*  更友好的搜索引擎排名。
+  * 传统的CSR渲染搜索引擎爬取到信息是空白页面或者模板指令，不利于解析。
+  * SSR搜索引擎爬取到的是网站内容，这样搜索引擎更好的了解你的网站，如果你网站注重排名我觉得你更应该使用它
+
+## **CSR**与**SSR**概念与区别。
 
 ## CSR：Client Side Rendering
 
@@ -340,6 +350,7 @@ let routesComponentConfig = [
     exact: false,
     name: "DiscountCoupon",
     entry: "/pages/marketing/pages/DiscountCoupon/index.js",
+    // 异步加载组件
     Component: lazy(() =>
       import(
         /* webpackChunkName:"DiscountCoupon" */ "client/pages/marketing/pages/DiscountCoupon/index.js"
@@ -583,6 +594,430 @@ import createApp from "client/App";
 
 ```
 
+而在client 我们使用的是异步加载组件
+
+```
+  import { lazy } from "react-lazy-router-dom";
+  
+  {
+    path: "/marketing/discount-coupon",
+    exact: false,
+    name: "DiscountCoupon",
+    entry: "/pages/marketing/pages/DiscountCoupon/index.js",
+    Component: lazy(() =>
+      import(
+        /* webpackChunkName:"DiscountCoupon" */ "client/pages/marketing/pages/DiscountCoupon/index.js"
+      )
+    ),
+    level: 2,
+    routesConfigPath:
+      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
+  },
+```
+
+
+
+异步加载引用组件，这样就可以实现代码按需加载和代码切分功能。
+
+ client/router/react-lazy-router-dom/lazy.js
+
+```
+const lazy = (loader) => {
+  lazy.loaderArr = [...lazy.loaderArr, loader];
+  return () => {
+    return loader()
+      .then((res) => {
+        return res.default;
+      })
+      .catch((e) => {
+        throw new Error(e);
+      });
+  };
+};
+lazy.loaderArr = [];
+
+const preloadReady = (onSuccess = () => {}, onError = () => {}) => {
+  const promiseArr = [];
+  for (let item of lazy.loaderArr) {
+    promiseArr.push(item());
+  }
+
+  return Promise.all(promiseArr)
+    .then(() => {
+      onSuccess();
+    })
+    .catch((error) => {
+      // console.log("error:", error);
+      onError(error);
+      throw new Error(error);
+    });
+};
+
+export { preloadReady };
+export { lazy };
+export default lazy;
+
+```
+
+
+
+
+
+### 动态编译路由
+
+在项目中 client/router/routesComponent.js 是通过 client/router/routesConfig.js 配置经过webpack编译动态生成的，这样方式大大减少了配置路由的复杂度，我们通过webpack插件然后通过读写文件把文件动态加载生成出来，这样方式也有利于项目的构建微服务切分。
+
+webpack/definePlugin/webpack-plugin-router/index.js
+
+```
+
+const fs = require("fs");
+const path = require("path");
+const _ = require("lodash");
+const { readFile } = require("../../utils");
+const dataDiff = require("./diff");
+const chalk = require("chalk");
+// https://juejin.cn/post/6844903991508205576
+class WebpackPluginRouter {
+  constructor(options) {
+    this.options = options;
+    this.routesConfigs = [];
+    this.startTime = null;
+    this.timer = null;
+    this.writeFile();
+  }
+
+  // 节流函数
+  throttle(time, callback = () => {}) {
+    let nowTime = new Date().getTime();
+    if (!this.startTime || nowTime - this.startTime > time) {
+      this.startTime = nowTime;
+      if (callback && callback instanceof Function) {
+        callback();
+      }
+    }
+  }
+
+  firstToUpper(str) {
+    return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
+  }
+
+  mapRoutesConfig(
+    config,
+    routesConfigPath,
+    code = {},
+    compilation,
+    cacheNames,
+    cachePaths,
+    parentPath = ""
+  ) {
+    for (let item of config) {
+      let { path, name, entry, exact, children = [], level = 1 } = item;
+      path = parentPath ? parentPath + path : path;
+      let errorMessage = "";
+      if (cacheNames.has(name)) {
+        const { routesConfigPath: cacheRoutesConfigPath } =
+          cacheNames.get(name);
+        errorMessage = `[webpack-plugin-router]
+ 路由name: ${name} 命名重名冲突，请重新修改 路由name: ${name} 
+   in ${cacheRoutesConfigPath}
+   in ${routesConfigPath}
+ ✖ 1 problem (1 error, 0 warnings)
+`;
+        if (
+          compilation &&
+          compilation.errors &&
+          compilation.errors instanceof Array
+        ) {
+          compilation.errors.push(errorMessage);
+          // console.error(chalk.red(errorMessage));
+          // process.exit(1);
+          // throw chalk.red(errorMessage);
+        } else {
+          // console.error(chalk.red(errorMessage));
+          // process.exit(1);
+          // throw chalk.red(errorMessage);
+        }
+        code.compilationErrors.push(errorMessage);
+      }
+
+      if (cachePaths.has(path)) {
+        const { routesConfigPath: cacheRoutesConfigPath } =
+          cachePaths.get(path);
+        errorMessage = `[webpack-plugin-router]
+ 路由path: ${path} 命名重名冲突，请重新修改 路由path: ${path} 
+   in ${cacheRoutesConfigPath}
+   in ${routesConfigPath}  
+ ✖ 1 problem (1 error, 0 warnings)                     
+`;
+        if (
+          compilation &&
+          compilation.errors &&
+          compilation.errors instanceof Array
+        ) {
+          compilation.errors.push(errorMessage);
+          // console.error(chalk.red(errorMessage));
+          // process.exit(1);
+          // throw chalk.red(errorMessage);
+        } else {
+          // console.error(chalk.red(errorMessage));
+          // process.exit(1);
+          // throw chalk.red(errorMessage);
+        }
+        code.compilationErrors.push(errorMessage);
+      }
+
+      cacheNames.set(name, {
+        path: path,
+        name: name,
+        routesConfigPath: routesConfigPath
+      });
+      cachePaths.set(path, {
+        path: path,
+        name: name,
+        routesConfigPath: routesConfigPath
+      });
+      if (children && children.length) {
+        const { routesComponentConfig, loadableComponent, routePaths } =
+          this.mapRoutesConfig(
+            children,
+            routesConfigPath,
+            code,
+            compilation,
+            cacheNames,
+            cachePaths,
+            path
+          );
+        code.loadableComponent = loadableComponent;
+        code.routesComponentConfig = routesComponentConfig;
+        code.routePaths = routePaths;
+      }
+      // import("client/pages/marketing/pages/DiscountCoupon/index.js")  Loadable${this.firstToUpper(name)}
+      code.loadableComponent = `${code.loadableComponent || ""}`
+      code.routesComponentConfig = `${code.routesComponentConfig || ""}
+                    {  
+                     path: "${path}",
+                     exact: ${exact ? true : false},
+                     name:"${name}",
+                     entry:"${entry}",
+                     Component:lazy(
+                           () => import(/* webpackChunkName:"${name}" */ "client${entry}")
+                      ),
+                     level:${level},
+                     routesConfigPath:"${routesConfigPath}",
+                   },`;
+
+      code.routePaths = `${code.routePaths || ""}
+  ${name}:"${path}",`;
+    }
+    return code;
+  }
+  getDynamicCode(routesConfig, compilation) {
+    let cacheNames = new Map();
+    let cachePaths = new Map();
+
+    const code = {
+      routesComponentConfig: "",
+      loadableComponent: "",
+      importRoutesConfigCode: "",
+      exportRoutesConfigCode: "",
+      routePaths: "",
+      compilationErrors: []
+    };
+    for (let item of routesConfig) {
+      let { path, config = [] } = item;
+      let routesConfigPath = path;
+      path = path.split(/\/client\//g)[1];
+      let fileName = path.split(/\//g);
+      fileName = fileName
+        .map((item, index) => {
+          return index == 0 ? item : this.firstToUpper(item);
+        })
+        .join("");
+      fileName = fileName.replace(/\.js$/g, "");
+      code.exportRoutesConfigCode += `
+  ...${fileName},`;
+      code.importRoutesConfigCode += `import ${fileName} from "client/${path}";\n`;
+
+      const { routesComponentConfig, loadableComponent, routePaths } =
+        this.mapRoutesConfig(
+          config,
+          routesConfigPath,
+          code,
+          compilation,
+          cacheNames,
+          cachePaths
+        );
+      code.loadableComponent = loadableComponent;
+      code.routesComponentConfig = routesComponentConfig;
+      code.routePaths = routePaths;
+    }
+
+    return code;
+  }
+  getCode(routesConfigs, compilation) {
+    const {
+      routesComponentConfig = "",
+      loadableComponent = "",
+      importRoutesConfigCode = "",
+      routePaths = "",
+      compilationErrors = [],
+      exportRoutesConfigCode = ""
+    } = this.getDynamicCode(routesConfigs, compilation);
+
+    let routesComponentFile = `
+// 按需加载插件
+import { lazy } from "react-lazy-router-dom";
+`;
+
+    routesComponentFile += importRoutesConfigCode;
+
+    routesComponentFile += loadableComponent;
+
+    routesComponentFile += `
+let routesComponentConfig=[`;
+
+    routesComponentFile += routesComponentConfig;
+    routesComponentFile += `
+    ]`;
+
+    routesComponentFile += `
+
+export const routesConfigs = [${exportRoutesConfigCode}
+];     
+
+export default routesComponentConfig;
+        `;
+
+    let routePathsFile = `export default {${routePaths}
+ }
+    `;
+    return {
+      routesComponentFile,
+      routePathsFile,
+      compilationErrors
+    };
+  }
+
+  writeFile(compilation) {
+    const {
+      entry,
+      aggregateTimeout,
+      output: { routesComponent, routePaths },
+      watch = []
+    } = this.options;
+
+    this.throttle(aggregateTimeout, () => {
+      let routesConfigs = [];
+      readFile(entry, (value) => {
+        const { path, filename } = value;
+        watch.includes();
+        if (watch.includes(filename)) {
+          const content = require(path).default;
+          routesConfigs.push({
+            path,
+            config: content
+          });
+          delete require.cache[require.resolve(path)];
+        }
+      });
+
+      if (!dataDiff(routesConfigs, this.routesConfigs)) {
+        this.routesConfigs = _.cloneDeep(routesConfigs);
+        const { routesComponentFile, routePathsFile, compilationErrors } =
+          this.getCode(routesConfigs, compilation);
+        if (compilationErrors.length) {
+          return false;
+        }
+        fs.writeFileSync(
+          path.join(process.cwd(), routesComponent),
+          routesComponentFile
+        );
+        fs.writeFileSync(path.join(process.cwd(), routePaths), routePathsFile);
+      }
+    });
+  }
+  compilerFile(compilation) {
+    const {
+      entry,
+      aggregateTimeout,
+      output: { routesComponent, routePaths },
+      watch = []
+    } = this.options;
+
+    let routesConfigs = [];
+    readFile(entry, (value) => {
+      const { path, filename } = value;
+      if (filename === "routesConfig.js") {
+        const content = require(path).default;
+        routesConfigs.push({
+          path,
+          config: content
+        });
+        delete require.cache[require.resolve(path)];
+      }
+    });
+
+    this.routesConfigs = _.cloneDeep(routesConfigs);
+    const { routesComponentFile, routePathsFile } = this.getCode(
+      routesConfigs,
+      compilation
+    );
+  }
+  //   做兼容
+  hook(compiler, hookName, pluginName, fn) {
+    if (arguments.length === 3) {
+      fn = pluginName;
+      pluginName = hookName;
+    }
+    if (compiler.hooks) {
+      compiler.hooks[hookName].tap(pluginName, fn);
+    } else {
+      compiler.plugin(pluginName, fn);
+    }
+  }
+
+  apply(compiler) {
+    // webpack  处理webpack选项的条目配置后调用。 只编译一次
+    // this.hook(compiler, "entryOption", () => {
+    // this.compilerFile(compiler);
+    // });
+    this.hook(compiler, "watchRun", (compilation) => {
+      this.writeFile(compilation);
+    });
+
+    compiler.hooks.emit.tapAsync(
+      "WebpackPluginRouter",
+      (compilation, callback) => {
+        this.compilerFile(compilation);
+        callback();
+      }
+    );
+
+    // compiler.plugin("make", (compilation, callback) => {
+    //     this.compilerFile(compilation);
+    //     callback();
+    // });
+    // this.hook(compiler, "done", (stats) => {
+    //     if (stats.compilation.errors && stats.compilation.errors.length) {
+    //         console.log(
+    //             " stats.compilation.errors===",
+    //             chalk.red(stats.compilation.errors)
+    //         );
+    //         // process.exit(1);
+    //     }
+    // });
+  }
+}
+
+module.exports = WebpackPluginRouter;
+
+```
+
+
+
+
+
 ## 数据同构（预取同构）
 
 数据预取同构，解决双端如何使用同一套数据请求方法来进行数据请求。
@@ -741,11 +1176,1539 @@ export default mapRedux()(Index);
 
 ```
 
- 把数据请求方法挂载在Index.getInitPropsState 静态中这么做主要是为了后端server 可以拿到该方法，可以去调用他。
+ 把数据请求方法挂载在Index.getInitPropsState 静态中这么做主要是为了后端server 可以拿到该方法，可以去调用他。client 端也可以 拿到Index.getInitPropsState方法请求这样做就可以做到了同构。
 
 ### 数据注水
 
+在服务端将预取的数据注入到浏览器，使浏览器端可以访问到，客户端进行渲染前将数据传入对应的组件即可，这样就保证了props的一致。
 
+这里我们使用react redux 注入 到props中。我的redux 放在 /client/redux/index.js 中 基于@rematch/core 二次封装，这样可以把actions 和 reduce state 按模块解耦出来，用 connect }  "react-redux" connect 注入到props 中 使用和我们toss里面类似。
+
+下面例子/server/middleware/clientRouter/index.js
+
+客户端第一次访问会先经过server路由，server 路由查找到对应的组件，然后获取到组件中的getInitPropsState方法，在调用getInitPropsState方法进行ajax请求，请看下面代码 。然后存入到redux中，
+
+```
+   //      初始化
+  async init() {
+    const { ctx, next } = this.context;
+
+    const modules = new Set();
+    let template = fs.readFileSync(
+      path.join(
+        path.join(
+          absolutePath,
+          isEnvDevelopment ? "/client/public" : "dist/client"
+        ),
+        "index.html"
+      ),
+      "utf-8"
+    );
+
+    let isMatchRoute = this.getMatch(
+      routesComponent,
+      ctx.req._parsedUrl.pathname
+    );
+
+    if (isMatchRoute) {
+      const { Component } = isMatchRoute;
+      /* eslint-disable   */
+      const routeComponent = await Component();
+      /* eslint-enable   */
+      const { WrappedComponent: { getInitPropsState, getMetaProps } = {} } =
+        routeComponent;
+
+      let data = null;
+
+      await getBaseInitState(dispatch, getState());
+
+      if (getInitPropsState) {
+        // 拉去请求或者查询sql等操作
+        data = await getInitPropsState();
+        await dispatch[isMatchRoute.name].setInitState({
+          initState: data
+        });
+      }
+
+      // 渲染html
+      let renderedHtml = await this.reactToHtml({
+        ctx,
+        store,
+        template,
+        isMatchRoute,
+        modules,
+        routeComponent
+      });
+
+      renderedHtml = ejs.render(renderedHtml, {
+        htmlWebpackPlugin: {
+          options: {
+            ...stringToObject(htmlWebpackPluginOptions),
+            ...(getMetaProps ? getMetaProps() : {})
+          }
+        }
+      });
+      ctx.body = renderedHtml;
+    }
+    next();
+  }
+```
+
+
+
+reactToHtml 方法
+
+```
+  // 创建react转换成HTMl 
+  async reactToHtml({
+    ctx,
+    store,
+    template,
+    isMatchRoute,
+    modules,
+    routeComponent
+  }) {
+    let initState = store.getState();
+
+    // 路由注入到react中
+    let history = getMemoryHistory({ initialEntries: [ctx.req.url] });
+    history = {
+      ...history,
+      ...isMatchRoute
+    };
+
+    let context = [];
+    let location = ctx.req.url;
+
+    let rootString = renderToString(
+      createApp({
+        store,
+        context,
+        history,
+        modules,
+        location,
+        // 同步路由配置
+        routesComponent: [
+          {
+            ...isMatchRoute,
+            Component: routeComponent
+          }
+        ]
+      })
+    );
+    let { scripts, styles } = await this.createTags({ modules, isMatchRoute });
+
+    const helmet = Helmet.renderStatic();
+    let renderedHtml = this.assemblyHTML(template, {
+      html: helmet.htmlAttributes.toString(),
+      head:
+        helmet.title.toString() +
+        helmet.meta.toString() +
+        helmet.link.toString(),
+      rootString,
+      scripts,
+      styles,
+      initState
+    });
+    return renderedHtml;
+  }
+```
+
+assemblyHTML 方法
+
+```
+  // 拼装html页面
+  assemblyHTML(
+    template,
+    {
+      html,
+      // head,
+      rootString,
+      scripts,
+      styles,
+      initState
+    }
+  ) {
+    template = template.replace("<html", `<html ${html}`);
+    template = template.replace("</head>", `${styles}</head>`);
+
+    template = template.replace(
+      '<div id="root">',
+      `<div id="root">${rootString}`
+    );
+    template = template.replace(
+      "</head>",
+      `</head> \n <script>window.__INITIAL_STATE__ =${JSON.stringify(
+        initState
+      )}</script>`
+    );
+    template = template.replace("</body>", `${scripts}</body>`);
+    return template;
+  }
+```
+
+在  <script>window.__INITIAL_STATE__ =${JSON.stringify(
+
+​        initState
+
+​      )}</script> 注入redux state 到客户端中。如果我们直接从组件的props中注入到组件中客户端是获取不到这个值的，所以只能注入到window.__INITIAL_STATE__中，然后客户端在创建redux的时候初始化会读取这个值
+
+
+
+### 数据脱水
+
+上一步数据已经注入到了浏览器端，这一步要在客户端组件渲染前先拿到数据，并且传入组件就可以了。
+
+上面我们讲到了服务端把redux 的 state 注入到了 window.__INITIAL_STATE__中，只要我们客户端获取这个值就行，客户端在创建redux的时候初始化会读取这个值。
+
+ client/redux/models/home.js
+
+```
+import { setInitData } from "client/utils";
+
+export default (global) => ({
+  state: {
+   // 获取 服务端注入的数据 这个过程叫脱水
+    initState: setInitData(global, "home"),
+    count: 0
+  },
+  reducers: {
+    setCount(state, newState) {
+      return {
+        ...state,
+        count: newState
+      };
+    },
+
+    setInitState(state, newState) {
+      return {
+        ...state,
+        ...newState
+      };
+    }
+  },
+  effects: {
+    //   async incrementAsync(num1, rootState, num2) {
+    //     /*
+    //                 第二个变量rootState， 为当前model的state的值
+    //                 第一个变量num1， 第三个变量num2分别， 调用incrementAsync时传递进来的第一个参数， 第二个参数，后面依次类推。
+    //                 例如：dispatch.count.incrementAsync(10, 20)时，num1 = 10, num2 = 20
+    //             */
+    //     // await new Promise((resolve) => setTimeout(resolve, 2000));
+    //     // this.increment(num1);
+    //   },
+    // },
+    //   effects: (dispatch) => ({
+    //     async incrementAsync(num1, rootState, num2) {
+    //       await new Promise((resolve) => setTimeout(resolve, 2000))
+    //       // 方式一
+    //       // this.increment(num1);
+    //       // 方式二
+    //       dispatch.count.increment(num1)
+    //     },
+    //   }),
+  }
+});
+
+```
+
+
+
+然后在 client/pages/Home/index.js 中用mapRedux 注入state 就可以使用这个值
+
+```
+/*
+ * @Date: 2022-08-05 09:22:30
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-15 18:35:56
+ * @FilePath: /react-ssr-lazy-loading/client/pages/Home/index.js
+ * @Description:
+ */
+import React, { useState, useCallback, useEffect } from "react";
+import axios from "axios";
+import PropTypes from "prop-types";
+import { mapRedux } from "client/redux";
+import Nav from "client/component/Nav";
+import Head from "client/component/Head";
+import LazyLoadingImg from "client/component/LazyLoadingImg";
+// import { routesConfigs } from "client/router/routesComponent";
+// import { findTreeData } from "client/utils";
+import { getHaoKanVideo } from "client/assets/js/request/requestApi";
+import "./index.less";
+// 权限跳转登录页面可以在这控制
+const Index = (props) => {
+  let [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const {
+    dispatch: { home: { setInitState = () => {} } = {} } = {},
+    state: { home: { initState: { list = [] } = {} } = {} } = {}
+  } = props;
+  useEffect(() => {
+    console.log(
+      "window.__INITIAL_STATE__ =",
+      window && window.__INITIAL_STATE__
+    );
+    if (!list.length) {
+      getImages(page - 1);
+    }
+  }, []);
+
+  // 获取组件初始化数据
+  // const findInitData = useCallback(
+  //   (routesConfigs, value, key) =>
+  //     (findTreeData(routesConfigs, value, key) || {}).initState,
+  //   []
+  // );
+
+  const getImages = useCallback(
+    async (page) => {
+      if (loading) {
+        return false;
+      }
+      setLoading(true);
+      /* eslint-disable   */
+    page += 1;
+      /* eslint-enable   */
+
+      // const initStateFn =findInitData(routesConfigs, "home", "name");
+      setPage(page);
+      const {
+        data: { result: data }
+      } = await axios(
+        `https://api.apiopen.top/api/getHaoKanVideo?page=${page}&size=10`
+      );
+
+      // let $data = await Index.getInitPropsState({
+      //   page,
+      //   size: 10
+      // });
+
+      // console.log("$data=====", $data);
+      // let data = await initStateFn({
+      //     page,
+      //     size: 10,
+      // });
+      const { total, list: resList = [] } = data;
+      setInitState({
+        initState: {
+          total,
+          list: list.concat(
+            resList.map((item) => ({
+              ...item,
+              url: item.userPic
+            }))
+          )
+        }
+      });
+
+      setLoading(false);
+    },
+    [page, list, loading]
+  );
+
+  return (
+    <div className="home">
+      <Head />
+      <Nav />
+      <div className="center-box">
+        <LazyLoadingImg
+          list={list}
+          callback={() => {
+            getImages(page);
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+Index.propTypes = {
+  location: PropTypes.object,
+  store: PropTypes.object,
+  context: PropTypes.object,
+  history: PropTypes.object,
+  dispatch: PropTypes.func,
+  state: PropTypes.object
+};
+
+Index.getInitPropsState = async (parameter = {}) => {
+  const { page = 1, size = 10 } = parameter;
+
+  return await getHaoKanVideo({
+    page,
+    size
+  })
+    .then((res) => {
+      const { result: { list = [], total } = {} } = res;
+      return {
+        list: list.map((item) => ({
+          ...item,
+          url: item.userPic
+        })),
+        total
+      };
+    })
+    .catch(() => {
+      // console.log("Error: ", err.message);
+    });
+};
+
+Index.getMetaProps = () => {
+  return {
+    title: "首页",
+    keywords: "网站关键词",
+    description: "网站描述"
+  };
+};
+
+
+
+```
+
+
+
+## css 过滤
+
+   我们在写组件的时候大部分都会导入相关的 css 文件。但是这个 css 文件在服务端无法执行， 为什么会这样子呢？因为在服务端中没有window对象，而client中添加css是window.document.body.appendChild(link)或者window.document.body.appendChild(style)，因为在服务端中没有window对象当执行这个语句的时候服务端是会报错的。所以我们需要把css抽离出来。
+
+   现在问题是在client端我们需要保持css的引入，而在服务端却要把css剔除，这是一个很困难的问题，为了决绝这个问题我找了网上很多帖子都没有找到合适的方案，很多帖子说 用 in css 这样就可以实现，但是这样方式可能会增加项目耦合性，当然这个是一个用户习惯问题，因为在国外他们很喜欢用 in css 这样更容易利于组件解耦，这个看个人习惯用法吧。
+
+   不过我这里想了很久终于找到了解决防范就是我通过改写 webpack mini-css-extract-plugin 插件里面的源码，然后通过在服务端中只需要抽离css功能 不需要 插入css功能，这样就不会执行window.document.body.appendChild 就不会报错。
+
+  服务端如果只是单纯抽离了css样式，还会引发一个问题，就是服务端没有了css样式，第一次加载访问页面的时候，会看到布局错乱一闪问题，这个问题就是服务端没有css样式，渲染了之后客户端执行JavaScript脚本之后执行了 window.document.body.appendChild 才插入样式，这样会有一闪问题。为了决绝这个问题我使用了 react-loadable-ssr-addon 插件，才能解决这个问题。
+
+ react-loadable-ssr-addon 会在 webpack 打包的时候拿到 静态资源的地址，在服务端我们通过 静态资源的地址 动态创建标签插入到页面中，而不是用 window.document.body.appendChild ，这样就可以完美解决了问题。
+
+```
+  // 创建标签
+  async createTags({ modules, isMatchRoute }) {
+    let { assetsManifest } = this.options;
+
+    if (assetsManifest) {
+      assetsManifest = JSON.parse(assetsManifest);
+    } else {
+      // 变成一个js去引入
+      assetsManifest = await import("@/dist/client/assets-manifest.json");
+    }
+
+    const modulesToBeLoaded = [
+      ...assetsManifest.entrypoints,
+      "client" + isMatchRoute.entry,
+      ...Array.from(modules)
+    ];
+
+    let bundles = getBundles(assetsManifest, modulesToBeLoaded);
+    let { css = [], js = [] } = bundles;
+
+    let scripts = js
+      .map((script) => `<script src="/${script.file}"></script>`)
+      .join("\n");
+
+    let styles = css
+      .map((style) => `<link href="/${style.file}" rel="stylesheet"/>`)
+      .join("\n");
+
+    return { scripts, styles };
+  }
+```
+
+## SEO 支持
+
+  页面的 SEO 效果取决于页面的主体内容和页面的 TDK（标题 title,描述 description,关键词 keyword）以及关键词的分布和密度，现在我们实现了 ssr所以页面的主体内容有了，那如何设置页面的标题并且让每个页面（路由）的标题都不同呢？
+
+只要我们每请求一个路由的时候返回不同的 tdk 就可以了。
+
+这里我在所对应组件数据预取的方法内加了约定，返回的数据为固定格式，必须包含 page 对象，page 对象内包含 getMetaProps 的信息。
+
+看代码瞬间就明白。
+
+ client/pages/Home/index.js
+
+```
+Index.getMetaProps = () => {
+  return {
+    title: "首页",
+    keywords: "网站关键词",
+    description: "网站描述"
+  };
+};
+
+```
+
+服务端
+```
+  //      初始化
+  async init() {
+    const { ctx, next } = this.context;
+
+    const modules = new Set();
+    let template = fs.readFileSync(
+      path.join(
+        path.join(
+          absolutePath,
+          isEnvDevelopment ? "/client/public" : "dist/client"
+        ),
+        "index.html"
+      ),
+      "utf-8"
+    );
+
+    let isMatchRoute = this.getMatch(
+      routesComponent,
+      ctx.req._parsedUrl.pathname
+    );
+
+    if (isMatchRoute) {
+      const { Component } = isMatchRoute;
+      /* eslint-disable   */
+      const routeComponent = await Component();
+      /* eslint-enable   */
+      const { WrappedComponent: { getInitPropsState, getMetaProps } = {} } =
+        routeComponent;
+
+      let data = null;
+
+      await getBaseInitState(dispatch, getState());
+
+      if (getInitPropsState) {
+        // 拉去请求或者查询sql等操作
+        data = await getInitPropsState();
+        await dispatch[isMatchRoute.name].setInitState({
+          initState: data
+        });
+      }
+
+      // 渲染html
+      let renderedHtml = await this.reactToHtml({
+        ctx,
+        store,
+        template,
+        isMatchRoute,
+        modules,
+        routeComponent
+      });
+
+      renderedHtml = ejs.render(renderedHtml, {
+        htmlWebpackPlugin: {
+          options: {
+            ...stringToObject(htmlWebpackPluginOptions),
+            ...(getMetaProps ? getMetaProps() : {})
+          }
+        }
+      });
+      ctx.body = renderedHtml;
+    }
+    next();
+  }
+
+```
+上面代码通过组件获取到  getMetaProps 的网页描述关键词 标题等 然后注入到html中
+
+client/public/index.html
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="aplus-waiting" content="MAN">
+  <meta name="spm-id" content="a2e0b">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="renderer" content="webkit">
+  <meta name="keywords" content="<%= htmlWebpackPlugin.options.keywords %>" />
+  <meta name="description" content="<%= htmlWebpackPlugin.options.description %>" />
+  <meta name="referrer" content="no-referrer" />
+  <title>
+    <%= htmlWebpackPlugin.options.title %>
+  </title>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root">
+  </div>
+</body>
+<script>
+  //  window.addEventListener('load', function () {
+  window.main()
+  //  })
+</script>
+
+</html>
+```
+
+
+
+## ajax fetch 同构
+
+在浏览器中有XMLHttpRequest 而在node服务中没有这个对象，则我们需要兼容client和server端就要做兼容。在server node端中我使用了node-fetch，而在浏览器client端中我使用了XMLHttpRequest对象。
+
+```
+let XHR = {};
+
+try {
+  if (window) {
+    XHR = BrowserXHR;
+  }
+} catch (error) {
+  XHR = NodeFetch;
+}
+
+export default XHR;
+
+```
+
+ client/assets/js/request/XMLHttpRequest.js
+
+```
+import FormData from "form-data";
+import fetch from "node-fetch";
+import { CheckDataType } from "client/utils/CheckDataType";
+
+class BrowserXHR {
+  constructor() {
+    // const { method = 'POST', url = '' } = options;
+    // this.defaultConfig={
+    //     timeout:3000,
+    // }
+    // this.options ={
+    //     ...this.defaultConfig,
+    //     ...options,
+    // }
+  }
+
+  // init() {
+  //     this.createXHR();
+  //     this.setTimeout();
+  //     this.setWithCredentials();
+  //     this.open();
+  //     this.setRequestHeader();
+  //     this.send();
+  // }
+  ininData(options) {
+    this.defaultConfig = {
+      timeout: 300000,
+      withCredentials: true
+    };
+    this.options = {
+      ...this.defaultConfig,
+      ...options
+    };
+    return this;
+  }
+
+  queryStringify(data) {
+    const keys = Object.keys(data);
+    let formStr = "";
+    if (keys.length === 0) {
+      return formStr;
+    }
+    keys.forEach((key) => {
+      if (data[key] === undefined || data[key] === null) {
+        return;
+      }
+      formStr += `&${key}=${
+        CheckDataType.isObject(data[key])
+          ? JSON.stringify(data[key])
+          : data[key]
+      }`;
+    });
+    return formStr.substr(1);
+  }
+
+  // 发送http请求
+  xhRequest(options) {
+    if (CheckDataType.isPromise(options)) {
+      options
+        .then((options) => {
+          this.ininData(options);
+          this.createXHR();
+          this.setTimeout();
+          this.setWithCredentials();
+          this.setXhrAttr();
+          this.open();
+          this.setRequestHeader();
+          this.change();
+          this.send();
+        })
+        .catch((errorInfo) => {
+          const { error = () => {} } = errorInfo;
+          console.error("http 请求异常,未发送http请求。", errorInfo);
+          error(options);
+        });
+    } else {
+      this.ininData(options);
+      this.createXHR();
+      this.setTimeout();
+      this.setWithCredentials();
+      this.setXhrAttr();
+      this.open();
+      this.setRequestHeader();
+      this.change();
+      this.send();
+    }
+    return this;
+  }
+
+  uploadFile(options) {
+    this.ininData(options);
+    const { parameter = {} } = this.options;
+    const formData = new FormData();
+    const keys = Object.keys(parameter);
+    keys.forEach((key) => {
+      formData.append(key, parameter[key]);
+    });
+
+    this.options.parameter = formData;
+
+    this.createXHR();
+    this.setTimeout();
+    this.setWithCredentials();
+    this.setXhrAttr();
+    this.open();
+    this.setRequestHeader();
+    try {
+      this.xmlHttp.onprogress = this.updateProgress;
+    } catch (e) {
+      try {
+        this.xmlHttp.upload.onprogress = this.updateProgress;
+      } catch (e) {
+        console.log("浏览器不支持上传进度条监控！");
+      }
+    }
+    this.change();
+    this.send();
+    return this;
+  }
+
+  updateProgress(event) {
+    const { updateProgress = () => {} } = this.options;
+    if (event.lengthComputable) {
+      const percentComplete = event.loaded / event.total;
+      updateProgress(percentComplete, event);
+    }
+  }
+
+  // 创建XHR
+  createXHR() {
+    const {
+      parameter: { operationName } = {},
+      urlSuffix,
+      headers: { token }
+    } = this.options;
+
+    let xmlHttp = null;
+    const errorMessage = [];
+    if (window.XMLHttpRequest) {
+      xmlHttp = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+      try {
+        xmlHttp = new window.ActiveXObject("MSXML2.xmlHttp");
+      } catch (error) {
+        errorMessage.push(error);
+        try {
+          xmlHttp = new window.ActiveXObject("Microsoft.xmlHttp");
+        } catch (error) {
+          try {
+            xmlHttp = new window.XDomainRequest();
+          } catch (error) {
+            errorMessage.push(error);
+            console.error(...errorMessage, "浏览器不支持xhr请求");
+            xmlHttp = null;
+          }
+        }
+      }
+    }
+
+    // 插入请求队列中
+    if (token) {
+      BrowserXHR.XHRQueue = BrowserXHR.XHRQueue
+        ? [
+            ...BrowserXHR.XHRQueue,
+            {
+              operationName,
+              urlSuffix,
+              xmlHttp
+            }
+          ]
+        : [
+            {
+              operationName,
+              urlSuffix,
+              xmlHttp
+            }
+          ];
+    }
+    this.xmlHttp = xmlHttp;
+  }
+
+  // 设置 xhr属性
+  setXhrAttr() {
+    const { xhrAttr = {} } = this.options;
+    const keys = Object.keys(xhrAttr);
+    keys.forEach((key) => {
+      this.xmlHttp[key] = xhrAttr[key];
+    });
+  }
+
+  // xhr 打开
+  // 发送数据
+  open() {
+    const {
+      url = "",
+      method = "POST",
+      async = true,
+      parameter = {}
+    } = this.options;
+
+    this.xmlHttp.open(
+      method,
+      method === "GET" ? `${url}?${this.queryStringify(parameter)}` : url,
+      async
+    );
+  }
+
+  // 设置请求头
+  setRequestHeader(defaultHeaders = {}) {
+    let { headers = {} } = this.options;
+    headers = {
+      ...defaultHeaders,
+      ...headers
+    };
+
+    const keys = Object.keys(headers);
+    keys.forEach((key) => {
+      this.xmlHttp.setRequestHeader(key, headers[key]);
+    });
+  }
+
+  // 设置跨域复杂请求cookie
+  setWithCredentials() {
+    const { withCredentials = true } = this.options;
+
+    this.xmlHttp.withCredentials = withCredentials;
+    // this.xmlHttp.crossDomain = withCredentials;
+  }
+
+  // 设置请求过期时间
+  setTimeout() {
+    const { timeout = null } = this.options;
+    if (timeout) {
+      this.xmlHttp.timeout = timeout;
+
+      this.onTimeout();
+    }
+  }
+
+  // 过期时间相应
+  onTimeout() {
+    const { error = () => {}, complete = () => {} } = this.options;
+    this.xmlHttp.ontimeout = function (event) {
+      console.error("http请求超时！");
+      complete(event);
+      error(event);
+    };
+  }
+
+  // 监听请求状态
+  change() {
+    this.xmlHttp.onreadystatechange = this.stateChange.bind(this);
+  }
+
+  // 监听请求状态
+  stateChange() {
+    const {
+      success = () => {},
+      error = () => {},
+      dataType = "json",
+      complete = () => {},
+      urlSuffix,
+      parameter: { operationName } = {}
+    } = this.options;
+    const XHRQueue = BrowserXHR.XHRQueue || [];
+    if (this.xmlHttp.readyState === 4) {
+      if (this.xmlHttp.status === 200) {
+        // 从队列中剔除
+        for (let index = XHRQueue.length - 1; index >= 0; index--) {
+          // 是graphq请求
+          if (
+            operationName &&
+            XHRQueue[index].operationName === operationName
+          ) {
+            XHRQueue.splice(index, 1);
+          } else if (XHRQueue[index].urlSuffix === urlSuffix) {
+            XHRQueue.splice(index, 1);
+          }
+        }
+
+        complete(
+          dataType === "json"
+            ? JSON.parse(this.xmlHttp.responseText)
+            : this.xmlHttp.responseText,
+          this.xmlHttp,
+          {
+            ...this.options,
+            XHRQueue: BrowserXHR.XHRQueue || []
+          }
+        );
+
+        success(
+          dataType === "json"
+            ? JSON.parse(this.xmlHttp.responseText)
+            : this.xmlHttp.responseText,
+          this.xmlHttp,
+          {
+            ...this.options,
+            XHRQueue: BrowserXHR.XHRQueue || []
+          }
+        );
+      } else {
+        console.error("http 请求异常");
+        console.log("this.xmlHttp=", this.xmlHttp);
+        complete(this.xmlHttp.status, this.xmlHttp, {
+          ...this.options,
+          XHRQueue: BrowserXHR.XHRQueue || []
+        });
+        error(this.xmlHttp.status, this.xmlHttp, this.options);
+      }
+    } else {
+      // complete(this.xmlHttp.status, this.xmlHttp);
+      // error(this.xmlHttp.status, this.xmlHttp);
+    }
+  }
+
+  // 停止请求
+  abort() {
+    this.xmlHttp.abort();
+  }
+
+  // 发送数据
+  send() {
+    let { parameter = {}, method, dataType = "json" } = this.options;
+    if (!(parameter instanceof FormData)) {
+      parameter =
+        dataType === "json"
+          ? JSON.stringify(parameter)
+          : this.queryStringify(parameter); // this.queryStringify(data)
+    }
+    // const keys = Object.keys(data);
+    // const formData = new FormData();
+    // keys.forEach((key) => {
+    //     formData.append(key, data[key]);
+    // });
+    // this.xmlHttp.responseType = 'json';
+    if (method === "POST") {
+      this.xmlHttp.send(parameter);
+    } else {
+      this.xmlHttp.send();
+    }
+    // data?this.xmlHttp.send(data):this.xmlHttp.send();
+  }
+}
+
+class NodeFetch {
+  ininData(options) {
+    // method: 'GET',
+    // headers: {},            // Request headers. format is the identical to that accepted by the Headers constructor (see below)
+    // body: null,             // Request body. can be null, or a Node.js Readable stream
+
+    this.defaultConfig = {
+      timeout: 300000,
+      withCredentials: true
+    };
+    this.options = {
+      ...this.defaultConfig,
+      ...options
+    };
+    return this;
+  }
+
+  // 设置请求头
+  setRequestHeader(defaultHeaders = {}) {
+    const { headers = {} } = this.options;
+    this.options.headers = {
+      ...defaultHeaders,
+      ...headers
+    };
+  }
+
+  // 发送http请求
+  xhRequest(options) {
+    if (CheckDataType.isPromise(options)) {
+      options
+        .then((options) => {
+          this.ininData(options);
+          this.createXHR();
+          this.setRequestHeader();
+          this.send();
+        })
+        .catch((errorInfo) => {
+          const { error = () => {} } = errorInfo;
+          console.error("http 请求异常,未发送http请求。", errorInfo);
+          error(options);
+        });
+    } else {
+      this.ininData(options);
+      this.createXHR();
+      this.setRequestHeader();
+      this.send();
+    }
+    return this;
+  }
+
+  queryStringify(data) {
+    const keys = Object.keys(data);
+    let formStr = "";
+    if (keys.length === 0) {
+      return formStr;
+    }
+    keys.forEach((key) => {
+      if (data[key] === undefined || data[key] === null) {
+        return;
+      }
+      formStr += `&${key}=${
+        CheckDataType.isObject(data[key])
+          ? JSON.stringify(data[key])
+          : data[key]
+      }`;
+    });
+    return formStr.substr(1);
+  }
+
+  // 创建XHR
+  createXHR() {
+    const {
+      parameter: { operationName } = {},
+      urlSuffix,
+      headers: { token }
+    } = this.options;
+
+    let xmlHttp = null;
+
+    // 插入请求队列中
+    if (token) {
+      BrowserXHR.XHRQueue = BrowserXHR.XHRQueue
+        ? [
+            ...BrowserXHR.XHRQueue,
+            {
+              operationName,
+              urlSuffix,
+              xmlHttp
+            }
+          ]
+        : [
+            {
+              operationName,
+              urlSuffix,
+              xmlHttp
+            }
+          ];
+    }
+  }
+
+  uploadFile(options) {
+    this.ininData(options);
+    const { parameter = {} } = this.options;
+    const formData = new FormData();
+    const keys = Object.keys(parameter);
+    keys.forEach((key) => {
+      formData.append(key, parameter[key]);
+    });
+    this.options.parameter = formData;
+
+    this.createXHR();
+    this.setRequestHeader();
+    this.send();
+    return this;
+  }
+
+  // 发送数据
+  send() {
+    let { url = "", parameter = {}, method, headers } = this.options;
+
+    const options = {
+      method,
+      headers
+    };
+    if (parameter instanceof FormData) {
+      options.body = parameter;
+    } else {
+      if (method.toUpperCase() === "POST") {
+        options.body = JSON.stringify(parameter);
+      }
+      if (method.toUpperCase() === "GET") {
+        url = `${url}?${this.queryStringify(parameter)}`;
+      }
+    }
+    fetch(url, options)
+      .then((response) => {
+        this.stateChange(response);
+      })
+      .catch((response) => {
+        this.stateChange(response);
+      });
+  }
+
+  // 监听请求状态
+  async stateChange(response) {
+    const {
+      success = () => {},
+      error = () => {},
+      dataType = "json",
+      complete = () => {},
+      urlSuffix,
+      parameter: { operationName } = {}
+    } = this.options;
+    const XHRQueue = NodeFetch.XHRQueue || [];
+
+    if (response.status === 200) {
+      // 从队列中剔除
+      for (let index = XHRQueue.length - 1; index >= 0; index--) {
+        // 是graphq请求
+        if (operationName && XHRQueue[index].operationName === operationName) {
+          XHRQueue.splice(index, 1);
+        } else if (XHRQueue[index].urlSuffix === urlSuffix) {
+          XHRQueue.splice(index, 1);
+        }
+      }
+
+      const data = [
+        dataType === "json" ? await response.json() : await response.text(),
+        response,
+        {
+          ...this.options,
+          XHRQueue: XHR.XHRQueue || []
+        }
+      ];
+
+      complete(...data);
+      success(...data);
+    } else {
+      console.error("http 请求异常");
+      console.log("response=", response);
+      complete(response.status, response, {
+        ...this.options,
+        XHRQueue: XHR.XHRQueue || []
+      });
+      error(response.status, response, this.options);
+    }
+  }
+}
+
+let XHR = {};
+
+try {
+  if (window) {
+    XHR = BrowserXHR;
+  }
+} catch (error) {
+  XHR = NodeFetch;
+}
+
+export default XHR;
+
+```
+
+
+
+## 开发打包编译  
+
+### 时时打包热编译热编译
+
+在   node ssr 开发打包编译中webpack 远远比  单纯的csr开发打包编译简单的多。这里我的webpack dev server都是自己配置的 利用了 "webpack-dev-middleware"，
+
+  "webpack-dev-server"，
+
+   "webpack-hot-middleware"，
+
+ "webpack-hot-server-middleware"，
+
+实现了时时打包热编译功能，包括 server和client端。
+
+server/middleware/webpackHot/index.js
+
+```
+import webpack from "webpack";
+import fs from "fs";
+import path from "path";
+import webpackDevMiddleware from "webpack-dev-middleware";
+import webpackHotServerMiddleware from "webpack-hot-server-middleware";
+import webpackHotMiddleware from "webpack-hot-middleware";
+import ReactLoadableSSRAddon from "react-loadable-ssr-addon";
+import { createProxyMiddleware } from "http-proxy-middleware";
+import koaProxy from "koa2-proxy-middleware";
+import bodyparser from "koa-bodyparser";
+import historyApiFallback from "koa-history-api-fallback";
+// import connectHistoryApiFallback from "connect-history-api-fallback";
+import { compiler, config } from "@/webpack";
+import { writeFile } from "@/webpack/utils";
+
+let {
+  NODE_ENV, // 环境参数
+  target // 环境参数
+} = process.env; // 环境参数
+
+const isSsr = target === "ssr";
+//    是否是生产环境
+const isEnvProduction = NODE_ENV === "production";
+//   是否是测试开发环境
+const isEnvDevelopment = NODE_ENV === "development";
+
+class WebpackHot {
+  constructor(app) {
+    this.app = app;
+    this.compilerOptions = {};
+    this.init();
+  }
+  async init() {
+    var _this = this;
+
+    for (let [index, item] of config[0].plugins.entries()) {
+      if (item instanceof ReactLoadableSSRAddon) {
+        item.apply = function apply(compiler) {
+          const PLUGIN_NAME = "ReactLoadableSSRAddon";
+          // 写入文件
+          writeFile(this.options.filename, "{}");
+          // fs.writeFileSync(this.options.filename, "{}");
+          compiler.hooks.emit.tapAsync(PLUGIN_NAME, this.handleEmit.bind(this));
+        };
+        item.writeAssetsFile = function () {
+          const filePath = this.manifestOutputPath;
+          const fileDir = path.dirname(filePath);
+          const json = JSON.stringify(this.manifest, null, 2);
+          try {
+            if (!fs.existsSync(fileDir)) {
+              fs.mkdirSync(fileDir, { recursive: true });
+            }
+          } catch (err) {
+            if (err.code !== "EEXIST") {
+              throw err;
+            }
+          }
+          _this.compilerOptions.assetsManifest = json;
+          fs.writeFileSync(filePath, json);
+        };
+        config[0].plugins[index] = item;
+        break;
+      }
+    }
+    // 编译
+    this.compiler = webpack(isSsr ? config : config[0]);
+    this.addMiddleware();
+  }
+  addMiddleware() {
+    if (!isSsr) {
+      // handle fallback for HTML5 history API
+      // 通过指定的索引页面中间件代理请求，用于单页应用程序，利用HTML5 History API。
+      // 这个插件是用来解决单页面应用，点击刷新按钮和通过其他search值定位页面的404错误
+      this.setConnectHistoryApiFallback();
+    }
+
+    // 开启代理
+    this.setProxyMiddleware();
+    // dev服务器
+    this.addWebpackDevMiddleware();
+
+    if (isSsr) {
+      this.addWebpackHotServerMiddleware();
+    }
+  }
+  addWebpackDevMiddleware() {
+    const _this = this;
+    const { devServer = {} } = config[0];
+
+    this.app.use(
+      _this.koaDevware(
+        webpackDevMiddleware(_this.compiler, {
+          ...devServer
+          // noInfo: true,
+          // serverSideRender: true // 是否是服务器渲染
+
+          // //设置允许跨域
+          // headers: () => {
+          //   return {
+          //     // "Last-Modified": new Date(),
+          //     "Access-Control-Allow-Origin": "*",
+          //     "Access-Control-Allow-Headers": "content-type",
+          //     "Access-Control-Allow-Methods": "DELETE,PUT,POST,GET,OPTIONS"
+          //   };
+          // }
+
+          // publicPath: "/"
+          // writeToDisk: true //是否写入本地磁盘
+        }),
+        _this.compiler
+      )
+    );
+  }
+
+  // 代理服务器
+  setProxyMiddleware() {
+    // proxy: { // 配置代理（只在本地开发有效，上线无效）
+    //   "/x": { // 这是请求接口中要替换的标识
+    //     target: "https://api.bilibili.com", // 被替换的目标地址，即把 /api 替换成这个
+    //     pathRewrite: {"^/api" : ""},
+    //     secure: false, // 若代理的地址是https协议，需要配置这个属性
+    //   },
+    //   '/api': {
+    //     target: 'http://localhost:3000', // 这是本地用node写的一个服务，用webpack-dev-server起的服务默认端口是8080
+    //     pathRewrite: {"/api" : ""}, // 后台在转接的时候url中是没有 /api 的
+    //     changeOrigin: true, // 加了这个属性，那后端收到的请求头中的host是目标地址 target
+    //   },
+    // }
+
+    // proxy: [
+    //   {
+    //     context: ["/api/v1/common/upload/"],
+    //     target: "https://webpack.docschina.org/",
+    //     changeOrigin: true,
+    //     secure: false,
+    //     // pathRewrite: {
+    //     //   "^/api/v1/common/upload/": "/",
+    //     // },
+    //   },
+    // ],
+
+    const { devServer: { proxy } = {} } = config[0];
+    const type = Object.prototype.toString.call(proxy).toLowerCase();
+    let targets = {};
+    if (proxy && type === "[object object]") {
+      // 下面是代理表的处理方法， 可以使用后台,代理后台地址
+      /*
+            支持对象
+            proxy: { // 配置代理（只在本地开发有效，上线无效）
+                "/x": { // 这是请求接口中要替换的标识
+                  target: "https://api.bilibili.com", // 被替换的目标地址，即把 /api 替换成这个
+                  pathRewrite: {"^/api" : ""},
+                  secure: false, // 若代理的地址是https协议，需要配置这个属性
+                },
+                '/api': {
+                  target: 'http://localhost:3000', // 这是本地用node写的一个服务，用webpack-dev-server起的服务默认端口是8080
+                  pathRewrite: {"/api" : ""}, // 后台在转接的时候url中是没有 /api 的
+                  changeOrigin: true, // 加了这个属性，那后端收到的请求头中的host是目标地址 target
+                },
+            }
+            */
+      // Object.keys(proxy).forEach((context) => {
+      //   // 下面是代理表的处理方法， 可以使用后台管理
+      //   var options = proxy[context];
+      //   if (typeof options === "string") {
+      //     // 支持 proxy: { '/api':'http://localhost:3000' }
+      //     options = { target: options };
+      //   }
+      //   this.app.use(context, createProxyMiddleware(options));
+      // });
+
+      // this.koaProxy
+      targets = proxy;
+    }
+
+    /*
+         支持数组
+          支持单个
+          proxy: [
+            {
+              context: "/api/v1/common/upload/",
+              target: "https://webpack.docschina.org/",
+              changeOrigin: true,
+               secure: false,
+              // pathRewrite: {
+              //   "^/api/v1/common/upload/": "/",
+              // },
+            },
+          ],
+
+           或者
+          proxy: [
+          {
+              context: ["/api/v1/common/upload/","/api/v1/scrm/upload/", ]
+              target: "https://webpack.docschina.org/",
+              changeOrigin: true,
+               secure: false,
+              // pathRewrite: {
+              //   "^/api/v1/common/upload/": "/",
+              // },
+            },
+          ],
+        */
+
+    if (proxy && type === "[object array]") {
+      for (let item of proxy) {
+        let { context } = item;
+        delete item.context;
+        if (
+          Object.prototype.toString.call(context).toLowerCase() ===
+          "[object array]"
+        ) {
+          for (let contextItem of context) {
+            targets[contextItem] = item;
+          }
+        } else {
+          targets[context] = item;
+        }
+      }
+    }
+    this.app.use(
+      koaProxy({
+        targets
+      })
+    );
+    this.app.use(
+      bodyparser({
+        enableTypes: ["json", "form", "text"]
+      })
+    );
+  }
+
+  setConnectHistoryApiFallback() {
+    this.app.use(historyApiFallback());
+  }
+
+  addWebpackHotServerMiddleware() {
+    const _this = this;
+    this.app.use(
+      webpackHotServerMiddleware(_this.compiler, {
+        createHandler: webpackHotServerMiddleware.createKoaHandler,
+        serverRendererOptions: {
+          foo: "Bar",
+          options: _this.compilerOptions // 引用传参
+        }
+      })
+    );
+  }
+  // // 做兼容
+  hook(compiler, hookName, pluginName, fn) {
+    if (arguments.length === 3) {
+      fn = pluginName;
+      pluginName = hookName;
+    }
+    if (compiler.hooks) {
+      compiler.hooks[hookName].tap(pluginName, fn);
+    } else {
+      compiler.plugin(pluginName, fn);
+    }
+  }
+  koaDevware(dev, compiler) {
+    var _this = this;
+    const waitMiddleware = () =>
+      new Promise((resolve, reject) => {
+        dev.waitUntilValid(() => {
+          resolve(true);
+        });
+
+        _this.hook(compiler, "failed", (error) => {
+          reject(error);
+        });
+      });
+
+    return async (ctx, next) => {
+      await waitMiddleware();
+      await dev(
+        ctx.req,
+        {
+          end(content) {
+            ctx.body = content;
+          },
+          setHeader: ctx.set.bind(ctx),
+          locals: ctx.state
+        },
+        next
+      );
+    };
+  }
+}
+
+export default WebpackHot;
+
+```
+
+
+
+###  热启动node服务
+
+webpack/utils/index.js
+
+热启动则使用了 gulp 源码中的一些sdk   ，map-stream ，vinyl-fs ，stream ，glob-watcher 自己写了一些shell脚本监听文件是否有变动则重启服务器。
+
+```
+/*
+ * @Date: 2022-08-04 09:21:17
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-08-09 12:07:17
+ * @FilePath: /react-loading-ssr/webpack/utils/readWriteFiles.js
+ * @Description:
+ */
+const map = require('map-stream')
+const fs = require('vinyl-fs')
+const stream = require('stream')
+const watch = require('glob-watcher')
+
+// 编写中间件转换代码
+const transformCode = ($callback = (data, path) => data) => {
+  return new stream.Transform({
+    objectMode: true,
+    transform(file, encoding, callback) {
+      if (file.isStream()) {
+        return callback(new Error('Streaming is not supported.'))
+      }
+      if (file.isNull() || !file.contents) {
+        return callback(undefined, file)
+      }
+      if (!file.path) {
+        return callback(
+          new Error(
+            'Received file with no path. Files must have path to be resolved.',
+          ),
+        )
+      }
+
+      if (file.contents.toString() === '') {
+        return callback(undefined, file)
+      }
+
+      file.contents = Buffer.from(
+        $callback(file.contents.toString(), file.path),
+      )
+      callback(undefined, file)
+    },
+  })
+}
+// var log = function (file, cb) {
+//     console.log(file);
+//     cb(null, file);
+// };
+const readWriteFile = ({ from, to, transform }) => {
+  fs.src(from)
+    // .pipe(map(log))
+    .pipe(
+      transformCode((contents, path) => {
+        return transform(contents, path)
+      }),
+    )
+    .pipe(fs.dest(to))
+}
+
+module.exports = ({
+  from,
+  to,
+  transform,
+  isWatch = true,
+  callback = () => {},
+}) => {
+  if (isWatch) {
+    watch(from, {}, function () { 
+      readWriteFile({ from, to, transform, isWatch })
+      callback()
+    })
+  }
+  readWriteFile({ from, to, transform, isWatch })
+  callback()
+}
+
+```
 
 
 
