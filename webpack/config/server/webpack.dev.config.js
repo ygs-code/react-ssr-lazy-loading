@@ -48,7 +48,7 @@ module.exports = {
     new CleanWebpackPlugin({
       cleanOnceBeforeBuildPatterns: [
         path.join(process.cwd(), "/dist/server/*.js"),
-        path.join(process.cwd(), "/dist/server/**/*"),
+        path.join(process.cwd(), "/dist/server/static/**/*"),
         "!" + path.join(process.cwd(), "/dist/server/app.js"),
         "!" + path.join(process.cwd(), "/dist/server/index.js")
       ]

@@ -73,10 +73,10 @@ npm  run   start:ssr:dev
 npm  run  build:ssr:prod
 ```
 
-#### This command is used to start the SSR server start:server
+#### This command is used to start the SSR server start:ssr:prod
 
 ```
-npm  run  start:server
+npm  run  start:ssr:prod
 ```
 
 
@@ -652,10 +652,10 @@ npm  run   start:ssr:dev
 npm  run  build:ssr:prod
 ```
 
-#### 启动 ssr 服务器命令start:server
+#### 启动 ssr 服务器命令start:ssr:prod
 
 ```
-npm  run  start:server
+npm  run  start:ssr:prod
 ```
 
 

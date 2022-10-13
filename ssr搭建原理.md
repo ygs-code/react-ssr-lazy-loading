@@ -340,37 +340,23 @@ app.listen(3000,()=>{
 
 
 
-
-
 启动服务
 
 ```
 npm  run   start:ssr:dev
 ```
 
-
-
 启动服务node.js 流程程序图
 
+![img](./3.png)
 
 
 
-
-
-
-
-
-
-
-
-
-测试第一次访问页面
+测试第一次访问页面,模拟爬虫效果
 
 ```
  curl www.baidu.com
 ```
-
-
 
 
 

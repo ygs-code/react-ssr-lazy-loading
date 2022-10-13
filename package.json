@@ -14,7 +14,7 @@
     "cmd": "cross-env NODE_ENV=development       target=ssr   node   -r @babel/register    ./bin/cmd.js",
     "start:ssr:dev": "cross-env     target='ssr'     npx babel-node    -r @babel/register    ./bin/index.js    -r  dotenv/config  dotenv_config_path=.env.development",
     "build:ssr:prod": "cross-env  target='ssr'  npx babel-node    -r @babel/register    ./bin/index.js   -r  dotenv/config  dotenv_config_path=.env.production",
-    "start:server": "cross-env  target='ssr'  npx babel-node  -r  @babel/register    ./dist/server/index.js   -r  dotenv/config  dotenv_config_path=.env.production",
+    "start:ssr:prod": "cross-env  target='ssr'  npx babel-node  -r  @babel/register    ./dist/server/index.js   -r  dotenv/config  dotenv_config_path=.env.production",
     "web:dev:server": "cross-env    target=web  webpack-dev-server   -r @babel/register      --config  ./webpack/config/client/index.js  ",
     "start:client:dev": "cross-env  target=client  npx babel-node    -r @babel/register    ./bin/index.js   -r  dotenv/config  dotenv_config_path=.env.development",
     "build:client:prod": "cross-env  target=client  npx babel-node    -r @babel/register    ./bin/index.js   -r  dotenv/config  dotenv_config_path=.env.production",
