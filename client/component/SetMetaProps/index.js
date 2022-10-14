@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import hoistStatics from "hoist-non-react-statics";
-export default (options) => {
+export default (options = {}) => {
   return (Traget) => {
     const displayName =
       "SetMetaProps(" + (Traget.displayName || Traget.name) + ")";
