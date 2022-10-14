@@ -17,4 +17,4 @@ const Index = () => {
   );
 };
 
-export default mapRedux()(setMetaProps(Index));
+export default mapRedux()(setMetaProps()(Index));

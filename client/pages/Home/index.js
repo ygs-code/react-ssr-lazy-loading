@@ -48,7 +48,7 @@ const Index = (props) => {
       }
       setLoading(true);
       /* eslint-disable   */
-    page += 1;
+      page += 1;
       /* eslint-enable   */
 
       // const initStateFn =findInitData(routesConfigs, "home", "name");
@@ -134,12 +134,10 @@ Index.getInitPropsState = async (parameter = {}) => {
     });
 };
 
-Index.getMetaProps = () => {
-  return {
+export default mapRedux()(
+  setMetaProps({
     title: "首页",
     keywords: "首页网站关键词",
     description: "首页网站描述"
-  };
-};
-
-export default mapRedux()(setMetaProps(Index));
+  })(Index)
+);

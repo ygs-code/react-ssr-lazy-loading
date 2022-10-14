@@ -99,4 +99,4 @@ Index.getMetaProps = () => {
     description: "用户页面网站描述"
   };
 };
-export default mapRedux()(setMetaProps(Index));
+export default mapRedux()(setMetaProps()(Index));
