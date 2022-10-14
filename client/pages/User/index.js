@@ -7,6 +7,7 @@
  * @Description:
  */
 import React, { useEffect } from "react";
+import setMetaProps from "client/component/SetMetaProps";
 import Nav from "client/component/Nav";
 import Head from "client/component/Head";
 import Table from "client/component/Table";
@@ -91,5 +92,11 @@ const Index = () => {
     </div>
   );
 };
-
-export default mapRedux()(Index);
+Index.getMetaProps = () => {
+  return {
+    title: "用户页面",
+    keywords: "用户页面网站关键词",
+    description: "用户页面网站描述"
+  };
+};
+export default mapRedux()(setMetaProps(Index));

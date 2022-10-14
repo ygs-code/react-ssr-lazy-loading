@@ -8,7 +8,7 @@
  */
 import React from "react";
 import hoistStatics from "hoist-non-react-statics";
-import { withRouter } from "react-lazy-router-dom";
+import { withRouter } from "client/router/react-lazy-router-dom";
 import routePaths from "./routePaths";
 import { historyPush } from "./historyPush";
 

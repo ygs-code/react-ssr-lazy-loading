@@ -52,7 +52,6 @@ class ClientRouter {
   async init() {
     const { ctx, next } = this.context;
 
-    const modules = new Set();
     let template = fs.readFileSync(
       path.join(
         path.join(
@@ -70,9 +69,9 @@ class ClientRouter {
     );
 
     if (isMatchRoute) {
-      const { Component } = isMatchRoute;
+      const { Component, syncComponent } = isMatchRoute;
       /* eslint-disable   */
-      const routeComponent = await Component();
+      const routeComponent = syncComponent;
       /* eslint-enable   */
       const { WrappedComponent: { getInitPropsState, getMetaProps } = {} } =
         routeComponent;
@@ -95,7 +94,7 @@ class ClientRouter {
         store,
         template,
         isMatchRoute,
-        modules,
+
         routeComponent
       });
 
@@ -122,20 +121,21 @@ class ClientRouter {
     return path.replace(reg, "/");
   }
   // 创建标签
-  async createTags({ modules, isMatchRoute }) {
+  async createTags({ isMatchRoute }) {
     let { assetsManifest } = this.options;
 
     if (assetsManifest) {
       assetsManifest = JSON.parse(assetsManifest);
     } else {
-      // 变成一个js去引入
-      assetsManifest = await import("@/dist/client/assets-manifest.json");
+      try {
+        // 变成一个js去引入
+        assetsManifest = await import("@/dist/client/assets-manifest.json");
+      } catch (error) {}
     }
 
     const modulesToBeLoaded = [
       ...assetsManifest.entrypoints,
-      "client" + isMatchRoute.entry,
-      ...Array.from(modules)
+      "client" + isMatchRoute.entry
     ];
 
     let bundles = getBundles(assetsManifest, modulesToBeLoaded);
@@ -195,13 +195,13 @@ class ClientRouter {
       }
     }
   }
-  // 创建react转换成HTMl 
+  // 创建react转换成HTMl
   async reactToHtml({
     ctx,
     store,
     template,
     isMatchRoute,
-    modules,
+
     routeComponent
   }) {
     let initState = store.getState();
@@ -213,16 +213,10 @@ class ClientRouter {
       ...isMatchRoute
     };
 
-    let context = [];
-    let location = ctx.req.url;
-
     let rootString = renderToString(
       createApp({
         store,
-        context,
         history,
-        modules,
-        location,
         // 同步路由配置
         routesComponent: [
           {
@@ -232,7 +226,7 @@ class ClientRouter {
         ]
       })
     );
-    let { scripts, styles } = await this.createTags({ modules, isMatchRoute });
+    let { scripts, styles } = await this.createTags({ isMatchRoute });
 
     const helmet = Helmet.renderStatic();
     let renderedHtml = this.assemblyHTML(template, {

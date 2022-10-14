@@ -21,6 +21,10 @@ import "bootstrap/dist/css/bootstrap.css";
 // } = process.env; // 环境参数
 const App = (props) => {
   const { history, store, routesComponent } = props;
+  /*
+  Warning: Detected multiple renderers concurrently rendering the same context provider. This is currently unsupported.
+  来自Provider组件
+  */
   return (
     <Provider store={store}>
       <Routers history={history} routesComponent={routesComponent} />

@@ -1,4 +1,3 @@
-
 const fs = require("fs");
 const path = require("path");
 const _ = require("lodash");
@@ -106,23 +105,28 @@ class WebpackPluginRouter {
         routesConfigPath: routesConfigPath
       });
       if (children && children.length) {
-        const { routesComponentConfig, loadableComponent, routePaths } =
-          this.mapRoutesConfig(
-            children,
-            routesConfigPath,
-            code,
-            compilation,
-            cacheNames,
-            cachePaths,
-            path
-          );
-        code.loadableComponent = loadableComponent;
+        const {
+          routesComponentConfig = "",
+          syncComponent = "",
+          routePaths = ""
+        } = this.mapRoutesConfig(
+          children,
+          routesConfigPath,
+          code,
+          compilation,
+          cacheNames,
+          cachePaths,
+          path
+        );
+        code.syncComponent = syncComponent;
         code.routesComponentConfig = routesComponentConfig;
         code.routePaths = routePaths;
       }
       // import("client/pages/marketing/pages/DiscountCoupon/index.js")  Loadable${this.firstToUpper(name)}
-      code.loadableComponent = `${code.loadableComponent || ""}`
-      code.routesComponentConfig = `${code.routesComponentConfig || ""}
+      code.syncComponent += `
+import ${this.firstToUpper(name)} from "client${entry}"`;
+
+      code.routesComponentConfig += `
                     {  
                      path: "${path}",
                      exact: ${exact ? true : false},
@@ -131,11 +135,12 @@ class WebpackPluginRouter {
                      Component:lazy(
                            () => import(/* webpackChunkName:"${name}" */ "client${entry}")
                       ),
+                     syncComponent:${this.firstToUpper(name)},
                      level:${level},
                      routesConfigPath:"${routesConfigPath}",
                    },`;
 
-      code.routePaths = `${code.routePaths || ""}
+      code.routePaths += `
   ${name}:"${path}",`;
     }
     return code;
@@ -146,7 +151,7 @@ class WebpackPluginRouter {
 
     const code = {
       routesComponentConfig: "",
-      loadableComponent: "",
+      syncComponent: "",
       importRoutesConfigCode: "",
       exportRoutesConfigCode: "",
       routePaths: "",
@@ -167,7 +172,7 @@ class WebpackPluginRouter {
   ...${fileName},`;
       code.importRoutesConfigCode += `import ${fileName} from "client/${path}";\n`;
 
-      const { routesComponentConfig, loadableComponent, routePaths } =
+      const { routesComponentConfig, syncComponent, routePaths } =
         this.mapRoutesConfig(
           config,
           routesConfigPath,
@@ -176,7 +181,7 @@ class WebpackPluginRouter {
           cacheNames,
           cachePaths
         );
-      code.loadableComponent = loadableComponent;
+      code.syncComponent = syncComponent;
       code.routesComponentConfig = routesComponentConfig;
       code.routePaths = routePaths;
     }
@@ -186,7 +191,7 @@ class WebpackPluginRouter {
   getCode(routesConfigs, compilation) {
     const {
       routesComponentConfig = "",
-      loadableComponent = "",
+      syncComponent = "",
       importRoutesConfigCode = "",
       routePaths = "",
       compilationErrors = [],
@@ -195,14 +200,15 @@ class WebpackPluginRouter {
 
     let routesComponentFile = `
 // 按需加载插件
-import { lazy } from "react-lazy-router-dom";
+import { lazy } from "client/router/react-lazy-router-dom";
 `;
 
     routesComponentFile += importRoutesConfigCode;
 
-    routesComponentFile += loadableComponent;
+    routesComponentFile += syncComponent;
 
     routesComponentFile += `
+
 let routesComponentConfig=[`;
 
     routesComponentFile += routesComponentConfig;

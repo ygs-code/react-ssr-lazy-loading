@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import Nav from "client/component/Nav";
 import Head from "client/component/Head";
+import setMetaProps from "client/component/SetMetaProps";
 import { mapRedux } from "client/redux";
 const Index = () => {
   useEffect(() => {
@@ -16,4 +17,4 @@ const Index = () => {
   );
 };
 
-export default mapRedux()(Index);
+export default mapRedux()(setMetaProps(Index));

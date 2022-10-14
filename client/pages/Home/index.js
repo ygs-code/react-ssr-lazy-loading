@@ -13,8 +13,7 @@ import { mapRedux } from "client/redux";
 import Nav from "client/component/Nav";
 import Head from "client/component/Head";
 import LazyLoadingImg from "client/component/LazyLoadingImg";
-// import { routesConfigs } from "client/router/routesComponent";
-// import { findTreeData } from "client/utils";
+import setMetaProps from "client/component/SetMetaProps";
 import { getHaoKanVideo } from "client/assets/js/request/requestApi";
 import "./index.less";
 // 权限跳转登录页面可以在这控制
@@ -138,9 +137,9 @@ Index.getInitPropsState = async (parameter = {}) => {
 Index.getMetaProps = () => {
   return {
     title: "首页",
-    keywords: "网站关键词",
-    description: "网站描述"
+    keywords: "首页网站关键词",
+    description: "首页网站描述"
   };
 };
 
-export default mapRedux()(Index);
+export default mapRedux()(setMetaProps(Index));
