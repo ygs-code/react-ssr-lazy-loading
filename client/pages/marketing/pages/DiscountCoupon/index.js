@@ -17,4 +17,10 @@ const Index = () => {
   );
 };
 
-export default mapRedux()(setMetaProps()(Index));
+export default mapRedux()(
+  setMetaProps({
+    title: "优惠券页面",
+    keywords: "优惠券页面网站关键词",
+    description: "优惠券页面网站描述"
+  })(Index)
+);
