@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback } from "react";
-import routesComponent, { routesConfigs } from "@/router/routesComponent";
+import routesComponent, { routesConfigs } from "client/router/routesComponent";
 import { matchPath } from "client/router/react-lazy-router-dom";
-import { mapRedux } from "@/redux";
-import { findTreeData, getBaseInitState } from "@/utils";
+import { mapRedux } from "client/redux";
+import { findTreeData, getBaseInitState } from "client/utils";
 
 // 注入initState
 const InitState = (props) => {

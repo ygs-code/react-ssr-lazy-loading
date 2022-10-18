@@ -7,7 +7,7 @@
  * @Description: ()
  */
 // 这种方式需要前后命名一致才行能做到这样效果
-export const getBaseInitState = async (dispatch, state) => {
+export const getBaseInitState = async (dispatch, state, props) => {
   const dispatchBaseInitState = dispatch.baseInitState;
   // 函数命名必须是这样
   const reg = /(?<=^get)(.+?)(?=Async$)/g;
@@ -21,7 +21,7 @@ export const getBaseInitState = async (dispatch, state) => {
         if (state.baseInitState[dataKey]) {
           return false;
         }
-        await dispatchBaseInitState[key]();
+        await dispatchBaseInitState[key](props);
       }
     }
   }

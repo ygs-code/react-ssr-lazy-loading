@@ -6,7 +6,6 @@
  * @Description: In User Settings Edit
  * @FilePath: /react-loading-ssr/client/assets/js/request/redirect.js
  */
-// import { routePaths, historyPush, getHistory } from "@/router";
 import token from "./token";
 
 export const codeMap = {

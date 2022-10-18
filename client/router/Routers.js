@@ -9,6 +9,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Loading from "client/component/Loading";
+import InitState from "client/component/InitState";
 import {
   Router,
   Switch as Routes,

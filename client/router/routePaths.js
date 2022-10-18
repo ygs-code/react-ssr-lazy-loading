@@ -1,5 +1,5 @@
 export default {
-  DiscountCoupon: "/marketing/discount-coupon",
+  DiscountCoupon: "/marketing/discount-coupon/:id",
   marketing: "/marketing",
   home: "/",
   user: "/user"

@@ -10,7 +10,7 @@ import User from "client/pages/User/index.js";
 
 let routesComponentConfig = [
   {
-    path: "/marketing/discount-coupon",
+    path: "/marketing/discount-coupon/:id",
     exact: false,
     name: "DiscountCoupon",
     entry: "/pages/marketing/pages/DiscountCoupon/index.js",

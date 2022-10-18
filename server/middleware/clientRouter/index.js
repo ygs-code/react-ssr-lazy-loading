@@ -68,33 +68,54 @@ class ClientRouter {
       ctx.req._parsedUrl.pathname
     );
 
+    console.log("isMatchRoute=", isMatchRoute);
     if (isMatchRoute) {
-      const { Component, syncComponent } = isMatchRoute;
+      const { syncComponent } = isMatchRoute;
+      // 路由注入到react中
+      let history = getMemoryHistory({ initialEntries: [ctx.req.url] });
+      history = {
+        ...history,
+        ...isMatchRoute
+      };
+      const { isExact, path, url, params } = history;
+
+      delete history.Component;
+      delete history.syncComponent;
       /* eslint-disable   */
       const routeComponent = syncComponent;
       /* eslint-enable   */
       const { WrappedComponent: { getInitPropsState, getMetaProps } = {} } =
         routeComponent;
 
-      let data = null;
+      let props = {
+        ...history,
+        dispatch,
+        state: store.getState(),
+        match: {
+          isExact,
+          path,
+          url,
+          params
+        }
+      };
 
-      await getBaseInitState(dispatch, getState());
+      await getBaseInitState(dispatch, getState(), props);
 
       if (getInitPropsState) {
         // 拉去请求或者查询sql等操作
-        data = await getInitPropsState();
-        await dispatch[isMatchRoute.name].setInitState({
-          initState: data
-        });
+        await getInitPropsState(
+          // 注入props
+          props
+        );
       }
 
       // 渲染html
       let renderedHtml = await this.reactToHtml({
-        ctx,
+        // ctx,
         store,
         template,
         isMatchRoute,
-
+        history,
         routeComponent
       });
 
@@ -197,21 +218,14 @@ class ClientRouter {
   }
   // 创建react转换成HTMl
   async reactToHtml({
-    ctx,
+    // ctx,
     store,
     template,
     isMatchRoute,
-
-    routeComponent
+    routeComponent,
+    history
   }) {
     let initState = store.getState();
-
-    // 路由注入到react中
-    let history = getMemoryHistory({ initialEntries: [ctx.req.url] });
-    history = {
-      ...history,
-      ...isMatchRoute
-    };
 
     let rootString = renderToString(
       createApp({

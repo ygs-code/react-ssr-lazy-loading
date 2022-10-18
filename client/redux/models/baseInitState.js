@@ -48,7 +48,7 @@ export default (global) => ({
   //     },
   // },
   effects: (dispatch) => ({
-    async getWeatherAsync() {
+    async getWeatherAsync(props) {
       return await getWeather({
         key: "2d935fc56c5f9ab2ef2165822cedff56",
         city: "440300",

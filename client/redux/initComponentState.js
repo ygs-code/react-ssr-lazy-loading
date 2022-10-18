@@ -55,6 +55,8 @@ const initState = (Component) => {
         state = {},
         dispatch
       } = this.props;
+      console.log('this.props==',this.props)
+      debugger
 
       const { name } = this.getMatch(routesComponent, pathname);
       if (

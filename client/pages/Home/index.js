@@ -32,6 +32,8 @@ const Index = (props) => {
     if (!list.length) {
       getImages(page - 1);
     }
+
+    // Index.getInitPropsState(props);
   }, []);
 
   // 获取组件初始化数据
@@ -112,10 +114,18 @@ Index.propTypes = {
   state: PropTypes.object
 };
 
-Index.getInitPropsState = async (parameter = {}) => {
-  const { page = 1, size = 10 } = parameter;
+Index.getInitPropsState = async (props = {}) => {
+  console.log("props=================", props);
+  const {
+    dispatch: {
+      home: { setInitState }
+    },
+    match: {
+      params: { page = 1, size = 10 }
+    }
+  } = props;
 
-  return await getHaoKanVideo({
+  let data = await getHaoKanVideo({
     page,
     size
   })
@@ -132,6 +142,8 @@ Index.getInitPropsState = async (parameter = {}) => {
     .catch(() => {
       // console.log("Error: ", err.message);
     });
+  setInitState(data);
+  return data;
 };
 
 export default mapRedux()(
