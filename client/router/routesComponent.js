@@ -22,7 +22,7 @@ let routesComponentConfig = [
     syncComponent: Discountcoupon,
     level: 2,
     routesConfigPath:
-      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
+      "K:/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
   },
   {
     path: "/marketing",
@@ -37,7 +37,7 @@ let routesComponentConfig = [
     syncComponent: Marketing,
     level: 2,
     routesConfigPath:
-      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
+      "K:/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
   },
   {
     path: "/",
@@ -49,8 +49,7 @@ let routesComponentConfig = [
     ),
     syncComponent: Home,
     level: 1,
-    routesConfigPath:
-      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/router/routesConfig.js"
+    routesConfigPath: "K:/react-ssr-lazy-loading/client/router/routesConfig.js"
   },
   {
     path: "/user",
@@ -62,8 +61,7 @@ let routesComponentConfig = [
     ),
     syncComponent: User,
     level: 1,
-    routesConfigPath:
-      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/router/routesConfig.js"
+    routesConfigPath: "K:/react-ssr-lazy-loading/client/router/routesConfig.js"
   }
 ];
 

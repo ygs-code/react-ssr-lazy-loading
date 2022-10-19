@@ -15,8 +15,8 @@ import "./index.less";
 
 const Index = (props) => {
   const {
-    dispatch: { baseInitState: { setMenuActive } = {} } = {},
-    location: { pathname } = {},
+    dispatch: { nav: { setMenuActive } = {} } = {},
+    match: { params = {}, path: matchPath },
     pushRoute
   } = props;
 
@@ -44,9 +44,8 @@ const Index = (props) => {
           return (
             <NavItem key={index}>
               <NavLink
-                active={pathname === path}
+                active={matchPath === path}
                 onClick={() => {
-                  console.log();
                   setMenuActive({
                     menuActive: path
                   });
@@ -72,6 +71,17 @@ const Index = (props) => {
     </div>
   );
 };
+
+Index.getInitPropsState = async (props = {}) => {
+  const {
+    dispatch: { nav: { setMenuActive } = {} } = {},
+    match: { path: matchPath }
+  } = props;
+  setMenuActive({
+    menuActive: matchPath
+  });
+};
+
 Index.propTypes = {
   history: PropTypes.object,
   dispatch: PropTypes.func,

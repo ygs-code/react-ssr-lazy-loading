@@ -5,7 +5,7 @@ import { matchPath } from "react-lazy-router-dom";
 import store from "client/redux";
 import routesComponent from "client/router/routesComponent";
 import { getMemoryHistory } from "client/router/history";
-import { findTreeData, getBaseInitState } from "client/utils";
+import { findTreeData } from "client/utils";
 import createApp from "client/App";
 import { stringToObject } from "client/utils";
 // import otherModules from "./otherModules";
@@ -68,7 +68,6 @@ class ClientRouter {
       ctx.req._parsedUrl.pathname
     );
 
-    console.log("isMatchRoute=", isMatchRoute);
     if (isMatchRoute) {
       const { syncComponent } = isMatchRoute;
       // 路由注入到react中
@@ -90,7 +89,7 @@ class ClientRouter {
       let props = {
         ...history,
         dispatch,
-        state: store.getState(),
+        state: getState(),
         match: {
           isExact,
           path,
@@ -99,7 +98,7 @@ class ClientRouter {
         }
       };
 
-      await getBaseInitState(dispatch, getState(), props);
+      // await getBaseInitState(dispatch, getState(), props);
 
       if (getInitPropsState) {
         // 拉去请求或者查询sql等操作
@@ -191,11 +190,11 @@ class ClientRouter {
       '<div id="root">',
       `<div id="root">${rootString}`
     );
+
     template = template.replace(
       "</head>",
-      `</head> \n <script>window.__INITIAL_STATE__ =${JSON.stringify(
-        initState
-      )}</script>`
+      `</head> \n <script>
+      window.__INITIAL_STATE__ =${JSON.stringify(initState)}</script>`
     );
     template = template.replace("</body>", `${scripts}</body>`);
     return template;

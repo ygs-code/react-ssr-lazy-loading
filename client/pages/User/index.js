@@ -94,18 +94,19 @@ const Index = () => {
 };
 
 Index.getInitPropsState = async (props = {}) => {
-  console.log("props=================", props);
-  // const {
-  //   dispatch: {
-  //     home: { setInitState }
-  //   },
-  //   match: {
-  //     params: { page = 1, size = 10 }
-  //   }
-  // } = props;
+  const {
+    dispatch: {
+      home: { setInitState }
+    },
+    match: {
+      params: { page = 1, size = 10 }
+    }
+  } = props;
 
-  return {};
+  await Head.getInitPropsState(props);
+  await Nav.getInitPropsState(props);
 };
+
 Index.getMetaProps = () => {
   return {
     title: "用户页面",

@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from "react";
 import routesComponent, { routesConfigs } from "client/router/routesComponent";
 import { matchPath } from "client/router/react-lazy-router-dom";
 import { mapRedux } from "client/redux";
-import { findTreeData, getBaseInitState } from "client/utils";
+import { findTreeData } from "client/utils";
 
 // 注入initState
 const InitState = (props) => {
@@ -54,7 +54,7 @@ const InitState = (props) => {
   }, []);
 
   useEffect(() => {
-    getBaseInitState(dispatch, state);
+    // getBaseInitState(dispatch, state);
     getInitState();
   }, []);
   return <> {children(props)}</>;

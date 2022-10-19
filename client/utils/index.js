@@ -32,7 +32,6 @@ import {
   checkVerificationCode,
   firstToUpper
 } from "./regular";
-import { setInitData } from "./setInitData";
 import { getBaseInitState } from "./getBaseInitState";
 import stringToObject from "./stringToObject";
 
@@ -55,8 +54,7 @@ export {
   checkUser,
   checkPassword,
   checkVerificationCode,
-  firstToUpper,
-  setInitData
+  firstToUpper
 };
 // 整体输出
 export * from "./regular.js";

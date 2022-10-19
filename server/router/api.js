@@ -1,5 +1,4 @@
 import koaRouter from "koa-router";
-// import { menu } from '../baseInitState';
 export default class Api {
   constructor(app) {
     this.app = app;

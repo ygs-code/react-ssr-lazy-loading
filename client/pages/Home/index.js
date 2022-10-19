@@ -21,14 +21,11 @@ const Index = (props) => {
   let [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const {
-    dispatch: { home: { setInitState = () => {} } = {} } = {},
-    state: { home: { initState: { list = [] } = {} } = {} } = {}
+    dispatch: { home: { setImgData = () => {} } = {} } = {},
+    state: { home: { imgData: { list = [] } = {} } = {} } = {}
   } = props;
+
   useEffect(() => {
-    console.log(
-      "window.__INITIAL_STATE__ =",
-      window && window.__INITIAL_STATE__
-    );
     if (!list.length) {
       getImages(page - 1);
     }
@@ -72,8 +69,8 @@ const Index = (props) => {
       //     size: 10,
       // });
       const { total, list: resList = [] } = data;
-      setInitState({
-        initState: {
+      setImgData({
+        imgData: {
           total,
           list: list.concat(
             resList.map((item) => ({
@@ -115,15 +112,17 @@ Index.propTypes = {
 };
 
 Index.getInitPropsState = async (props = {}) => {
-  console.log("props=================", props);
   const {
     dispatch: {
-      home: { setInitState }
+      home: { setImgData }
     },
     match: {
       params: { page = 1, size = 10 }
     }
   } = props;
+
+  await Head.getInitPropsState(props);
+  await Nav.getInitPropsState(props);
 
   let data = await getHaoKanVideo({
     page,
@@ -142,7 +141,9 @@ Index.getInitPropsState = async (props = {}) => {
     .catch(() => {
       // console.log("Error: ", err.message);
     });
-  setInitState(data);
+  setImgData({
+    imgData: data
+  });
   return data;
 };
 

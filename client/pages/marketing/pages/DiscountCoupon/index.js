@@ -17,6 +17,20 @@ const Index = () => {
   );
 };
 
+Index.getInitPropsState = async (props = {}) => {
+  const {
+    dispatch: {
+      home: { setInitState }
+    },
+    match: {
+      params: { page = 1, size = 10 }
+    }
+  } = props;
+
+  await Head.getInitPropsState(props);
+  await Nav.getInitPropsState(props);
+};
+
 export default mapRedux()(
   setMetaProps({
     title: "优惠券页面",
