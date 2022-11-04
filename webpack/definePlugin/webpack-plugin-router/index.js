@@ -123,8 +123,8 @@ class WebpackPluginRouter {
         code.routePaths = routePaths;
       }
       // import("client/pages/marketing/pages/DiscountCoupon/index.js")  Loadable${this.firstToUpper(name)}
-      code.syncComponent += `
-import ${this.firstToUpper(name)} from "client${entry}"`;
+//       code.syncComponent += `
+// import ${this.firstToUpper(name)} from "client${entry}"`;
 
       code.routesComponentConfig += `
                     {  
@@ -135,7 +135,7 @@ import ${this.firstToUpper(name)} from "client${entry}"`;
                      Component:lazy(
                            () => import(/* webpackChunkName:"${name}" */ "client${entry}")
                       ),
-                     syncComponent:${this.firstToUpper(name)},
+                    //  syncComponent:${this.firstToUpper(name)},
                      level:${level},
                      routesConfigPath:"${routesConfigPath}",
                    },`;
@@ -181,7 +181,7 @@ import ${this.firstToUpper(name)} from "client${entry}"`;
           cacheNames,
           cachePaths
         );
-      code.syncComponent = syncComponent;
+      // code.syncComponent = syncComponent;
       code.routesComponentConfig = routesComponentConfig;
       code.routePaths = routePaths;
     }
@@ -205,7 +205,7 @@ import { lazy } from "client/router/react-lazy-router-dom";
 
     routesComponentFile += importRoutesConfigCode;
 
-    routesComponentFile += syncComponent;
+    // routesComponentFile += syncComponent;
 
     routesComponentFile += `
 

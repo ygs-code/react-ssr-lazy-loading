@@ -6,11 +6,11 @@
  * @FilePath: /react-ssr-lazy-loading/client/redux/models/home.js
  * @Description:
  */
-import { setInitPropsState } from "../setInitPropsState";
+import { getPropsState } from "../index";
 
 export default (global) => ({
   state: {
-    weather: setInitPropsState(global, "head", "weather"),
+    weather: getPropsState(global, "head", "weather"),
     count: 0
   },
   reducers: {

@@ -1,3 +1,4 @@
+import React from "react";
 import { renderToString } from "react-dom/server";
 import { getBundles } from "react-loadable-ssr-addon";
 import Helmet from "react-helmet";
@@ -6,7 +7,7 @@ import store from "client/redux";
 import routesComponent from "client/router/routesComponent";
 import { getMemoryHistory } from "client/router/history";
 import { findTreeData } from "client/utils";
-import createApp from "client/App";
+import App from "client/App";
 import { stringToObject } from "client/utils";
 // import otherModules from "./otherModules";
 import path, { resolve } from "path";
@@ -25,7 +26,6 @@ let {
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === "development";
 
-// const createApp = require("client/App").default;
 // 创建 store
 // const store = createStore({});
 
@@ -69,7 +69,10 @@ class ClientRouter {
     );
 
     if (isMatchRoute) {
-      const { syncComponent } = isMatchRoute;
+      const { Component } = isMatchRoute;
+
+      const syncComponent = await Component();
+
       // 路由注入到react中
       let history = getMemoryHistory({ initialEntries: [ctx.req.url] });
       history = {
@@ -80,11 +83,8 @@ class ClientRouter {
 
       delete history.Component;
       delete history.syncComponent;
-      /* eslint-disable   */
-      const routeComponent = syncComponent;
-      /* eslint-enable   */
       const { WrappedComponent: { getInitPropsState, getMetaProps } = {} } =
-        routeComponent;
+        syncComponent;
 
       let props = {
         ...history,
@@ -115,7 +115,7 @@ class ClientRouter {
         template,
         isMatchRoute,
         history,
-        routeComponent
+        syncComponent
       });
 
       renderedHtml = ejs.render(renderedHtml, {
@@ -221,23 +221,25 @@ class ClientRouter {
     store,
     template,
     isMatchRoute,
-    routeComponent,
+    syncComponent,
     history
   }) {
     let initState = store.getState();
 
     let rootString = renderToString(
-      createApp({
-        store,
-        history,
-        // 同步路由配置
-        routesComponent: [
-          {
-            ...isMatchRoute,
-            Component: routeComponent
-          }
-        ]
-      })
+      <App
+        {...{
+          store,
+          history,
+          // 同步路由配置
+          routesComponent: [
+            {
+              ...isMatchRoute,
+              Component: syncComponent
+            }
+          ]
+        }}
+      />
     );
     let { scripts, styles } = await this.createTags({ isMatchRoute });
 

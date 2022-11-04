@@ -6,10 +6,10 @@
  * @FilePath: /react-ssr-lazy-loading/client/redux/models/home.js
  * @Description:
  */
-import { setInitPropsState } from "../setInitPropsState";
+import { getPropsState } from "../index";
 export default (global) => ({
   state: {
-    menuActive: setInitPropsState(global, "nav", "menuActive")
+    menuActive: getPropsState(global, "nav", "menuActive")
   },
   reducers: {
     setMenuActive(state, newState) {

@@ -62,12 +62,8 @@ const Index = (props) => {
 
 Index.getInitPropsState = async (props = {}) => {
   const {
-    dispatch: {
-      head: { setWeather }
-    },
-    match: {
-      params: { page = 1, size = 10 }
-    }
+    dispatch: { head: { setWeather } = {} } = {},
+    match: { params: { page = 1, size = 10 } = {} } = {}
   } = props;
 
   return await getWeather({

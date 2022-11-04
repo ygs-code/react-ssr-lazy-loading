@@ -240,6 +240,15 @@ module.exports = {
     // Chunk end
   },
   plugins: [
+    // 下面是复制文件的插件，我认为在这里并不是起到复制文件的作用，而是过滤掉打包过程中产生的以.开头的文件
+    new CopyWebpackPlugin([
+      {
+        from: path.join(process.cwd(), "/client/static"),
+        to: path.join(process.cwd(), "/dist/client/static"),
+        ignore: [".*"]
+      }
+    ]),
+
     new ManifestPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new MiniCssExtractPlugin({

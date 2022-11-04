@@ -31,37 +31,36 @@ class WebpackHot {
     this.init();
   }
   async init() {
-    var _this = this;
-
-    for (let [index, item] of config[0].plugins.entries()) {
-      if (item instanceof ReactLoadableSSRAddon) {
-        item.apply = function apply(compiler) {
-          const PLUGIN_NAME = "ReactLoadableSSRAddon";
-          // 写入文件
-          writeFile(this.options.filename, "{}");
-          // fs.writeFileSync(this.options.filename, "{}");
-          compiler.hooks.emit.tapAsync(PLUGIN_NAME, this.handleEmit.bind(this));
-        };
-        item.writeAssetsFile = function () {
-          const filePath = this.manifestOutputPath;
-          const fileDir = path.dirname(filePath);
-          const json = JSON.stringify(this.manifest, null, 2);
-          try {
-            if (!fs.existsSync(fileDir)) {
-              fs.mkdirSync(fileDir, { recursive: true });
-            }
-          } catch (err) {
-            if (err.code !== "EEXIST") {
-              throw err;
-            }
-          }
-          _this.compilerOptions.assetsManifest = json;
-          fs.writeFileSync(filePath, json);
-        };
-        config[0].plugins[index] = item;
-        break;
-      }
-    }
+    // var _this = this;
+    // for (let [index, item] of config[0].plugins.entries()) {
+    //   if (item instanceof ReactLoadableSSRAddon) {
+    //     item.apply = function apply(compiler) {
+    //       const PLUGIN_NAME = "ReactLoadableSSRAddon";
+    //       // 写入文件
+    //       writeFile(this.options.filename, "{}");
+    //       // fs.writeFileSync(this.options.filename, "{}");
+    //       compiler.hooks.emit.tapAsync(PLUGIN_NAME, this.handleEmit.bind(this));
+    //     };
+    //     item.writeAssetsFile = function () {
+    //       const filePath = this.manifestOutputPath;
+    //       const fileDir = path.dirname(filePath);
+    //       const json = JSON.stringify(this.manifest, null, 2);
+    //       try {
+    //         if (!fs.existsSync(fileDir)) {
+    //           fs.mkdirSync(fileDir, { recursive: true });
+    //         }
+    //       } catch (err) {
+    //         if (err.code !== "EEXIST") {
+    //           throw err;
+    //         }
+    //       }
+    //       _this.compilerOptions.assetsManifest = json;
+    //       fs.writeFileSync(filePath, json);
+    //     };
+    //     config[0].plugins[index] = item;
+    //     break;
+    //   }
+    // }
     // 编译
     this.compiler = webpack(isSsr ? config : config[0]);
     this.addMiddleware();

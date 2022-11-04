@@ -47,7 +47,22 @@ const mapRedux = (modelsName) => (Component) => {
   };
   return connect(mapStateToProps, mapDispatchToProps)(Component);
 };
-export { mapRedux };
+
+const getPropsState = (global, modelKey, dataKey = "initState") => {
+  let initState = {};
+  if (
+    global &&
+    global.__INITIAL_STATE__ &&
+    global.__INITIAL_STATE__[modelKey] &&
+    global.__INITIAL_STATE__[modelKey][dataKey]
+  ) {
+    initState = global.__INITIAL_STATE__[modelKey][dataKey];
+  }
+
+  return initState;
+};
+
+export { mapRedux, getPropsState };
 
 export const createStore = (global) => {
   const newModels = {};

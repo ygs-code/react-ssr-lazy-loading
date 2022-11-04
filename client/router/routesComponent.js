@@ -3,11 +3,6 @@ import { lazy } from "client/router/react-lazy-router-dom";
 import pagesMarketingRouterRoutesconfig from "client/pages/marketing/router/routesConfig.js";
 import routerRoutesconfig from "client/router/routesConfig.js";
 
-import Discountcoupon from "client/pages/marketing/pages/DiscountCoupon/index.js";
-import Marketing from "client/pages/marketing/index.js";
-import Home from "client/pages/Home/index.js";
-import User from "client/pages/User/index.js";
-
 let routesComponentConfig = [
   {
     path: "/marketing/discount-coupon/:id",
@@ -19,10 +14,10 @@ let routesComponentConfig = [
         /* webpackChunkName:"DiscountCoupon" */ "client/pages/marketing/pages/DiscountCoupon/index.js"
       )
     ),
-    syncComponent: Discountcoupon,
+    //  syncComponent:Discountcoupon,
     level: 2,
     routesConfigPath:
-      "K:/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
+      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
   },
   {
     path: "/marketing",
@@ -34,10 +29,10 @@ let routesComponentConfig = [
         /* webpackChunkName:"marketing" */ "client/pages/marketing/index.js"
       )
     ),
-    syncComponent: Marketing,
+    //  syncComponent:Marketing,
     level: 2,
     routesConfigPath:
-      "K:/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
+      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/pages/marketing/router/routesConfig.js"
   },
   {
     path: "/",
@@ -47,9 +42,10 @@ let routesComponentConfig = [
     Component: lazy(() =>
       import(/* webpackChunkName:"home" */ "client/pages/Home/index.js")
     ),
-    syncComponent: Home,
+    //  syncComponent:Home,
     level: 1,
-    routesConfigPath: "K:/react-ssr-lazy-loading/client/router/routesConfig.js"
+    routesConfigPath:
+      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/router/routesConfig.js"
   },
   {
     path: "/user",
@@ -59,9 +55,10 @@ let routesComponentConfig = [
     Component: lazy(() =>
       import(/* webpackChunkName:"user" */ "client/pages/User/index.js")
     ),
-    syncComponent: User,
+    //  syncComponent:User,
     level: 1,
-    routesConfigPath: "K:/react-ssr-lazy-loading/client/router/routesConfig.js"
+    routesConfigPath:
+      "/Users/admin/Documents/code/react-ssr-lazy-loading/client/router/routesConfig.js"
   }
 ];
 

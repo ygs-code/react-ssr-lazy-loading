@@ -6,11 +6,11 @@
  * @FilePath: /react-ssr-lazy-loading/client/redux/models/home.js
  * @Description:
  */
-import { setInitPropsState } from "../setInitPropsState";
+import { getPropsState } from "../index";
 
 export default (global) => ({
   state: {
-    imgData: setInitPropsState(global, "home", "imgData"),
+    imgData: getPropsState(global, "home", "imgData"),
     count: 0
   },
   reducers: {

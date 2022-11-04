@@ -16,7 +16,7 @@ import "./index.less";
 const Index = (props) => {
   const {
     dispatch: { nav: { setMenuActive } = {} } = {},
-    match: { params = {}, path: matchPath },
+    match: { params = {}, path: matchPath } = {},
     pushRoute
   } = props;
 
@@ -75,7 +75,7 @@ const Index = (props) => {
 Index.getInitPropsState = async (props = {}) => {
   const {
     dispatch: { nav: { setMenuActive } = {} } = {},
-    match: { path: matchPath }
+    match: { path: matchPath } = {}
   } = props;
   setMenuActive({
     menuActive: matchPath

@@ -6,9 +6,9 @@
  * @FilePath: /react-ssr-lazy-loading/client/index.js
  * @Description:
  */
-// import { hydrate, render } from "react-dom";
+import React from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
-import app from "./App/index.js";
+import App from "./App/index.js";
 import { getBrowserHistory } from "client/router/history";
 import store from "client/redux";
 import routesComponent from "client/router/routesComponent";
@@ -26,19 +26,24 @@ const renderApp = () => {
   if (isSsr && !module.hot) {
     hydrateRoot(
       document.getElementById("root"),
-      app({
-        history,
-        store,
-        routesComponent
-      })
+
+      <App
+        {...{
+          history,
+          store,
+          routesComponent
+        }}
+      />
     );
   } else {
     createRoot(document.getElementById("root")).render(
-      app({
-        history,
-        store,
-        routesComponent
-      })
+      <App
+        {...{
+          history,
+          store,
+          routesComponent
+        }}
+      />
     );
   }
 };

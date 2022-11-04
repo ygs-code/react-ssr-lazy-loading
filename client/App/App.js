@@ -6,7 +6,7 @@
  * @FilePath: /react-ssr-lazy-loading/client/App/App.js
  * @Description:
  */
-import React from "react";
+import React, { Component } from "react";
 import { Provider } from "react-redux";
 import Routers from "client/router";
 // import { stringToObject } from "client/utils";
@@ -19,18 +19,27 @@ import "bootstrap/dist/css/bootstrap.css";
 //   target, // 环境参数
 //   htmlWebpackPluginOptions = ""
 // } = process.env; // 环境参数
-const App = (props) => {
-  const { history, store, routesComponent } = props;
-  /*
+
+class App extends Component {
+  render() {
+    const { history, store, routesComponent } = this.props;
+
+    /*
   Warning: Detected multiple renderers concurrently rendering the same context provider. This is currently unsupported.
   来自Provider组件
   */
-  return (
-    <Provider store={store}>
-      <Routers history={history} routesComponent={routesComponent} />
-    </Provider>
-  );
-};
+    return (
+      <Provider store={store}>
+        <Routers history={history} routesComponent={routesComponent} />
+      </Provider>
+    );
+  }
+  componentDidCatch(error, info) {
+    console.error("Error：", error);
+    console.error("错误发生的文件栈：", info.componentStack);
+  }
+}
+
 // App.propTypes = {
 //     location: PropTypes.string,
 //     store: PropTypes.object,

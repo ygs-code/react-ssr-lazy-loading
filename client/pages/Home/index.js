@@ -59,15 +59,12 @@ const Index = (props) => {
       );
 
       // let $data = await Index.getInitPropsState({
-      //   page,
-      //   size: 10
+      //   ...props,
+      //   match: {
+      //     params: { page, size: 10 }
+      //   }
       // });
 
-      // console.log("$data=====", $data);
-      // let data = await initStateFn({
-      //     page,
-      //     size: 10,
-      // });
       const { total, list: resList = [] } = data;
       setImgData({
         imgData: {
@@ -113,12 +110,9 @@ Index.propTypes = {
 
 Index.getInitPropsState = async (props = {}) => {
   const {
-    dispatch: {
-      home: { setImgData }
-    },
-    match: {
-      params: { page = 1, size = 10 }
-    }
+    dispatch: { home: { setImgData } = {} } = {},
+    state: { home: { imgData: { list = [] } = {} } = {} } = {},
+    match: { params: { page = 1, size = 10 } = {} } = {}
   } = props;
 
   await Head.getInitPropsState(props);
@@ -141,8 +135,18 @@ Index.getInitPropsState = async (props = {}) => {
     .catch(() => {
       // console.log("Error: ", err.message);
     });
+
+  const { total, list: resList = [] } = data;
   setImgData({
-    imgData: data
+    imgData: {
+      total,
+      list: list.concat(
+        resList.map((item) => ({
+          ...item,
+          url: item.userPic
+        }))
+      )
+    }
   });
   return data;
 };
